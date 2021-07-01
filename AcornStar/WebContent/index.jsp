@@ -9,11 +9,11 @@
 </head>
 <body>
 <div class="text-center" style="margin-top:100px;">
-<h1>AcornStar<span class="badge bg-secondary"></span></h1>
+<h1 class="text-primary">AcornStar<span class="badge bg-secondary"></span></h1>
 </div>
 <div class="container" >
-   <div style="margin:auto; text-align:center; margin-top:100px;">
-   <form action="login.jsp" method="post" style="display:inline-block;">
+   <div style="margin:auto; text-align:center; margin-top:50px;">
+   <form action="users/login.jsp" method="post" style="display:inline-block;">
 	  <div class="row mb-3">
 	    <label for="id" class="col-sm-5 col-form-label">ID</label>
 	    <div class="col-sm-7">
@@ -26,7 +26,7 @@
 	      <input type="password" class="form-control" name="pwd" id="pwd">
 	    </div>
 	  </div>
-	  <div style="margin-top:30px;">
+	  <div style="margin-top:50px;">
 	  <button type="submit" class="col-sm-5 me-2 btn btn-primary">LOGIN</button>
 	  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 		  회원가입
