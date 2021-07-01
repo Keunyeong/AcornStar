@@ -8,13 +8,9 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
-<<<<<<< HEAD
-<h1>test</h1>
-=======
 <div class="text-center" style="margin-top:100px;">
 <h1>AcornStar<span class="badge bg-secondary"></span></h1>
 </div>
->>>>>>> refs/remotes/origin/shin02
 <div class="container" >
    <div style="margin:auto; text-align:center; margin-top:200px;">
    <form action="user/login.jsp" method="post" style="display:inline-block;">
