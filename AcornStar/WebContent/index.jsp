@@ -8,6 +8,9 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
+<div class="text-center" style="margin-top:100px;">
+<h1>AcornStar<span class="badge bg-secondary"></span></h1>
+</div>
 <div class="container" >
    <div style="margin:auto; text-align:center; margin-top:100px;">
    <form action="login.jsp" method="post" style="display:inline-block;">
@@ -17,7 +20,6 @@
 	      <input type="text" class="form-control" name="id" id="id">
 	    </div>
 	  </div>
-	  
 	  <div class="row mb-3">
 	    <label for="pwd" class="col-sm-5 col-form-label">Password</label>
 	    <div class="col-sm-7">
