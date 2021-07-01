@@ -9,8 +9,8 @@
 </head>
 <body>
 <div class="container" >
-   <div style="margin:auto; text-align:center; margin-top:100px;">
-   <form action="login.jsp" method="post" style="display:inline-block;">
+   <div style="margin:auto; text-align:center; margin-top:200px;">
+   <form action="/user/login.jsp" method="post" style="display:inline-block;">
 	  <div class="row mb-3">
 	    <label for="id" class="col-sm-5 col-form-label">ID</label>
 	    <div class="col-sm-7">
