@@ -8,21 +8,20 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
-<h1>test</h1>
 <div class="container" >
    <div style="margin:auto; text-align:center; margin-top:100px;">
-   <form action="login.jsp" method="post" style="display:inline-block;">
+   <form id="loginForm" action="user/login.jsp" method="post" style="display:inline-block;">
 	  <div class="row mb-3">
-	    <label for="id" class="col-sm-5 col-form-label">ID</label>
+	    <label for="loginId" class="col-sm-5 col-form-label">ID</label>
 	    <div class="col-sm-7">
-	      <input type="text" class="form-control" name="id" id="id">
+	      <input type="text" class="form-control" name="loginId" id="loginId">
 	    </div>
 	  </div>
 	  
 	  <div class="row mb-3">
-	    <label for="pwd" class="col-sm-5 col-form-label">Password</label>
+	    <label for="loginPwd" class="col-sm-5 col-form-label">Password</label>
 	    <div class="col-sm-7">
-	      <input type="password" class="form-control" name="pwd" id="pwd">
+	      <input type="password" class="form-control" name="loginPwd" id="loginPwd">
 	    </div>
 	  </div>
 	  <div style="margin-top:30px;">
@@ -43,7 +42,7 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	        <form action="signup.jsp" method="post" id="myForm" class="row">
+	        <form action="user/signup.jsp" method="post" id="myForm" class="row">
 		      <div>
 		         <label class="control-label" for="id">아이디</label>
 		         <input class="form-control" type="text" name="id" id="id"/>
@@ -99,7 +98,7 @@
       }
       
       //2. util 에 있는 함수를 이용해서 ajax 요청하기
-      ajaxPromise("checkid.jsp", "get", "inputId="+inputId)
+      ajaxPromise("user/checkid.jsp", "get", "inputId="+inputId)
       .then(function(response){
          return response.json();
       })
@@ -179,8 +178,30 @@
       if(!isFormValid){//폼이 유효하지 않으면
          //폼 전송 막기 
          e.preventDefault();
-      }   
+      }
+      ajaxFormPromise(this)
+      .then(function(response){
+    	 return response.json();
+      }).then(function(data){
+    	 console.log(data); 
+      });
    });
+   
+   document.querySelector("#loginForm").addEventListener("submit", function(e){
+	   //e.preventDefault();
+	   
+	   ajaxFormPromise(this)
+	   .then(function(response){
+		   return response.json();
+	   });
+		   /*
+	   }).then(function(data){
+		   console.log(data);
+	   });
+	   */
+	   
+   });
+   
 </script>
 </body>
 </html>
