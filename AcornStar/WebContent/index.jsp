@@ -8,6 +8,7 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
+<h1>test</h1>
 <div class="container" >
    <div style="margin:auto; text-align:center; margin-top:100px;">
    <form action="login.jsp" method="post" style="display:inline-block;">
