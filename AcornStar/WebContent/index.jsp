@@ -184,7 +184,13 @@
       .then(function(response){
     	 return response.json();
       }).then(function(data){
-    	 console.log(data); 
+    	 if(data.isSuccess){
+    		 alert("회원가입되었습니다. 로그인 후 이용해주세요.");
+    		 location.href="${pageContext.request.contextPath}/index.jsp";
+    	 } else {
+    		 alert("회원가입에 실패하였습니다. 다시 시도해주세요.");
+    		 location.href="${pageContext.request.contextPath}/index.jsp";
+    	 }
       });
    });
    
@@ -195,7 +201,13 @@
 	   .then(function(response){
 		   return response.json();
 	   }).then(function(data){
-		   console.log(data);
+		   if(data.isValid){
+			   alert("로그인되었습니다.");
+			   location.href="${pageContext.request.contextPath}/main.jsp";
+		   } else {
+			   alert("로그인에 실패하였습니다.");
+			   location.href="${pageContext.request.contextPath}/index.jsp"
+		   }
 	   });	   
    });
    
