@@ -11,7 +11,7 @@
 
 <div class="text-center" style="margin-top:100px;">
 
-	<h1 class="text-primary">AcornStar<span class="badge bg-secondary"></span></h1>
+	<h1 class="id" style="color:#6610f2">AcornStar<span class="badge bg-secondary"></span></h1>
 
 </div>
 
@@ -34,9 +34,9 @@
 	    </div>
 	  </div>
 	  <div style="margin-top:50px;">
-	  <button type="submit" class="col-sm-5 me-2 btn btn-primary">LOGIN</button>
-	  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-		  회원가입
+	  <button type="submit" class="col-sm-5 me-2 btn" style="color: #6610f2">LOGIN</button>
+	  <button type="button" class="btn" style="color: #6610f2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		  JOIN
 	  </button>
 	  </div>
 	</form> 
