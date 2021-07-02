@@ -4,7 +4,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-
 	//1. 폼 전송되는 아이디와 비밀번호를 읽어온다.
 	String id=request.getParameter("id");
 	String pwd=request.getParameter("pwd");
@@ -31,7 +30,7 @@
 		session.setMaxInactiveInterval(60*20);%>
 		<p>
 			<strong><%=id %></strong>님 로그인 되었습니다.
-			<a href="">확인</a>
+			<a href="../cafe/list.jsp">확인</a>
 		</p>
 	<%}else{ %>
 		<p>
@@ -42,5 +41,3 @@
 </div>	
 </body>
 </html>
-
-
