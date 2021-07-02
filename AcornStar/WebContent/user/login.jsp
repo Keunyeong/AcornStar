@@ -4,7 +4,6 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%
-
 	//1. 폼 전송되는 아이디와 비밀번호를 읽어온다.
 	String id=request.getParameter("loginId");
 	String pwd=request.getParameter("loginPwd");
