@@ -1,19 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="application/json; charset=UTF-8"
+    pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%
 	// session scope에서 id parameter에 저장된 기록 없애기
 	session.removeAttribute("id");
+
+	response.sendRedirect("../main/main.jsp");
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>user/logout.jsp</title>
-</head>
-<body>
-	<script>
-		alert("성공적으로 로그아웃했습니다.");
-		location.href="${pageContext.request.contextPath}/index.jsp";
-	</script>
-</body>
-</html>

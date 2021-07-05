@@ -12,15 +12,14 @@ public class FeedDto {
 	private int endRowNum;
 	private int prevNum;
 	private int nextNum;
-	
-	public FeedDto() {}
 
-	public FeedDto(int num, String writer, String tag, String content, int upCount, String regdate, int startRowNum,
-			int endRowNum, int prevNum, int nextNum) {
-	
 	// default constructor
 	public FeedDto() {
 		
+	}
+	
+	public FeedDto(int num, String writer, String tag, String content, int upCount, String regdate, int startRowNum,
+			int endRowNum, int prevNum, int nextNum) {
 	}
 
 	public FeedDto(int num, String writer, String tag, String content, int upCount, String regdate) {
