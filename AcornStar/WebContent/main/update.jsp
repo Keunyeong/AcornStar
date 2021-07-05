@@ -21,9 +21,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>/main/update.jsp</title>
 </head>
 <body>
-
+	<%if(beUpdate){ %>
+		<script>
+			alert("수정 되었습니다.");
+			location.href="../main.jsp?num=<%=dto.getNum()%>";
+		</script>
+	<%}else{ %>
+		<h1>알림</h1>
+		<p>
+			글 수정을 실패 하였습니다.
+			<a href="updateform.jsp?num=<%=dto.getNum()%>">다시 시도</a>
+		</p>
+	<%} %>
 </body>
 </html>
