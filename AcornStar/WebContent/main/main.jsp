@@ -63,7 +63,7 @@
 				</a>
 			</div>
 			<div class="container">
-				<a id="write" href="javascript:">
+				<a id="write" href="${pageContext.request.contextPath}/main/insertForm.jsp">
 					<svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" fill="indigo" class="bi bi-pencil-square" viewBox="0 0 16 16">
   						<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
   						<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -97,21 +97,15 @@
 		<br>	
 		<br>
 		
-		<div id="insertBox" class="border" style="display:none;">
-			<form id="insertForm" action="insert.jsp" method="post"> 
-				<textarea name="content" id="content"></textarea>
-				<button type="submit">새 글 등록</button>
-			</form>
-		</div>		
-		<br>
-		
 		<div id="feed" class="border">
 			<ul>
 				<%for(FeedDto tmp:list){%>
 					<li class="form-control">
-						<%=tmp.getContent() %>
+						<pre><%=tmp.getContent() %></pre>
+						<a data-num="<%=tmp.getNum() %>" href="javascript:">댓글</a>
 						<%if(tmp.getWriter().equals(id)) {%>
-							<a data-num="<%=tmp.getNum() %>" class="update" href="javascript:">
+							<a data-num="<%=tmp.getNum() %>" class="update" 
+								href="${pageContext.request.contextPath}/main/updateForm.jsp?num=<%=tmp.getNum()%>">
 								글 수정
 							</a>
 							<a data-num="<%=tmp.getNum() %>" class="delete" href="javascript:">
@@ -123,8 +117,6 @@
 			</ul>
 		</div>
 	</div>
-	<!-- SmartEditor 에서 필요한 javascript 로딩  -->
-	<script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
 	
 	<script>
 		
@@ -134,35 +126,6 @@
 			if(!logout){
 				e.preventDefault();
 			}
-		});
-		
-		// 새 글 작성 버튼을 눌렀을 때 진행되는 과정
-		document.querySelector("#write").addEventListener("click", function(){		
-			let insertForm=document.querySelector("#insertBox");
-			if(insertForm.style.display=="none"){
-				insertForm.style.display="block";
-			} else if(insertForm.style.display="block"){
-				insertForm.style.display="none";
-			}
-		});
-		
-		// 새 글 등록 버튼을 눌렀을 때 진행되는 ajax
-		document.querySelector("#insertForm").addEventListener("submit", function(e){
-			e.preventDefault();
-			
-			ajaxFormPromise(this)
-			.then(function(response){
-				return response.json();
-			}).then(function(data){
-				if(data.isSuccess){
-					alert("새 글을 성공적으로 등록했습니다.");
-					location.href="${pageContext.request.contextPath}/main/main.jsp"
-				} else {
-					alert("새 글 등록에 실패했습니다. 다시 작성해주세요.");
-					location.href="${pageContext.request.contextPath}/main/main.jsp"
-				}
-			});
-			
 		});
 		
 		// 글 삭제 버튼을 눌렀을 때 진행되는 ajax가 일어나는 event listener 달아주기
@@ -188,21 +151,6 @@
 				}				
 			});
 		}
-		
-		// 글 수정 버튼을 눌렀을 때 진행되는 ajax가 일어나는 event listener 달아주기
-		let updateLinks=document.querySelectorAll(".update");
-		for(let i=0; i<updateLinks.length; i++){
-			updateLinks[i].addEventListener("click", function(){
-				let num=this.getAttribute("data-num");
-				ajaxPromise(this)
-				.then(function(response){
-					return response.json();
-				}).then(function(data){
-					console.log(data);
-				});
-			});
-		}	
 	</script>
-
 </body>
 </html>
