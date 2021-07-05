@@ -15,11 +15,14 @@
 <meta charset="UTF-8">
 <title>AcornStar</title>
 <jsp:include page="/include/resource.jsp"></jsp:include>
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+</style>
 </head>
 <body>
 <div class="text-center" style="margin-top:100px;">
 
-	<h1 class="id" style="color:#6610f2">AcornStar<span class="badge bg-secondary"></span></h1>
+	<h1 style="font-family: 'Lobster', cursive; display: inline-block; color:#6610f2;">AcornStar<span class="badge bg-secondary"></span></h1>
 
 </div>
 <div class="container" >
