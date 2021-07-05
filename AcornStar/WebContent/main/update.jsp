@@ -13,7 +13,7 @@
 	dto.setContent(content);
 	
 	// method를 이용해서 글 수정을 한 다음
-	boolean beUpdate=FeedDao.getInstance().update(dto);
+	boolean isUpdated=FeedDao.getInstance().update(dto);
 	
 	// 응답
 %>
@@ -24,17 +24,16 @@
 <title>/main/update.jsp</title>
 </head>
 <body>
-	<%if(beUpdate){ %>
-		<script>
-			alert("수정 되었습니다.");
-			location.href="../main.jsp?num=<%=dto.getNum()%>";
-		</script>
-	<%}else{ %>
-		<h1>알림</h1>
-		<p>
-			글 수정을 실패 하였습니다.
-			<a href="updateform.jsp?num=<%=dto.getNum()%>">다시 시도</a>
-		</p>
-	<%} %>
+
+	<script>
+		<%if(isUpdated){%>
+			alert("글을 성공적으로 수정했습니다.");
+			location.href="${pageContext.request.contextPath}/main/main.jsp";
+		<%} else {%>
+			alert("글 수정에 실패했습니다. 다시 수정해주세요.");
+			location.href="${pageContext.request.contextPath}/main/updateForm.jsp?num=<%=num%>";
+		<%}%>
+	</script>
+
 </body>
 </html>
