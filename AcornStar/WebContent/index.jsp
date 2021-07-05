@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	// session scope에 id라고 저장된 data를 불러옴
+	String id=(String)session.getAttribute("id");
+	// id에 저장된 값이 있으면
+	if(id!=null){
+		// main page로 redirect
+		response.sendRedirect("main/main.jsp");
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -211,10 +220,9 @@
 	   }).then(function(data){
 		   if(data.isValid){
 			   alert("로그인되었습니다.");
-			   location.href="${pageContext.request.contextPath}/main.jsp";
+			   location.href="${pageContext.request.contextPath}/main/main.jsp";
 		   } else {
-			   alert("로그인에 실패하였습니다.");
-			   location.href="${pageContext.request.contextPath}/index.jsp"
+			   alert("로그인에 실패하였습니다.");		
 		   }
 	   });	   
    });

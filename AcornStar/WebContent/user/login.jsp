@@ -13,5 +13,9 @@
 	//2. DB 에 실제로 존재하는 정보인지 확인한다.
 	boolean isValid=UsersDao.getInstance().isValid(dto);
 	//3. 유효한 정보이면 로그인 처리를 하고 응답, 그렇지 않다면 아이디 혹은 비밀 번호가 틀렸다고 응답
+
+	if(isValid){
+		session.setAttribute("id", id);
+	}
 %>    
 {"isValid":<%=isValid %>}
