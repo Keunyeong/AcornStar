@@ -11,6 +11,9 @@
 <title>user/logout.jsp</title>
 </head>
 <body>
-
+	<script>
+		alert("성공적으로 로그아웃했습니다.");
+		location.href="${pageContext.request.contextPath}/index.jsp";
+	</script>
 </body>
 </html>

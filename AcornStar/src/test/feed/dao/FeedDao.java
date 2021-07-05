@@ -23,6 +23,7 @@ public class FeedDao {
 		return dao;
 	}
 	
+	// 새 글을 작성하는 method
 	public boolean insert(FeedDto dto) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -58,6 +59,7 @@ public class FeedDao {
 		}
 	}
 	
+	// 모든 글 목록을 불러오는 method
 	public List<FeedDto> getList(){
 		List<FeedDto> list=new ArrayList<>();
 		
@@ -102,5 +104,75 @@ public class FeedDao {
 		}
 
 		return list;
+	}
+	
+	// 작성한 글을 삭제하는 method
+	public boolean delete(FeedDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0;
+		try {
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "delete from feed"
+					+ " where num=?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding 할 내용이 있으면 여기서 binding
+			pstmt.setInt(1, dto.getNum());
+			// insert or update or delete 문 수행하고
+			// 변화된 row의 개수 return 받기
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		if (flag > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// 작성한 글을 수정하는 method
+	public boolean update(FeedDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0;
+		try {
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "update feed"
+					+ " set content=?"
+					+ " where num=?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding 할 내용이 있으면 여기서 binding
+			pstmt.setString(1, dto.getContent());
+			pstmt.setInt(2, dto.getNum());
+			// insert or update or delete 문 수행하고
+			// 변화된 row의 개수 return 받기
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		if (flag > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
