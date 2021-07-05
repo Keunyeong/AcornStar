@@ -71,6 +71,7 @@
       white-space : nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      
    }
    
    .img-wrapper img{
@@ -78,27 +79,192 @@
    height: 100%;
    object-fit: fill; /*fill | contain | cover | scale-down | none*/
    }
+   
+   .card-body {
+   	padding-top: 100px;
+   }
+   
+   .container {
+   margin: 0 auto;
+   }
+   
+   .nav_margin {
+	margin-bottom:100px;
+	}
+	
+	.carousel_box {
+		border: 1px lightgray solid;
+		padding: 10px;
+		margin-bottom:25px;
+		border-radius: 5px;
+		width: 60%;
+	}
+	
+
+	.user_box .profile_box{
+		  display: inline;
+	}
+	
+	.control-icon {
+		background-color:lightgray;
+		width:25px;
+		height:25px;
+		border-radius:50%;
+	}
+	
+	body{
+		padding-top: 100px;
+	}
+	
+	.profile_id {
+		margin-bottom :0;
+		font-size: 13px;
+	}
+	
+	.col-2 {
+		display:flex;
+		flex-direction:column;
+		align-items:center;
+		justify-contents:center;
+	}
+	
+	.profile_img {
+		width: 60px;
+		height: 60px;
+		border-radius: 30px;
+		box-sizing: content-box;
+    	border: 2px solid #fff;
+    	background-color:white;
+		
+	}
+	
+
+	
+	.gradient_border {
+	width:72px;
+	height:72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    background: radial-gradient(circle at bottom left, #F58529 20%, #C42D91);
+	}
+	
+	
 </style>
-</head>
+</head> 
 <body>
 <jsp:include page="../include/navbar.jsp">
    <jsp:param value="gallery" name="thisPage"/>
 </jsp:include>
+<div class="container carousel_box">
+	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+	  <div class="carousel-inner">
+	    <div class="carousel-item active">
+	      	<div class="row">
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      	</div>
+	    </div>
+ 		<div class="carousel-item">
+	      	<div class="row">
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      	</div>
+	    </div>
+	  </div>
+	  <button class="carousel-control-prev pl-5" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+	    <span class="carousel-control-prev-icon control-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Previous</span>
+	  </button>
+	  <button class="carousel-control-next pl-5" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+	    <span class="carousel-control-next-icon control-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Next</span>
+	  </button>
+	</div>
+</div>
+
 <div class="container">
-   <a href="private/upload_form.jsp">navbar 글작성 아이콘</a><br/>
-   
-   <h1>여기는 feed</h1>
-   <div class="row">
+   <div class="section"></div>
+   <div class="row d-flex justify-content-center">
       <%for(GalleryDto tmp:list){ %>
-      <div class="col-12">
-         <div class="card mb-3">
+      <div style="width:70%; height:500px;">
+         <div class="card mb-4" style="height:480px;">
             <a href="detail.jsp?num=<%=tmp.getNum() %>">
                <div class="img-wrapper">
-                  <img style="height:450px; width:700px" class="card-img-top" src="${pageContext.request.contextPath }<%=tmp.getImagePath() %>" />
+                  <img style="height:350px; width:100%" class="card-img-top" src="${pageContext.request.contextPath }<%=tmp.getImagePath() %>" />
                </div>
             </a>
             <div class="card-body">
-               <p class="card-text"><%=tmp.getCaption() %></p>
+               <p class="card-text mb-0 mt-3"><%=tmp.getCaption() %></p>
                <p class="card-text">by <strong><%=tmp.getWriter() %></strong></p>
                <p><small><%=tmp.getRegdate() %></small></p>
             </div>
