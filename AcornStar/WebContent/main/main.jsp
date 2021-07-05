@@ -16,7 +16,7 @@
 </head>
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
-	<h1>로그인 후 main page 입니다.</h1>
+	<h1>여기에 Navbar 추가</h1>
 	<a href="${pageContext.request.contextPath}/user/logout.jsp">로그아웃</a>
 	<div class="container">
 		<form action="">

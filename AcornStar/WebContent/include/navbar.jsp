@@ -42,12 +42,6 @@
       				<li class="nav-item">
       					<div style="clear:both;"></div>
       					<form class="d-flex align-items-center " action="list.jsp" method="get"> 
-							<label for="condition" style="visibility:hidden;">검색조건</label>
-							<select name="condition" id="condition">
-								<option value="title_content">제목+내용</option>
-								<option value="title" >제목</option>
-								<option value="writer">작성자</option>
-							</select>
 							<input type="text" id="keyword" name="keyword" placeholder="검색어..." value=""/>
 							<button type="submit">검색</button>
 						</form>	
