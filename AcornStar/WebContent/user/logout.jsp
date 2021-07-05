@@ -4,5 +4,5 @@
 	// session scope에서 id parameter에 저장된 기록 없애기
 	session.removeAttribute("id");
 
-	response.sendRedirect("../main/main.jsp");
+	response.sendRedirect("../index.jsp");
 %>

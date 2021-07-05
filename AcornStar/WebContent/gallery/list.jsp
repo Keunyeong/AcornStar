@@ -91,46 +91,166 @@
    .nav_margin {
 	margin-bottom:100px;
 	}
+	
+	.carousel_box {
+		border: 1px lightgray solid;
+		padding: 10px;
+		margin-bottom:25px;
+		border-radius: 5px;
+		width: 60%;
+	}
+	
+
+	.user_box .profile_box{
+		  display: inline;
+	}
+	
+	.control-icon {
+		background-color:lightgray;
+		width:25px;
+		height:25px;
+		border-radius:50%;
+	}
+	
+	body{
+		padding-top: 100px;
+	}
+	
+	.profile_id {
+		margin-bottom :0;
+		font-size: 13px;
+	}
+	
+	.col-2 {
+		display:flex;
+		flex-direction:column;
+		align-items:center;
+		justify-contents:center;
+	}
+	
+	.profile_img {
+		width: 60px;
+		height: 60px;
+		border-radius: 30px;
+		box-sizing: content-box;
+    	border: 2px solid #fff;
+    	background-color:white;
+		
+	}
+	
+
+	
+	.gradient_border {
+	width:72px;
+	height:72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    background: radial-gradient(circle at bottom left, #F58529 20%, #C42D91);
+	}
+	
+	
 </style>
 </head> 
 <body>
 <jsp:include page="../include/navbar.jsp">
    <jsp:param value="gallery" name="thisPage"/>
 </jsp:include>
-<div class="nav_margin"></div>
-
-
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <ul class="carousel-item active">
-    	<li>
-	      <img src="..." class="d-block w-30" alt="...">
-    	</li>
-    	<li>
-	      <img src="..." class="d-block w-30" alt="...">
-    	</li>
-    	<li>
-	      <img src="..." class="d-block w-30" alt="...">
-    	</li>
-    	<li>
-	      <img src="..." class="d-block w-30" alt="...">
-    	</li>
-    </ul>
-
-    <div class="carousel-item">
-      <img src="..." class="d-block w-100" alt="...">
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
+<div class="container carousel_box">
+	<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+	  <div class="carousel-inner">
+	    <div class="carousel-item active">
+	      	<div class="row">
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      	</div>
+	    </div>
+ 		<div class="carousel-item">
+	      	<div class="row">
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      		<div class="col-2">
+	      			<div class="gradient_border">
+	      			<img class="profile_img" src="0.png">   			
+	      			</div>
+					<p class="profile_id">USER</p>
+	      		</div>
+	      	</div>
+	    </div>
+	  </div>
+	  <button class="carousel-control-prev pl-5" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+	    <span class="carousel-control-prev-icon control-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Previous</span>
+	  </button>
+	  <button class="carousel-control-next pl-5" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+	    <span class="carousel-control-next-icon control-icon" aria-hidden="true"></span>
+	    <span class="visually-hidden">Next</span>
+	  </button>
+	</div>
 </div>
-
 
 <div class="container">
    <div class="section"></div>
