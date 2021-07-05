@@ -21,10 +21,13 @@
 <title>index.jsp</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-
+.nav_margin {
+	margin-bottom:100px;
+}
 </style>
 </head>
 <body>
+<div class="nav_margin"></div>
 	<nav class="navbar navbar-light bg-light navbar-expand-lg fixed-top">
 		<div class="container-fluid">
 		    <a class="navbar-brand d-flex align-items-center" href="<%=request.getContextPath() %>/">

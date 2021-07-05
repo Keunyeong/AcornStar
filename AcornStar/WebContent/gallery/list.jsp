@@ -71,6 +71,7 @@
       white-space : nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      
    }
    
    .img-wrapper img{
@@ -78,27 +79,72 @@
    height: 100%;
    object-fit: fill; /*fill | contain | cover | scale-down | none*/
    }
+   
+   .card-body {
+   	padding-top: 100px;
+   }
+   
+   .container {
+   margin: 0 auto;
+   }
+   
+   .nav_margin {
+	margin-bottom:100px;
+	}
 </style>
-</head>
+</head> 
 <body>
 <jsp:include page="../include/navbar.jsp">
    <jsp:param value="gallery" name="thisPage"/>
 </jsp:include>
+<div class="nav_margin"></div>
+
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <ul class="carousel-item active">
+    	<li>
+	      <img src="..." class="d-block w-30" alt="...">
+    	</li>
+    	<li>
+	      <img src="..." class="d-block w-30" alt="...">
+    	</li>
+    	<li>
+	      <img src="..." class="d-block w-30" alt="...">
+    	</li>
+    	<li>
+	      <img src="..." class="d-block w-30" alt="...">
+    	</li>
+    </ul>
+
+    <div class="carousel-item">
+      <img src="..." class="d-block w-100" alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
 <div class="container">
-   <a href="private/upload_form.jsp">navbar 글작성 아이콘</a><br/>
-   
-   <h1>여기는 feed</h1>
-   <div class="row">
+   <div class="section"></div>
+   <div class="row d-flex justify-content-center">
       <%for(GalleryDto tmp:list){ %>
-      <div class="col-12">
-         <div class="card mb-3">
+      <div style="width:70%; height:500px;">
+         <div class="card mb-4" style="height:480px;">
             <a href="detail.jsp?num=<%=tmp.getNum() %>">
                <div class="img-wrapper">
-                  <img style="height:450px; width:700px" class="card-img-top" src="${pageContext.request.contextPath }<%=tmp.getImagePath() %>" />
+                  <img style="height:350px; width:100%" class="card-img-top" src="${pageContext.request.contextPath }<%=tmp.getImagePath() %>" />
                </div>
             </a>
             <div class="card-body">
-               <p class="card-text"><%=tmp.getCaption() %></p>
+               <p class="card-text mb-0 mt-3"><%=tmp.getCaption() %></p>
                <p class="card-text">by <strong><%=tmp.getWriter() %></strong></p>
                <p><small><%=tmp.getRegdate() %></small></p>
             </div>
