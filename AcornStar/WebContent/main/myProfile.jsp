@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>/main/myProfile.jsp</title>
 </head>
 <body>
 
