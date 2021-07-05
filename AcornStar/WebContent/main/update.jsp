@@ -21,9 +21,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>/main/update.jsp</title>
 </head>
 <body>
+
 	<script>
 		<%if(isUpdated){%>
 			alert("글을 성공적으로 수정했습니다.");
@@ -33,5 +34,6 @@
 			location.href="${pageContext.request.contextPath}/main/updateForm.jsp?num=<%=num%>";
 		<%}%>
 	</script>
+
 </body>
 </html>
