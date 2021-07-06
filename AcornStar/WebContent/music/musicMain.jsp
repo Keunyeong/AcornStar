@@ -119,15 +119,24 @@
 			        		<p class="card-text"><%=tmp.getContent() %></p>
 			        		<p class="card-text"><small class="text-muted">to be continued</small></p>
 			      		</div>
-			      		<a href="">댓글</a>
+			      		<a data-num="<%=tmp.getNum() %>" class="comment-link" href="javascript:">댓글</a>
 			      		<%if(tmp.getWriter().equals(id)){ %>
 				      		<a data-num="<%=tmp.getNum() %>" class="update-link" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">수정</a>
 				      		<a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
 			      		<%} %>
 			    	</div>
 			  	</div>
-			</div>			
-		<%} %>	
+			</div>
+			<!-- card 게시글 댓글 list -->
+			<div>
+			</div>
+			<div>
+				<form id="commentForm<%=tmp.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
+					<textarea name="" id=""></textarea>
+					<button type="submit">댓글 달기</button>
+				</form>
+			</div>				
+		<%} %>
 	</div>
 	
 	<script>
@@ -221,6 +230,25 @@
 				}
 			});
 		});
+		
+		// 댓글 버튼을 눌렀을 때 작동하는 곳
+		let commentLinks=document.querySelectorAll(".comment-link");
+		for(let i=0; i<commentLinks.length; i++){
+			commentLinks[i].addEventListener("click", function(e){
+				// 일단 막고
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				let commentForm=document.querySelector("#commentForm"+num);
+				if(commentForm.style.display=="none"){
+					commentForm.style.display="block";
+				} else if(commentForm.style.display=="block"){
+					commentForm.style.display="none";
+				}				
+			});
+		}
+		
+		// 댓글 달기 버튼을 눌렀을 때 작동하는 곳
 		
 	</script>
 </body>
