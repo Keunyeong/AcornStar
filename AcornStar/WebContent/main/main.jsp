@@ -32,7 +32,7 @@
 		text-decoration: none;
 	}
 	@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-	   .drag-area{
+	   .drag-area,.updrag-area{
       width: 200px;
       height: 300px;
       border: 2px dashed gray;
@@ -66,47 +66,13 @@
 					    <%if(tmp.getWriter().equals(id)){ %>
 					    <li class="list-group-item">
 					    		<!-- 피드 수정 -->
-								<a data-num="<%=tmp.getNum() %>" class="update">
+								<a data-num="<%=tmp.getNum() %>" class="update" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
 									  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 									  <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
 									</svg>
 								</a>
-										<!-- Button trigger modal -->
-								<button style="display:none;" id="modalUpdateBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<%=tmp.getNum() %>Modal"></button>
-	
-								<!-- Modal -->
-								<div class="modal fade" id="<%=tmp.getNum() %>Modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-								  <div class="modal-dialog">
-								    <div class="modal-content">
-								      <div class="modal-header">
-								        <h5 class="modal-title" id="updateModalLabel">UPDATE CONTENTS</h5>
-								        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								      </div>
-								      <div class="modal-body">
-								        <form action="update.jsp" method="post" id="insertForm">
-								        	<div class="drag-area"><img id="myImage" style="
-										         width: 100%;
-										         height: 100%;
-										         object-fit: contain; 
-										   "/></div>
-								        	<label class="form-label" for="image">IMAGE</label>
-											<textarea style="display:none;" class="form-control"  name="image" id="image"></textarea>
-											
-											<div class="mb-3">
-												<label class="form-label" for="content">CONTENT</label>
-												<textarea class="form-control"  name="content" id="content"><%=tmp.getContent() %></textarea>
-											</div>
-											<div class="mb-3">
-												<label class="form-label" for="tag">TAG</label>
-												<input class="form-control" type="text" name="tag" id="tag" value="<%=tmp.getTag() %>"/>
-											</div>
-											<button class="btn " style="color: #6610f2;" type="submit">SAVE</button>
-										</form>
-								      </div>
-								    </div>
-								  </div>
-								</div>
+
 								<!-- 피드 삭제 -->
 								<a data-num="<%=tmp.getNum() %>" class="delete" href="javascript:">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
@@ -160,7 +126,40 @@
 	    </div>
 	  </div>
 	</div>
+		<!-- Button trigger modal -->
+<button style="display:none;" id="modalUpdateBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"></button>
 
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">UPDATE CONTENTS</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="update.jsp" method="post" id="insertForm">
+        	<div style="width:200px;height:300px;radius:20px;"><img id="upImage" style="
+		         width: 100%;
+		         height: 100%;
+		         object-fit: contain; 
+		   "/></div>
+        	<label class="form-label" for="updateImage"></label>
+			<textarea style="display:none;" class="form-control"  name="updateImage" id="updateImage"></textarea>
+			<div class="mb-3">
+				<label class="form-label" for="content">CONTENT</label>
+				<textarea id="updateContent" class="form-control"  name="content" ></textarea>
+			</div>
+			<div class="mb-3">
+				<label class="form-label" for="tag">TAG</label>
+				<input id="updateTag" class="form-control" type="text" name="tag" />
+			</div>
+			<button class="btn " style="color: #6610f2;" type="submit">SAVE</button>
+		</form>
+      </div>
+    </div>
+  </div>
+</div>
 
 	<script>
 		
@@ -196,6 +195,24 @@
 			});
 		}
 		
+		//업데이트 폼 작성 하기위한 데이터 가져오기
+		let updateLinks=document.querySelectorAll(".update");
+		for(let i=0; i<updateLinks.length; i++){
+			updateLinks[i].addEventListener("click", function(){
+				let num=this.getAttribute("data-num");
+				ajaxPromise("updateForm.jsp", "post", "num="+num)
+				.then(function(response){
+					return response.json();
+				}).then(function(data){
+					console.log(data);
+					document.querySelector("#upImage").setAttribute("src", data.image);
+					document.querySelector("#updateImage").value=data.image;
+					document.querySelector("#updateContent").value=data.content;
+					document.querySelector("#updateTag").value=data.tag;
+				});				
+			});
+		}
+		
 		
 		// 댓글버튼 누르면 댓글 보여주기
 		let commentLinks=document.querySelectorAll(".comment");
@@ -218,10 +235,6 @@
 			document.querySelector("#modalBtn").click();
 		});
 		
-		document.querySelector(".update").addEventListener("click",function(){
-			let num = this.num;
-			document.querySelector("#modalUpdateBtn").click();
-		});
 		
 		// dragenter 이벤트가 일어 났을때 실행할 함수 등록 
 		   document.querySelector(".drag-area")
@@ -261,7 +274,6 @@
 		      }
 		   });
 		   
-		   
 		   function readImageFile(file){
 		      const reader=new FileReader();
 		      //이미지 파일을 data url 형식으로 읽어들이기
@@ -272,6 +284,7 @@
 		         console.log(e.target.result);
 		         document.querySelector("#myImage")
 		            .setAttribute("src", e.target.result);
+		         
 		         document.querySelector("#image").innerText=e.target.result;
 		      };
 		   }
