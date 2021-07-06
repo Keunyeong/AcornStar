@@ -99,7 +99,7 @@
 </nav>
 	<div class="container">
 		<div class="border">
-		
+			<a href="${pageContext.request.contextPath}/music/musicMain.jsp">으음~ 악!</a>
 		</div>
 		<br>	
 		<br>
