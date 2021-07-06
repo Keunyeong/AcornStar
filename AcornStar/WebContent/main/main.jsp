@@ -51,7 +51,11 @@
 						<ul class="list-group list-group-flush">
 						    <li class="list-group-item"><%=tmp.getWriter() %>님이 작성한 글.</li>
 						</ul>
-					  <img src="<%=tmp.getImage() %>" class="card-img-top" >
+					  <img src="<%=tmp.getImage() %>" class="card-img-top" style="
+					         width: 100%;
+					         height: 100%;
+					         object-fit: contain;
+					   " >
 					  <div class="card-body">
 					    <p class="card-text">
 					    	<%=tmp.getContent() %>
@@ -62,13 +66,47 @@
 					    <%if(tmp.getWriter().equals(id)){ %>
 					    <li class="list-group-item">
 					    		<!-- 피드 수정 -->
-								<a data-num="<%=tmp.getNum() %>" class="update" 
-									href="${pageContext.request.contextPath}/main/updateForm.jsp?num=<%=tmp.getNum()%>">
+								<a data-num="<%=tmp.getNum() %>" class="update">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
 									  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 									  <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
 									</svg>
 								</a>
+										<!-- Button trigger modal -->
+								<button style="display:none;" id="modalUpdateBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#<%=tmp.getNum() %>Modal"></button>
+	
+								<!-- Modal -->
+								<div class="modal fade" id="<%=tmp.getNum() %>Modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+								  <div class="modal-dialog">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <h5 class="modal-title" id="updateModalLabel">UPDATE CONTENTS</h5>
+								        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								      </div>
+								      <div class="modal-body">
+								        <form action="update.jsp" method="post" id="insertForm">
+								        	<div class="drag-area"><img id="myImage" style="
+										         width: 100%;
+										         height: 100%;
+										         object-fit: contain; 
+										   "/></div>
+								        	<label class="form-label" for="image">IMAGE</label>
+											<textarea style="display:none;" class="form-control"  name="image" id="image"></textarea>
+											
+											<div class="mb-3">
+												<label class="form-label" for="content">CONTENT</label>
+												<textarea class="form-control"  name="content" id="content"><%=tmp.getContent() %></textarea>
+											</div>
+											<div class="mb-3">
+												<label class="form-label" for="tag">TAG</label>
+												<input class="form-control" type="text" name="tag" id="tag" value="<%=tmp.getTag() %>"/>
+											</div>
+											<button class="btn " style="color: #6610f2;" type="submit">SAVE</button>
+										</form>
+								      </div>
+								    </div>
+								  </div>
+								</div>
 								<!-- 피드 삭제 -->
 								<a data-num="<%=tmp.getNum() %>" class="delete" href="javascript:">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
@@ -87,41 +125,43 @@
 			<%} %>
 		</div>
 	</div>
-<!-- Button trigger modal -->
-<button style="display:none;" id="modalBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+	<!-- Button trigger modal -->
+	<button style="display:none;" id="modalBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">NEW CONTENTS</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        <form action="main_insert.jsp" method="post" id="insertForm">
+	        	<div class="drag-area"><img id="myImage" style="
+			         width: 100%;
+			         height: 100%;
+			         object-fit: contain;
+			   "/></div>
+	        	<label class="form-label" for="image">IMAGE</label>
+				<textarea style="display:none;" class="form-control"  name="image" id="image"></textarea>
+				
+				<div class="mb-3">
+					<label class="form-label" for="content">CONTENT</label>
+					<textarea class="form-control"  name="content" id="content"></textarea>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="tag">TAG</label>
+					<input class="form-control" type="text" name="tag" id="tag"/>
+				</div>
+				<button class="btn " style="color: #6610f2;" type="submit">SAVE</button>
+			</form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">NEW CONTENTS</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="main_insert.jsp" method="post" id="insertForm">
-        	<div class="drag-area"><img id="myImage" style="
-		         width: 100%;
-		         height: 100%;
-		         object-fit: cover; /* fill | contain | cover | scale-down | none */
-		   "/></div>
-        	<label class="form-label" for="image">IMAGE</label>
-			<textarea style="display:none;" class="form-control"  name="image" id="image"></textarea>
-			
-			<div class="mb-3">
-				<label class="form-label" for="content">CONTENT</label>
-				<textarea class="form-control"  name="content" id="content"></textarea>
-			</div>
-			<div class="mb-3">
-				<label class="form-label" for="tag">TAG</label>
-				<input class="form-control" type="text" name="tag" id="tag"/>
-			</div>
-			<button class="btn " style="color: #6610f2;" type="submit">SAVE</button>
-		</form>
-      </div>
-    </div>
-  </div>
-</div>
+
 	<script>
 		
 		// 로그아웃 버튼을 눌렀을 때 수행되는 기능
@@ -155,6 +195,8 @@
 				}				
 			});
 		}
+		
+		
 		// 댓글버튼 누르면 댓글 보여주기
 		let commentLinks=document.querySelectorAll(".comment");
 		for(let i=0; i<commentLinks.length; i++){
@@ -166,13 +208,6 @@
 					return response.json();
 				}).then(function(data){
 					console.log(data);
-					if(data.isDeleted){
-						alert("게시글을 삭제하였습니다.");
-						location.href="${pageContext.request.contextPath}/main/main.jsp";
-					} else {
-						alert("게시글을 삭제하지 못했습니다.");
-						location.href="${pageContext.request.contextPath}/main/main.jsp";
-					}
 				});
 						
 			});
@@ -181,6 +216,11 @@
 		//네비바 새글 입력 누르면 modal 버튼 누르도록 이벤트 등록
 		document.querySelector("#write").addEventListener("click",function(){
 			document.querySelector("#modalBtn").click();
+		});
+		
+		document.querySelector(".update").addEventListener("click",function(){
+			let num = this.num;
+			document.querySelector("#modalUpdateBtn").click();
 		});
 		
 		// dragenter 이벤트가 일어 났을때 실행할 함수 등록 
