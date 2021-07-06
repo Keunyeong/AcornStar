@@ -71,4 +71,5 @@ public class SuggestDto {
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
+	
 }

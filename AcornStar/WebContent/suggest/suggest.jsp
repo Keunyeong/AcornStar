@@ -13,12 +13,14 @@
 <body>
 
 <!-- 
-
 	건의사항 페이지 제작
 	
 	1. table.sql
 	2. suggest dto
 	3. suggest dao
+		- 조회수 증가
+		- 글 작성, 수정, 삭제
+		- 글 정보, 목록 리턴 
 	4. suggest 페이지 구현
 		- navbar 추가
 		- 글 버튼 누르면 건의사항 글 작성 폼 (스마트에디터) 
