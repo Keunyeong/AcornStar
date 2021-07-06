@@ -92,7 +92,7 @@
 	}
 	
 	// session scope에서 id 정보 불러오기
-	String id=(String)session.getAttribute("id");	
+	String id=(String)session.getAttribute("id");
 	
 %>        
 <!DOCTYPE html>
@@ -200,25 +200,5 @@
 	<%} %>
 </div>
 
-<script>
-
-// 새 글 등록 버튼을 눌렀을 때 진행되는 ajax
-document.querySelector("#insertForm").addEventListener("submit", function(e){
-	e.preventDefault();
-	
-	ajaxFormPromise(this)
-	.then(function(response){
-		return response.json();
-	}).then(function(data){
-		if(data.isSuccess){
-			alert("새 글을 성공적으로 등록했습니다.");
-			location.href="${pageContext.request.contextPath}/suggest/list.jsp"
-		} else {
-			alert("새 글 등록에 실패했습니다. 다시 작성해주세요.");
-			location.href="${pageContext.request.contextPath}/suggest/private/insert_form.jsp"
-		}
-	});
-});
-</script>
 </body>
 </html>
