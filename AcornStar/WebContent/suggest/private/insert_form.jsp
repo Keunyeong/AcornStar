@@ -21,6 +21,7 @@
 </head>
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container">
 	<form action="insert.jsp" method="post" id="insertForm">
 		<div class="mb-3">

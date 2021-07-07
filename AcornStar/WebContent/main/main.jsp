@@ -289,5 +289,13 @@
 		      };
 		   }
 	</script>
+<script>
+document.querySelector("#acornstar").addEventListener("click",function(){
+	location.href="${pageContext.request.contextPath}/music/musicMain.jsp";
+	let star = document.querySelector("#star");
+	let music = document.querySelector("#music");
+	document.getElementById("#star").style.display = "none";
+});
+</script>
 </body>
 </html>

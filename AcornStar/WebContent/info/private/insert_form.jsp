@@ -13,6 +13,7 @@
 </style>
 </head>
 <body>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container">
    <h1>새 글 작성 폼</h1>
    <form action="insert.jsp" method="post" id="insertForm">

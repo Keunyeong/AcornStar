@@ -108,6 +108,7 @@
 <head>
 <meta charset="UTF-8">
 <title>/main/info.jsp</title>
+<jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
    .page-ui a{
       text-decoration: none;
@@ -135,6 +136,7 @@
 </style>
 </head>
 <body>
+<jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
    <a href="private/insert_form.jsp">새 글 작성하러 GO!</a>
    <br/>

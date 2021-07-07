@@ -96,6 +96,7 @@
 <head>
 <meta charset="UTF-8">
 <title>/info/detail.jsp</title>
+<jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
    .content{
@@ -188,6 +189,7 @@
 </style>
 </head>
 <body>
+<jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
    <%if(dto.getPrevNum()!=0){ %>
       <a href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>

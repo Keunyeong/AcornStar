@@ -5,8 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>/user/myProfile.jsp</title>
+<jsp:include page="../include/resource.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
 	<button id="PFupdate"> 프로필 수정</button>
 	<button id="PFdelete">회원탈퇴</button>
@@ -29,7 +31,7 @@
 		location.href="${pageContext.request.contextPath}/info/info.jsp";
 	});
 	document.querySelector("#suggest").addEventListener("click",function(){
-		location.href="${pageContext.request.contextPath}/suggest/suggest.jsp";
+		location.href="${pageContext.request.contextPath}/suggest/list.jsp";
 	});
 
 </script>

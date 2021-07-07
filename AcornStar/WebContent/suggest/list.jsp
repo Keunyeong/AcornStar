@@ -100,6 +100,7 @@
 <head>
 <meta charset="UTF-8">
 <title>suggest/private/list.jsp</title>
+<jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
 	.page-ui a{
 		text-decoration: none;
@@ -128,6 +129,7 @@
 </head>
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+<jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
 	<a href="private/insert_form.jsp">새글 작성</a>
 	<h1>글 목록 입니다.</h1>

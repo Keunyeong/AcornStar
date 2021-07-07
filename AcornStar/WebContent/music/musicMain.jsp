@@ -31,10 +31,8 @@
 </head>
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+<jsp:include page="../include/navbar.jsp"></jsp:include>
 	<div class="container">
-		<h1>list page</h1>
-		<h2>css 장인님들 navbar 작품 넣을 곳</h2>
-		<a href="${pageContext.request.contextPath}/index.jsp">home</a>
 		<div>
 			<!-- Button trigger modal -->
 			<button id="writeBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">
@@ -251,5 +249,13 @@
 		// 댓글 달기 버튼을 눌렀을 때 작동하는 곳
 		
 	</script>
+	<script>
+document.querySelector("#acornstar").addEventListener("click",function(){
+	location.href="${pageContext.request.contextPath}/main/main.jsp";
+	let star = document.querySelector("#star");
+	let music = document.querySelector("#music");
+	document.getElementById("#star").style.display = "none";
+});
+</script>
 </body>
 </html>

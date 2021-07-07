@@ -11,8 +11,10 @@
 <head>
 <meta charset="UTF-8">
 <title>/info/private/update_form.jsp</title>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container">
    <h1>글 수정 폼</h1>
    <form action="update.jsp" method="post">
