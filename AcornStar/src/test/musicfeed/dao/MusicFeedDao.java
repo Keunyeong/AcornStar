@@ -146,7 +146,57 @@ public class MusicFeedDao {
 		}
 	}
 	
-	// 게시글 하나의 정보를 불러오는 method
+	// 게시글 하나의 정보를 불러오는 method (번호로)
+		public MusicFeedDto getData(int num) {
+			MusicFeedDto dto2=null;
+			
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				// Connection 객체의 참조값 얻어오기
+				conn = new DbcpBean().getConn();
+				// 실행할 sql 문 작성
+				String sql = "select *"
+						+ " from music_feed"
+						+ " where num=?";
+				// PreparedStatement 객체의 참조값 얻어오기
+				pstmt = conn.prepareStatement(sql);
+				// ? 에 binding할 내용이 있으면 여기서 binding
+				pstmt.setInt(1, num);
+				// select 문 수행하고 결과를 ResultSet으로 받아옥
+				rs = pstmt.executeQuery();
+				// 변화하는 줄이 있다면
+				// 원하는 Data type으로 포장하기
+				if (rs.next()) {
+					dto2=new MusicFeedDto();
+					dto2.setNum(rs.getInt("num"));
+					dto2.setWriter(rs.getString("writer"));
+					dto2.setTitle(rs.getString("title"));
+					dto2.setContent(rs.getString("content"));
+					dto2.setLink(rs.getString("link"));
+					dto2.setUpCount(rs.getInt("upCount"));
+					dto2.setTag(rs.getString("tag"));
+					dto2.setRegdate(rs.getString("regdate"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+					if (pstmt != null)
+						pstmt.close();
+					if (conn != null)
+						conn.close();
+				} catch (Exception e) {
+				}
+			}
+
+			return dto2;
+		}
+	
+	// 게시글 하나의 정보를 불러오는 method (dto로)
 	public MusicFeedDto getData(MusicFeedDto dto) {
 		MusicFeedDto dto2=null;
 		
