@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/main/myProfile.jsp</title>
+<title>/suggest.jsp</title>
 </head>
 <body>
-
+	
 </body>
 </html>
