@@ -14,50 +14,105 @@
     	//로그인 된 아이디 읽어오기 
     	String id=(String)session.getAttribute("id");
     %>
-	<nav class="navbar navbar-light bg-light navbar-expand-lg fixed-top">
-		<div class="container-fluid">
-		    <a class="navbar-brand d-flex align-items-center" href="<%=request.getContextPath() %>/">
-			   <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
-	  				<path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+	<div class="container-fluid">
+		<h1 id="acornstar"  class="d-flex align-items-center mb-0 ps-5" style="font-family: 'Lobster', cursive; display:inline-block; color: #6610f2;">
+			<span id="logo"></span>
+			<div id="star" >
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+			    	<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
 				</svg>
-		     	<h1 class="d-flex align-items-center mb-0 ps-3" style="font-family: "Lobster", cursive; display: inline-block; color:#6610f2;">AcornStar</h1>
-		    </a>
-		 	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-		    	data-bs-target="#navbarNav">
-   					<span class="navbar-toggler-icon"></span>
-    	 	</button>
-    		<div class="collapse navbar-collapse " id="navbarNav">
-      			<ul class="navbar-nav me-auto">
-      				<li class="nav-item">
-      					<div style="clear:both;"></div>
-      					<form class="d-flex align-items-center " action="list.jsp" method="get"> 
-							<input type="text" id="keyword" name="keyword" placeholder="검색어..." value=""/>
-							<button type="submit">검색</button>
-						</form>	
-      				</li>
-      				<li class="nav-item">
-	          			<a class="nav-link <%=thisPage.equals("file") ? "active" : "" %>" href="../cafe/private/insertform.jsp">
-	          			<svg class="d-flex align-items-center" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-						  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-						  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-						</svg>
-	          			</a>
-	        		</li>
-	        		<li class="nav-item dropdown d-flex align-items-center">
-	        			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-							  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-							  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+			</div>
+			<span id="music">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+				  <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"/>
+				  <path fill-rule="evenodd" d="M14 11V2h1v9h-1zM6 3v10H5V3h1z"/>
+				  <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4V2.905z"/>
+				</svg>
+			</span>
+			AcornStar
+		</h1>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        	<span class="navbar-toggler-icon"></span>
+        </button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<form class="d-flex ms-4">
+        		<input class="form-control ml-2" type="search" placeholder="Search" aria-label="Search">
+        		<button class="btn" style="color: #6610f2" type="submit">Search</button>
+	      	</form>
+			<ul class="navbar-nav ms-auto mb-2 mb-lg-0" style="margin-right: 20px;">
+				<!-- main 이동  -->
+				<li>
+					<div class="m-2">
+						<a href="${pageContext.request.contextPath}/main/main.jsp">
+		          			<svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" fill="indigo" class="bi bi-house-door-fill" viewBox="0 0 16 16">
+		  						<path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/>
 							</svg>
-          				</a>
-          				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          					<li><a class="dropdown-item" href="../index.jsp">Logout</a></li>
-          				</ul>
-	        		</li>
-      			</ul>	
-    		</div>
-		</div>
-	</nav>
+						</a>
+					</div>
+				</li>
+				<!-- DM 이동  -->
+				<li>
+					<div class="m-2">
+						<a href="private/chat.jsp">
+		        			<svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" fill="indigo" class="bi bi-chat-dots" viewBox="0 0 16 16">
+								<path d="M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+						  		<path d="m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z"/>
+							</svg>
+						</a>
+					</div>
+				</li>
+				<!-- info 이동  -->
+				<li>
+					<div class="m-2">
+						<a href="info.jsp">
+							<svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" fill="indigo" class="bi bi-suit-heart" viewBox="0 0 16 16">
+		  						<path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+							</svg>
+						</a>
+					</div>
+				</li>
+				<!-- 새 글 작성 버튼  -->
+				<li>
+					<div class="m-2">
+						<a id="write" href="javascript:">
+							<svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" fill="indigo" class="bi bi-pencil-square" viewBox="0 0 16 16">
+		  						<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+		  						<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+							</svg>
+						</a>
+					</div>
+				</li>
+				<!-- MyProfile 버튼  -->
+				<li>
+					<div class="m-2">
+						<a href="${pageContext.request.contextPath}/user/myProfile.jsp">
+							<svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" fill="indigo" class="bi bi-person-circle" viewBox="0 0 16 16">
+		  						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+		  						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+							</svg>
+						</a>
+					</div>
+				</li>	
+			</ul>
+			<div class="m-2">
+				<a class="" id="logout" href="${pageContext.request.contextPath}/user/logout.jsp">
+					Logout
+
+				</a>
+			</div>
+    	</div>
+	</div>
+</nav>
+<script>
+document.querySelector("#acornstar").addEventListener("click",function(){
+	location.href="${pageContext.request.contextPath}/main/main.jsp";
+	let star = document.querySelector("#star");
+	let music = document.querySelector("#music");
+	document.getElementById("#star").style.display = "none";
+});
+</script>
 	
 	
 	
