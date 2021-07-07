@@ -93,6 +93,7 @@
 		oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
 	}
 	
+
 	//폼에 submit 이벤트가 일어났을때 실행할 함수 등록
 	document.querySelector("#insertForm")
 		.addEventListener("submit", function(e){
@@ -100,6 +101,18 @@
 			oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
 			//textarea 이외에 입력한 내용을 여기서 검증하고 
 			const title=document.querySelector("#title").value;
+			ajaxFormPromise(this)
+			.then(function(response){
+				return response.json();
+			}).then(function(data){
+				if(data.isSuccess){
+					alert("새 글을 성공적으로 등록했습니다.");
+					location.href="${pageContext.request.contextPath}/suggest/list.jsp"
+				} else {
+					alert("새 글 등록에 실패했습니다. 다시 작성해주세요.");
+					location.href="${pageContext.request.contextPath}/suggest/private/insert_form.jsp"
+				}
+			});
 			
 			//만일 폼 제출을 막고 싶으면  
 			//e.preventDefault();
@@ -109,26 +122,7 @@
 				e.preventDefault();
 			}
 		});
-</script>
-<script>
 
-// 새 글 등록 버튼을 눌렀을 때 진행되는 ajax
-document.querySelector("#insertForm").addEventListener("submit", function(e){
-	e.preventDefault();
-	
-	ajaxFormPromise(this)
-	.then(function(response){
-		return response.json();
-	}).then(function(data){
-		if(data.isSuccess){
-			alert("새 글을 성공적으로 등록했습니다.");
-			location.href="${pageContext.request.contextPath}/suggest/list.jsp"
-		} else {
-			alert("새 글 등록에 실패했습니다. 다시 작성해주세요.");
-			location.href="${pageContext.request.contextPath}/suggest/private/insert_form.jsp"
-		}
-	});
-});
 </script>
 </body>
 </html>

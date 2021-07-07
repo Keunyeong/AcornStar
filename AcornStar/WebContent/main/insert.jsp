@@ -21,4 +21,4 @@
 	// 응답
 		
 %>
-{"isSuccess":<%=isSuccess %>}
+{"isSuccess":<%=isSuccess %>};

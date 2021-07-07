@@ -117,11 +117,11 @@ import test.util.DbcpBean;
 		// 원하는 Data type으로 포장하기
 		while (rs.next()) {
 			SuggestDto dto2=new SuggestDto();
-			dto.setNum(rs.getInt("num"));
-			dto.setWriter(rs.getString("writer"));
-			dto.setTitle(rs.getString("title"));
-			dto.setContent(rs.getString("content"));
-			dto.setRegdate(rs.getString("regdate"));
+			dto2.setNum(rs.getInt("num"));
+			dto2.setWriter(rs.getString("writer"));
+			dto2.setTitle(rs.getString("title"));
+			dto2.setContent(rs.getString("content"));
+			dto2.setRegdate(rs.getString("regdate"));
 			list.add(dto2);
 		}
 	} catch (Exception e) {
