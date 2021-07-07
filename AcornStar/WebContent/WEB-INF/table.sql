@@ -7,6 +7,19 @@ create table feed(
    regdate DATE --글 작성일
 );
 
+CREATE TABLE info_comment(
+   num NUMBER PRIMARY KEY, --댓글의 글번호
+   writer VARCHAR2(100), --댓글 작성자의 아이디
+   content VARCHAR2(500), --댓글 내용
+   target_id VARCHAR2(100), --댓글의 대상자 아이디
+   ref_group NUMBER,
+   comment_group NUMBER,
+   deleted CHAR(3) DEFAULT 'no',
+   regdate DATE
+);
+
+CREATE SEQUENCE info_comment_seq;
+
 -- 게시글을 저장할 테이블 
 CREATE TABLE suggest(
 	num NUMBER PRIMARY KEY, --글번호

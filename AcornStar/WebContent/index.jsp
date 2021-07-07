@@ -21,10 +21,11 @@
 </head>
 <body>
 <div class="text-center" style="margin-top:100px;">
-
+  
    <h1 style="font-family: 'Lobster', cursive; display: inline-block; color:#6610f2;">AcornStar<span class="badge bg-secondary"></span></h1>
 
 </div>
+
 <div class="container" >
    <div style="margin:auto; text-align:center; margin-top:100px;">
    <form id="loginForm" action="user/login.jsp" method="post" style="display:inline-block;">

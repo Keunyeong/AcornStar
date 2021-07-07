@@ -1,7 +1,7 @@
 <%@page import="java.net.URLEncoder"%>
 <%@page import="java.util.List"%>
-<%@page import="test.feed.dao.FeedDao"%>
-<%@page import="test.feed.dto.FeedDto"%>
+<%@page import="test.info.dao.InfoDao"%>
+<%@page import="test.info.dto.InfoDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -42,13 +42,13 @@
    //특수기호를 인코딩한 키워드를 미리 준비한다. 
    String encodedK=URLEncoder.encode(keyword);
       
-   //FeedDto 객체에 startRowNum 과 endRowNum 을 담는다.
-   FeedDto dto=new FeedDto();
+   //InfoDto 객체에 startRowNum 과 endRowNum 을 담는다.
+   InfoDto dto=new InfoDto();
    dto.setStartRowNum(startRowNum);
    dto.setEndRowNum(endRowNum);
 
    //ArrayList 객체의 참조값을 담을 지역변수를 미리 만든다.
-   List<FeedDto> list=null;
+   List<InfoDto> list=null;
    //전체 row 의 갯수를 담을 지역변수를 미리 만든다.
    int totalRow=0;
    //만일 검색 키워드가 넘어온다면 
@@ -56,25 +56,25 @@
       //검색 조건이 무엇이냐에 따라 분기 하기
       if(condition.equals("title_content")){//제목 + 내용 검색인 경우
          //검색 키워드를 FeedDto 에 담아서 전달한다.
-         dto.setTag(keyword);
+         dto.setTitle(keyword);
          dto.setContent(keyword);
          //제목+내용 검색일때 호출하는 메소드를 이용해서 목록 얻어오기 
-         list=FeedDao.getInstance().getListTC(dto);
+         list=InfoDao.getInstance().getListTC(dto);
          //제목+내용 검색일때 호출하는 메소드를 이용해서 row  의 갯수 얻어오기
-         totalRow=FeedDao.getInstance().getCountTC(dto);
-      }else if(condition.equals("tag")){ //제목 검색인 경우
-         dto.setTag(keyword);
-         list=FeedDao.getInstance().getListT(dto);
-         totalRow=FeedDao.getInstance().getCountT(dto);
+         totalRow=InfoDao.getInstance().getCountTC(dto);
+      }else if(condition.equals("title")){ //제목 검색인 경우
+         dto.setTitle(keyword);
+         list=InfoDao.getInstance().getListT(dto);
+         totalRow=InfoDao.getInstance().getCountT(dto);
       }else if(condition.equals("writer")){ //작성자 검색인 경우
          dto.setWriter(keyword);
-         list=FeedDao.getInstance().getListW(dto);
+         list=InfoDao.getInstance().getListW(dto);
       } // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
    }else{//검색 키워드가 넘어오지 않는다면
       //키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다. 
-      list=FeedDao.getInstance().getList(dto);
+      list=InfoDao.getInstance().getList(dto);
       //키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
-      totalRow=FeedDao.getInstance().getCount();
+      totalRow=InfoDao.getInstance().getCount();
    }
    
    //하단 시작 페이지 번호 
@@ -90,6 +90,18 @@
       endPageNum=totalPageCount; //보정해 준다.
    }
    
+   // thisPage 라는 파라미터명으로 전달되는 문자열을 얻어와 본다. 
+   // null or "member" or "todo"
+   String thisPage=request.getParameter("thisPage");
+   // thisPage 가 null 이면 index.jsp 페이지에 포함된 것이다. 
+   //System.out.println(thisPage);
+   //만일 null 이면 
+   if(thisPage==null){
+      //빈 문자열을 대입한다. (NullPointerException 방지용)
+      thisPage="";
+   }
+   //로그인 된 아이디 읽어오기 
+   String id=(String)session.getAttribute("id");
 %>        
 <!DOCTYPE html>
 <html>
@@ -124,8 +136,16 @@
 </head>
 <body>
 <div class="container">
-   <a href="private/insertform.jsp">새글 작성!</a>
-   <h1>AcornStar 공지사항 입니다.</h1>
+   <a href="private/insert_form.jsp">새 글 작성하러 GO!</a>
+   <br/>
+   <%if(id==null){ %>
+	   <a href="${pageContext.request.contextPath}/index.jsp">로그인</a>
+   <%}else{ %>
+	   <a href="${pageContext.request.contextPath}/main/myProfile.jsp"><%=id %></a> 로그인 중...
+	   <a href="${pageContext.request.contextPath}/user/logout.jsp">로그아웃</a>
+   <%} %>
+   
+   <h1>AcornStar Info</h1>
    <table>
       <thead>
          <tr>
@@ -137,12 +157,12 @@
          </tr>
       </thead>
       <tbody>
-      <%for(FeedDto tmp:list){%>
+      <%for(InfoDto tmp:list){%>
          <tr>
             <td><%=tmp.getNum() %></td>
             <td><%=tmp.getWriter() %></td>
             <td>
-               <a href="detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK %>&condition=<%=condition%>"><%=tmp.getTag() %></a>
+               <a href="detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK %>&condition=<%=condition%>"><%=tmp.getTitle() %></a>
             </td>
             <td><%=tmp.getUpCount() %></td>
             <td><%=tmp.getRegdate() %></td>
@@ -177,7 +197,7 @@
    
    <div style="clear:both;"></div>
    
-   <form action="list.jsp" method="get"> 
+   <form action="info.jsp" method="get"> 
       <label for="condition">검색조건</label>
       <select name="condition" id="condition">
          <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
