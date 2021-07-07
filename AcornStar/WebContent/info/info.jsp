@@ -141,7 +141,7 @@
    <%if(id==null){ %>
 	   <a href="${pageContext.request.contextPath}/index.jsp">로그인</a>
    <%}else{ %>
-	   <a href="${pageContext.request.contextPath}/main/myProfile.jsp"><%=id %></a> 로그인중...
+	   <a href="${pageContext.request.contextPath}/main/myProfile.jsp"><%=id %></a> 로그인 중...
 	   <a href="${pageContext.request.contextPath}/user/logout.jsp">로그아웃</a>
    <%} %>
    
