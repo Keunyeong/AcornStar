@@ -31,13 +31,17 @@
 		color: black; 
 		text-decoration: none;
 	}
-	@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 	   .drag-area,.updrag-area{
       width: 200px;
       height: 300px;
       border: 2px dashed gray;
       border-radius: 20px;
    }
+   
+   #acornstar {
+   		cursor:pointer;
+   }
+   
 </style>
 </head>
 <body>

@@ -142,7 +142,7 @@ import test.util.DbcpBean;
 	}
 
 	//글을 삭제하는 method
-	public boolean delete(SuggestDto dto) {
+	public boolean delete(int num) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int flag = 0;
@@ -153,7 +153,7 @@ import test.util.DbcpBean;
 					+ " where num=?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 binding 할 내용이 있으면 여기서 binding
-			pstmt.setInt(1, dto.getNum());
+			pstmt.setInt(1, num);
 			// insert or update or delete 문 수행하고
 			// 변화된 row의 개수 return 받기
 			flag = pstmt.executeUpdate();

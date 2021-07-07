@@ -15,9 +15,7 @@
 <meta charset="UTF-8">
 <title>AcornStar</title>
 <jsp:include page="/include/resource.jsp"></jsp:include>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="text-center" style="margin-top:100px;">
