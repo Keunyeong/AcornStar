@@ -1,4 +1,6 @@
 
+<%@page import="test.feed.dao.FeedCommentDao"%>
+<%@page import="test.feed.dto.FeedCommentDto"%>
 <%@page import="test.feed.dao.MainFeedDao"%>
 <%@page import="test.feed.dto.MainFeedDto"%>
 <%@page import="java.util.List"%>
@@ -31,7 +33,6 @@
 		color: black; 
 		text-decoration: none;
 	}
-	@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 	   .drag-area,.updrag-area{
       width: 200px;
       height: 300px;
@@ -42,6 +43,7 @@
 </head>
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 	<div class="container">
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
@@ -51,20 +53,20 @@
 						<ul class="list-group list-group-flush">
 						    <li class="list-group-item"><%=tmp.getWriter() %>님이 작성한 글.</li>
 						</ul>
-					  <img src="<%=tmp.getImage() %>" class="card-img-top" style="
+					  <img id="img<%=tmp.getNum() %>" src="<%=tmp.getImage() %>" class="card-img-top" style="
 					         width: 100%;
 					         height: 100%;
 					         object-fit: contain;
 					   " >
-					  <div class="card-body">
+					  <div id="content<%=tmp.getNum() %>"class="card-body">
 					    <p class="card-text">
 					    	<%=tmp.getContent() %>
 					    </p>
 					  </div>
 					  <ul class="list-group list-group-flush">
-					    <li class="list-group-item"><%=tmp.getTag() %></li>
+					    <li id="tag<%=tmp.getNum() %> class="list-group-item"><%=tmp.getTag() %></li>
 					    <%if(tmp.getWriter().equals(id)){ %>
-					    <li class="list-group-item">
+					    <li id="update<%=tmp.getNum() %> class="list-group-item">
 					    		<!-- 피드 수정 -->
 								<a data-num="<%=tmp.getNum() %>" class="update" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
@@ -83,7 +85,90 @@
 					    </li>
 					    <%} %>
 					    <li class="list-group-item">
-					    	<a data-num="<%=tmp.getNum() %>" class="comment" href="javascript:">댓글</a>
+					    	<%  //한 페이지에 몇개씩 표시할 것인지
+						    	final int PAGE_ROW_COUNT=10;
+	
+						    	//detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
+						    	int pageNum=1;
+	
+						    	//보여줄 페이지의 시작 ROWNUM
+						    	int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
+						    	//보여줄 페이지의 끝 ROWNUM
+						    	int endRowNum=pageNum*PAGE_ROW_COUNT;
+	
+						    	//원글의 글번호를 이용해서 해당글에 달린 댓글 목록을 얻어온다.
+								FeedCommentDto commentDto=new FeedCommentDto();
+								commentDto.setRef_group(tmp.getNum());
+								//1페이지에 해당하는 startRowNum 과 endRowNum 을 dto 에 담아서  
+								commentDto.setStartRowNum(startRowNum);
+								commentDto.setEndRowNum(endRowNum);
+								
+								//1페이지에 해당하는 댓글 목록만 select 되도록 한다. 
+								List<FeedCommentDto> commentList=
+									FeedCommentDao.getInstance().getList(commentDto);%>
+					    	<%for(FeedCommentDto mp: commentList){ %>
+								<%if(mp.getDeleted().equals("yes")){ %>
+									<li>삭제된 댓글 입니다.</li>
+								<% 
+									// continue; 아래의 코드를 수행하지 않고 for 문으로 실행순서 다시 보내기 
+									continue;
+								}%>
+							
+								<%if(mp.getNum() == mp.getComment_group()){ %>
+									<li id="reli<%=mp.getNum()%>">
+								<%}else{ %>
+									<li id="reli<%=mp.getNum()%>" style="padding-left:50px;">
+										<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+						  					<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+										</svg>
+								<%} %>
+										<dl>
+											<dt>
+												<%if(mp.getProfile() == null){ %>
+													<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+														  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+														  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+													</svg>
+												<%}else{ %>
+													<img class="profile-image" src="${pageContext.request.contextPath}<%=mp.getProfile()%>"/>
+												<%} %>
+													<span><%=mp.getWriter() %></span>
+												<%if(mp.getNum() != mp.getComment_group()){ %>
+													@<i><%=mp.getTarget_id() %></i>
+												<%} %>
+													<span><%=mp.getRegdate() %></span>
+													<a data-num="<%=mp.getNum() %>" href="javascript:" class="reply-link">답글</a>
+												<%if(id != null && mp.getWriter().equals(id)){ %>
+													<a data-num="<%=mp.getNum() %>" class="update-link" href="javascript:">수정</a>
+													<a data-num="<%=mp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
+												<%} %>
+											</dt>
+											<dd>
+												<pre id="pre<%=mp.getNum()%>"><%=mp.getContent() %></pre>						
+											</dd>
+										</dl>	
+										<form id="reForm<%=mp.getNum() %>" class="animate__animated comment-form re-insert-form" 
+											action="comment_insert.jsp" method="post">
+											<input type="hidden" name="ref_group"
+												value="<%=tmp.getNum() %>"/>
+											<input type="hidden" name="target_id"
+												value="<%=mp.getWriter()%>"/>
+											<input type="hidden" name="comment_group"
+												value="<%=mp.getComment_group()%>"/>
+											<textarea name="content"></textarea>
+											<button type="submit">등록</button>
+										</form>	
+										<%if(mp.getWriter().equals(id)){ %>	
+											<form id="updateForm<%=mp.getNum() %>" class="comment-form update-form" 
+												action="comment_update.jsp" method="post">
+												<input type="hidden" name="num" value="<%=mp.getNum() %>" />
+												<textarea name="content"><%=mp.getContent() %></textarea>
+												<button type="submit">수정</button>
+											</form>
+										<%} %>						
+								</li>
+							<%} %>
+					    	<a data-num="<%=tmp.getNum() %>" class="comment" href="${pageContext.request.contextPath}/main/comment.jsp?num=<%=tmp.getNum() %>">댓글</a>
 					    </li>
 					  </ul>
 					</div>
@@ -120,7 +205,7 @@
 					<label class="form-label" for="tag">TAG</label>
 					<input class="form-control" type="text" name="tag" id="tag"/>
 				</div>
-				<button class="btn " style="color: #6610f2;" type="submit">SAVE</button>
+				<button class="btn " style="color: #6610f2;" type="submit"><img style="width:50px; display:inline-block;" src="${pageContext.request.contextPath}/image/roket.gif" alt="" />SAVE</button>
 			</form>
 	      </div>
 	    </div>
@@ -144,6 +229,7 @@
 		         height: 100%;
 		         object-fit: contain; 
 		   "/></div>
+		    <input type="hidden" name="num" id="num"/>
         	<label class="form-label" for="updateImage"></label>
 			<textarea style="display:none;" class="form-control"  name="updateImage" id="updateImage"></textarea>
 			<div class="mb-3">
@@ -209,6 +295,7 @@
 					document.querySelector("#updateImage").value=data.image;
 					document.querySelector("#updateContent").value=data.content;
 					document.querySelector("#updateTag").value=data.tag;
+					document.querySelector("#num").value=data.num;
 				});				
 			});
 		}
@@ -288,14 +375,10 @@
 		         document.querySelector("#image").innerText=e.target.result;
 		      };
 		   }
-	</script>
-<script>
-document.querySelector("#acornstar").addEventListener("click",function(){
-	location.href="${pageContext.request.contextPath}/music/musicMain.jsp";
-	let star = document.querySelector("#star");
-	let music = document.querySelector("#music");
-	document.getElementById("#star").style.display = "none";
-});
+	
+	document.querySelector("#acornstar").addEventListener("click",function(){
+		location.href="${pageContext.request.contextPath}/music/musicMain.jsp";
+	});
 </script>
 </body>
 </html>
