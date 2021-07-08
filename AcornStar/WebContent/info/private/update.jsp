@@ -34,7 +34,7 @@
 <body>
 	<%if(isSuccess){ %>
 		<script>
-			alert("수정했습니다.");
+			alert("수정 되었습니다.");
 			location.href="../detail.jsp?num=<%=dto.getNum()%>";
 		</script>
 	<%}else{ %>

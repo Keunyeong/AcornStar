@@ -17,34 +17,38 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+body {
+	background-image: url("info/images/galaxy.jpg");
+	background-size: cover;
+}
 </style>
 </head>
 <body>
 <div class="text-center" style="margin-top:100px;">
 
-   <h1 style="font-family: 'Lobster', cursive; display: inline-block; color:#6610f2;">AcornStar<span class="badge bg-secondary"></span></h1>
+   <h1 style="font-family: 'Lobster', cursive; display: inline-block; color: white;">AcornStar<span class="badge bg-secondary"></span></h1>
 
 </div>
 
 <div class="container" >
-   <div style="margin:auto; text-align:center; margin-top:100px;">
+   <div style="margin:auto; text-align:center; margin-top:80px;">
    <form id="loginForm" action="user/login.jsp" method="post" style="display:inline-block;">
 	  <div class="row mb-3">
-	    <label for="loginId" class="col-sm-5 col-form-label">ID</label>
+	    <label for="loginId" class="col-sm-5 col-form-label" style="color: white;">ID</label>
 	    <div class="col-sm-7">
 	      <input type="text" class="form-control" name="loginId" id="loginId">
 	    </div>
 	  </div>
 	  
 	  <div class="row mb-3">
-	    <label for="loginPwd" class="col-sm-5 col-form-label">Password</label>
+	    <label for="loginPwd" class="col-sm-5 col-form-label" style="color: white;">Password</label>
 	    <div class="col-sm-7">
 	      <input type="password" class="form-control" name="loginPwd" id="loginPwd">
 	    </div>
 	  </div>
     <div style="margin-top:50px;">
-      <button type="submit" class="col-sm-5 me-2 btn" style="color: #6610f2">LOGIN</button>
-      <button type="button" class="btn" style="color: #6610f2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <button type="submit" class="col-sm-5 me-2 btn" style="color: white;">LOGIN</button>
+      <button type="button" class="btn" style="color: white;" data-bs-toggle="modal" data-bs-target="#exampleModal">
         JOIN
       </button>
 	  </div>
@@ -203,10 +207,10 @@
     	 return response.json();
       }).then(function(data){
     	 if(data.isSuccess){
-    		 alert("회원가입되었습니다. 로그인 후 이용해주세요.");
+    		 alert("회원가입 되었습니다. 로그인 후 이용해주세요.");
     		 location.href="${pageContext.request.contextPath}/index.jsp";
     	 } else {
-    		 alert("회원가입에 실패하였습니다. 다시 시도해주세요.");
+    		 alert("회원가입에 실패 하였습니다. 다시 시도해주세요.");
     		 location.href="${pageContext.request.contextPath}/index.jsp";
     	 }
       });
@@ -220,10 +224,10 @@
 		   return response.json();
 	   }).then(function(data){
 		   if(data.isValid){
-			   alert("로그인되었습니다.");
+			   alert("로그인 되었습니다.");
 			   location.href="${pageContext.request.contextPath}/main/main.jsp";
 		   } else {
-			   alert("로그인에 실패하였습니다.");		
+			   alert("로그인에 실패 하였습니다.");		
 		   }
 	   });	   
    });

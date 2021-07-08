@@ -69,6 +69,7 @@
       }else if(condition.equals("writer")){ //작성자 검색인 경우
          dto.setWriter(keyword);
          list=InfoDao.getInstance().getListW(dto);
+         totalRow=InfoDao.getInstance().getCountW(dto);
       } // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
    }else{//검색 키워드가 넘어오지 않는다면
       //키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다. 
@@ -110,28 +111,22 @@
 <title>/main/info.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
-   .page-ui a{
-      text-decoration: none;
-      color: #000;
+	a{
+		text-decoration: none;
+		color: black;
+	}
+   .container{
+   	  text-align: right;
    }
-   
-   .page-ui a:hover{
-      text-decoration: underline;
+   table{
+   	  width: 70%;
+   	  margin-top: 50px;
+   	  margin-left: 15%;
+   	  margin-light: 15%;
+   	  text-align: center;
    }
-   
-   .page-ui a.active{
-      color: red;
-      font-weight: bold;
-      text-decoration: underline;
-   }
-   .page-ui ul{
-      list-style-type: none;
-      padding: 0;
-   }
-   
-   .page-ui ul > li{
-      float: left;
-      padding: 5px;
+   .pagination{
+   	  margin-top: 50px;
    }
 </style>
 </head>
@@ -146,8 +141,7 @@
 	   <a href="${pageContext.request.contextPath}/main/myProfile.jsp"><%=id %></a> 로그인 중...
 	   <a href="${pageContext.request.contextPath}/user/logout.jsp">로그아웃</a>
    <%} %>
-   
-   <h1>AcornStar Info</h1>
+   <h1 style="text-align: center;"><img src="images/info.jpg" width="60" height="50"/>Info</h1>
    <table>
       <thead>
          <tr>
@@ -172,31 +166,37 @@
       <%} %>
       </tbody>
    </table>
-   <div class="page-ui clearfix">
-      <ul>
+      <ul class="pagination justify-content-center">
          <%if(startPageNum != 1){ %>
-            <li>
-               <a href="info.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Prev</a>
-            </li>   
+            <li class="page-item">
+               <a class="page-link" href="info.jsp?pageNum=<%=startPageNum-1 %>">Prev</a>
+            </li>
+         <%}else{ %>
+            <li class="page-item disabled">
+               <a class="page-link" href="javascript:">Prev</a>
+            </li>
          <%} %>
-         
-         <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
-            <li>
-               <%if(pageNum == i){ %>
-                  <a class="active" href="info.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
-               <%}else{ %>
-                  <a href="info.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
-               <%} %>
-            </li>   
+         <%for(int i=startPageNum; i<=endPageNum; i++) {%>
+            <%if(i==pageNum){ %>
+               <li class="page-item active">
+                  <a class="page-link" href="info.jsp?pageNum=<%=i %>"><%=i %></a>
+               </li>
+            <%}else{ %>
+               <li class="page-item">
+                  <a class="page-link" href="info.jsp?pageNum=<%=i %>"><%=i %></a>
+               </li>
+            <%} %>
          <%} %>
          <%if(endPageNum < totalPageCount){ %>
-            <li>
-               <a href="info.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Next</a>
+            <li class="page-item">
+               <a class="page-link" href="info.jsp?pageNum=<%=endPageNum+1 %>">Next</a>
+            </li>
+         <%}else{ %>
+            <li class="page-item disabled">
+               <a class="page-link" href="javascript:">Next</a>
             </li>
          <%} %>
       </ul>
-   </div>
-   
    <div style="clear:both;"></div>
    
    <form action="info.jsp" method="get"> 

@@ -16,7 +16,6 @@
 <body>
 <jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container">
-   <h1>글 수정 폼</h1>
    <form action="update.jsp" method="post">
       <input type="hidden" name="num" value="<%=num %>" />
       <div>

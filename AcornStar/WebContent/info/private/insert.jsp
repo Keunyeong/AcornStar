@@ -25,7 +25,7 @@
 <body>
 	<%if(isSuccess){ %>
 	<script>
-		alert("새로운 글이 추가 되었습니다.");
+		alert("새로운 글이 추가 되었습니다!");
 		location.href="${pageContext.request.contextPath}/info/info.jsp";
 	</script>
 	<%}else{ %>
