@@ -1,3 +1,5 @@
+<%@page import="test.musicfeed.dao.MusicCommentDao"%>
+<%@page import="test.musicfeed.dto.MusicCommentDto"%>
 <%@page import="test.musicfeed.dto.MusicFeedDto"%>
 <%@page import="java.util.List"%>
 <%@page import="test.musicfeed.dao.MusicFeedDao"%>
@@ -10,7 +12,8 @@
 	// db music feed data를 불러온다.
 	List<MusicFeedDto> list=MusicFeedDao.getInstance().getList();
 	
-	// 글 하나의 data를 불러온다.
+	// 댓글의 data를 불러온다.
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -106,40 +109,102 @@
 		</div>
 		
 		<!-- card 게시글 list -->
-		<%for(MusicFeedDto tmp:list) {%>
-			<div class="card mb-3" style="max-width: 540px;">
-			  	<div class="row g-0">
-			    	<div class="col-md-4 iframeBox">
-			      		<iframe class="" src="<%=tmp.getLink()%>"></iframe>
-			    	</div>
-			    	<div class="col-md-8">
-			      		<div class="card-body">
-			        		<h5 class="card-title"><%=tmp.getTitle() %></h5>
-			        		<p class="card-text">작성자 : <%=tmp.getWriter() %></p>
-			        		<p class="card-text"><%=tmp.getContent() %></p>
-			        		<p class="card-text"><small class="text-muted">to be continued</small></p>
-			      		</div>
-			      		<a data-num="<%=tmp.getNum() %>" class="comment-link" href="javascript:">댓글</a>
-			      		<%if(tmp.getWriter().equals(id)){ %>
-				      		<a data-num="<%=tmp.getNum() %>" class="update-link" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">수정</a>
-				      		<a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
-			      		<%} %>
-			    	</div>
-			  	</div>
-			</div>
-			<!-- card 게시글 댓글 list -->
-			<div>
-			</div>
-			<div>
-				<form id="commentForm<%=tmp.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
-					<textarea name="" id=""></textarea>
-					<button type="submit">댓글 달기</button>
-				</form>
-			</div>				
-		<%} %>
+		<ul>
+			<%for(MusicFeedDto tmp:list) {%>
+				<li>
+					<div class="card mb-3" style="max-width: 540px;">
+					  	<div class="row g-0">
+					    	<div class="col-md-4 iframeBox">
+					      		<iframe class="" src="<%=tmp.getLink()%>"></iframe>
+					    	</div>
+					    	<div class="col-md-8">
+					      		<div class="card-body">
+					        		<h5 class="card-title"><%=tmp.getTitle() %></h5>
+					        		<p class="card-text">작성자 : <%=tmp.getWriter() %></p>
+					        		<p class="card-text"><%=tmp.getContent() %></p>
+					        		<p class="card-text"><small class="text-muted">to be continued</small></p>
+					      		</div>
+					      		<a data-num="<%=tmp.getNum() %>" class="comment-link" href="javascript:">댓글</a>
+					      		<%if(tmp.getWriter().equals(id)){ %>
+						      		<a data-num="<%=tmp.getNum() %>" class="update-link" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">수정</a>
+						      		<a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
+					      		<%} %>
+					    	</div>
+					  	</div>
+					</div>
+					<!-- card 게시글 댓글 list -->
+					<div data-num="<%=tmp.getNum() %>" id="commentList<%=tmp.getNum() %>" class="commentList" style="display: none;">
+						<ul>
+							<!-- 댓글의 data를 불러온다. -->
+							<%List<MusicCommentDto> commentList=MusicCommentDao.getInstance().getList(tmp.getNum()); %>
+							<%for(MusicCommentDto tmp2:commentList) {%>
+								<%if(tmp2.getDeleted().equals("yes")){ %>
+									<li>삭제된 댓글입니다.</li>
+								<% // continue; 아래의 코드를 수행하지 않고 for문으로 실행 순서를 다시 보내기
+									continue;
+								}%>
+								<%if(tmp2.getComment_group()==tmp2.getNum()) {%>
+									<li id="comment<%=tmp2.getNum()%>">
+								<%} else {%>
+									<li id="comment<%=tmp2.getNum()%>" style="padding-left:50px;">
+								<%} %>
+									<dl>
+										<dt>
+											<span><%=tmp2.getWriter() %></span>
+											<a data-num="<%=tmp2.getNum() %>" class="recomment-link" href="javascript;">댓글</a>
+											<%if(tmp2.getWriter().equals(id)){ %>
+												<a data-num="<%=tmp2.getNum() %>" class="comment-update-link" href="javascript:">수정</a>
+												<a data-num="<%=tmp2.getNum() %>" class="comment-delete-link" href="javascript:">삭제</a>
+											<%} %>
+											<span><%=tmp2.getRegdate() %></span>
+										</dt>
+										<dd>
+											<pre><%=tmp2.getContent() %></pre>
+										</dd>
+									</dl>
+									<!-- 댓글 수정하는 form(hidden) -->
+									<%if(tmp2.getWriter().equals(id)){ %>
+										<form data-num="<%=tmp2.getNum() %>" id="commentUpdateForm<%=tmp2.getNum() %>" class="commentUpdate" style="display:none;" action="update_comment.jsp" method="post">
+											<input type="hidden" name="num" value="<%=tmp2.getNum() %>"/>
+											<textarea name="commentUpdate" id="commentUpdate"><%=tmp2.getContent() %></textarea>
+											<button type="submit">수정하기</button>
+										</form>
+									<%} %>
+									<!-- 대댓글 form(hidden) -->
+									<form data-num="<%=tmp2.getNum() %>" id="recommentForm<%=tmp2.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
+										<input type="hidden" name="target_id" value="<%=tmp2.getWriter() %>"/>
+										<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
+										<input type="hidden" name="comment_group" value="<%=tmp2.getNum()%>"/>
+										<textarea name="comment" id="recomment"></textarea>
+										<button type="submit">댓글 달기</button>
+									</form>
+								</li>
+							<%} %>
+						</ul>
+						<!-- 댓글 작성하는 form(hidden) -->
+						<div>
+							<form data-num="<%=tmp.getNum() %>" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
+								<input type="hidden" name="target_id" value="<%=tmp.getWriter() %>"/>
+								<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
+								<input type="hidden" name="comment_group"/>
+								<textarea name="comment" id="comment"></textarea>
+								<button type="submit">댓글 달기</button>
+							</form>
+						</div>
+					</div>
+				</li>					
+			<%} %>
+		</ul>
 	</div>
 	
 	<script>
+		document.querySelector("#acornstar").addEventListener("click",function(){
+			location.href="${pageContext.request.contextPath}/main/main.jsp";
+			let star = document.querySelector("#star");
+			let music = document.querySelector("#music");
+			document.getElementById("#star").style.display = "none";
+		});
+	
 		// insert modal 에서 글 작성 버튼을 눌렀을 때 작동하는 곳
 		document.querySelector("#insertForm").addEventListener("submit", function(e){
 			// 일단 form 제출을 막고
@@ -239,7 +304,8 @@
 				e.preventDefault();
 				
 				let num=this.getAttribute("data-num");
-				let commentForm=document.querySelector("#commentForm"+num);
+				
+				let commentForm=document.querySelector("#commentList"+num);
 				if(commentForm.style.display=="none"){
 					commentForm.style.display="block";
 				} else if(commentForm.style.display=="block"){
@@ -249,12 +315,114 @@
 		}
 		
 		// 댓글 달기 버튼을 눌렀을 때 작동하는 곳
+		let commentForms=document.querySelectorAll(".comment");
+		for(let i=0; i<commentLinks.length; i++){
+			commentForms[i].addEventListener("submit", function(e){
+				// 일단 form 제출을 막고
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				
+				// ajax로 응답
+				ajaxFormPromise(this)
+				.then(function(response){
+					return response.json();
+				}).then(function(data){
+					if(data.beInserted){
+						console.log("댓글 등록 성공");
+						location.href="${pageContext.request.contextPath}/music/musicMain.jsp";
+					} else {
+						console.log("댓글 등록 실패");
+					}
+				});
+			});
+		}
 		
+		// 댓글 삭제 버튼을 눌렀을 때 작동하는 곳
+		let commentDeleteLinks=document.querySelectorAll(".comment-delete-link");
+		for(let i=0; i<commentDeleteLinks.length; i++){
+			commentDeleteLinks[i].addEventListener("click", function(e){
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				
+				let wantDelete=confirm("이 댓글을 삭제하시겠습니까?");
+				if(wantDelete){
+					// ajax로 응답
+					ajaxPromise("delete_comment.jsp", "post", "num="+num)
+					.then(function(response){
+						return response.json();
+					}).then(function(data){
+						if(data.beDeleted){
+							document.querySelector("#comment"+num).innerText="삭제된 댓글입니다.";
+						} else {
+							alert("삭제에 실패했습니다.");
+						}
+					});	
+				}
+			});
+		}
+		
+		// 댓글 수정 버튼을 눌렀을 때 작동하는 곳
+		let commentUpdateLinks=document.querySelectorAll(".comment-update-link");
+		for(let i=0; i<commentUpdateLinks.length; i++){
+			commentUpdateLinks[i].addEventListener("click", function(e){
+				// 일단 막고
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				let commentForm=document.querySelector("#commentUpdateForm"+num);
+				
+				if(commentForm.style.display=="none"){
+					commentForm.style.display="block";
+				} else if(commentForm.style.display=="block"){
+					commentForm.style.display="none";
+				}				
+			});
+		}
+		
+		// 수정하기 버튼을 눌렀을 때 작동하는 곳
+		let commentUpdateForms=document.querySelectorAll(".commentUpdate");
+		for(let i=0; i<commentUpdateLinks.length; i++){
+			commentUpdateForms[i].addEventListener("submit", function(e){
+				// 일단 form 제출을 막고
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				let commentForm=document.querySelector("#commentUpdateForm"+num);
+				
+				// ajax로 응답
+				ajaxFormPromise(this)
+				.then(function(response){
+					return response.json();
+				}).then(function(data){
+					if(data.beUpdated){
+						document.querySelector("#comment"+num+" pre").innerText=data.newContent;
+						commentForm.style.display="none";
+					} else {
+						alert("수정에 실패하였습니다. 다시 수정해주세요.");
+					}
+				});
+			});
+		}
+		
+		// 대댓글 버튼 눌렀을 때 작동하는 곳
+		let recommentLinks=document.querySelectorAll(".recomment-link");
+		for(let i=0; i<recommentLinks.length; i++){
+			recommentLinks[i].addEventListener("click", function(e){
+				// 일단 막고
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				let recommentForm=document.querySelector("#recommentForm"+num);
+				
+				if(recommentForm.style.display=="none"){
+					recommentForm.style.display="block";
+				} else if(recommentForm.style.display=="block"){
+					recommentForm.style.display="none";
+				}				
+			});
+		}
 	</script>
-	<script>
-document.querySelector("#acornstar").addEventListener("click",function(){
-	location.href="${pageContext.request.contextPath}/main/main.jsp";
-});
-</script>
 </body>
 </html>
