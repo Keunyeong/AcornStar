@@ -29,6 +29,8 @@
 		width: 100%;
 		height: 100%;
 	}
+	
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 </style>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 </head>

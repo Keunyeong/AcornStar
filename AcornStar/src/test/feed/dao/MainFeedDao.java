@@ -150,14 +150,13 @@ public class MainFeedDao {
 			conn = new DbcpBean().getConn();
 			// 실행할 sql 문 작성
 			String sql = "update main_feed"
-					+ " SET image=?,content=?,tag=?"
+					+ " SET content=?,tag=?"
 					+ " where num=?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 binding 할 내용이 있으면 여기서 binding
-			pstmt.setString(1, dto.getImage());
-			pstmt.setString(2, dto.getContent());
-			pstmt.setString(3, dto.getTag());
-			pstmt.setInt(4, dto.getNum());
+			pstmt.setString(1, dto.getContent());
+			pstmt.setString(2, dto.getTag());
+			pstmt.setInt(3, dto.getNum());
 			// insert or update or delete 문 수행하고
 			// 변화된 row의 개수 return 받기
 			flag = pstmt.executeUpdate();
@@ -206,6 +205,7 @@ public class MainFeedDao {
 				dto.setImage(rs.getString("image"));
 				dto.setContent(rs.getString("content"));
 				dto.setTag(rs.getString("tag"));
+				dto.setWriter(rs.getString("writer"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
