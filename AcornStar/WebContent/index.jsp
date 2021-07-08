@@ -33,7 +33,6 @@
 	      <input type="text" class="form-control" name="loginId" id="loginId">
 	    </div>
 	  </div>
-	  
 	  <div class="row mb-3">
 	    <label for="loginPwd" class="col-sm-5 col-form-label">Password</label>
 	    <div class="col-sm-7">

@@ -26,6 +26,8 @@
 		width: 100%;
 		height: 100%;
 	}
+	
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 </style>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 </head>
@@ -252,9 +254,6 @@
 	<script>
 document.querySelector("#acornstar").addEventListener("click",function(){
 	location.href="${pageContext.request.contextPath}/main/main.jsp";
-	let star = document.querySelector("#star");
-	let music = document.querySelector("#music");
-	document.getElementById("#star").style.display = "none";
 });
 </script>
 </body>
