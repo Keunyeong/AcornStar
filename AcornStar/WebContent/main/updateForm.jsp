@@ -9,4 +9,4 @@
 	// method를 이용해서 data를 가져옴
 	MainFeedDto dto=MainFeedDao.getInstance().getData(num);
 %>
-{ "image":"<%=dto.getImage()%>","content":"<%=dto.getContent()%>","tag":"<%=dto.getTag()%>" }
+{ "num":<%=dto.getNum()%>, "image":"<%=dto.getImage()%>","content":"<%=dto.getContent()%>","tag":"<%=dto.getTag()%>" }

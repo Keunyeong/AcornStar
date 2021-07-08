@@ -150,9 +150,9 @@ public class FeedCommentDao {
 					"		comment_group, deleted, Feed_comment.regdate, profile" + 
 					"		FROM Feed_comment" + 
 					"		INNER JOIN users" + 
-					"		ON board_Feed_comment.writer = users.id" + 
+					"		ON Feed_comment.writer = users.id" + 
 					"		WHERE ref_group=?" + 
-					"		ORDER BY comment_group DESC, num ASC) result1)" + 
+					"		ORDER BY comment_group desc, num ASC) result1)" + 
 					" WHERE rnum BETWEEN ? AND ?";
 			//PreparedStatement 객체의 참조값 얻어오기
 			pstmt = conn.prepareStatement(sql);
