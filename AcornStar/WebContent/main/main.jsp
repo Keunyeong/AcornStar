@@ -42,6 +42,13 @@
       border: 2px dashed gray;
       border-radius: 20px;
    }
+
+   
+   #acornstar {
+   		cursor:pointer;
+   }
+   
+
    .comments .comment-form{
 		display: none;
 	}
@@ -50,6 +57,7 @@
    	list-style:none;
    	}
    	
+
 </style>
 </head>
 <body>

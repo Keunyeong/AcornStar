@@ -6,34 +6,76 @@
 <meta charset="UTF-8">
 <title>/user/myProfile.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<style>
+	.profile_list {
+		list-style:none;
+	}
+	.profile_list a {
+		text-decoration:none;
+		color: #313833;
+	}
+</style>
 </head>
 <body>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
-<div class="container">
-	<button id="PFupdate"> 프로필 수정</button>
-	<button id="PFdelete">회원탈퇴</button>
-	<button id="logout">로그아웃</button>
-	<br />
-	<button id="info">공지사항</button>
-	<button id="suggest">건의사항</button>
-</div>
-<script>
-	document.querySelector("#PFupdate").addEventListener("click",function(){
-		location.href="${pageContext.request.contextPath}/user/update_form.jsp";
-	});
-	document.querySelector("#PFdelete").addEventListener("click",function(){
-		location.href="${pageContext.request.contextPath}/user/delete.jsp";
-	});
-	document.querySelector("#logout").addEventListener("click",function(){
-		location.href="${pageContext.request.contextPath}/index.jsp";
-	});
-	document.querySelector("#info").addEventListener("click",function(){
-		location.href="${pageContext.request.contextPath}/info/info.jsp";
-	});
-	document.querySelector("#suggest").addEventListener("click",function(){
-		location.href="${pageContext.request.contextPath}/suggest/list.jsp";
-	});
-
-</script>
+<section>
+	<main>
+		<div>
+			<ul class="profile_list">
+				<li><a href="${pageContext.request.contextPath}/user/update_form.jsp">프로필 수정</a></li>
+				<li><a href="${pageContext.request.contextPath}/info/info.jsp">공지사항</a></li>
+				<li><a href="${pageContext.request.contextPath}/suggest/list.jsp">Q&A</a></li>
+				<li><a href="${pageContext.request.contextPath}/index.jsp">로그아웃</a></li>
+				<li><a href="">이메일 및 SMS</a></li>
+				<li><a href="">공개범위 및 보안</a></li>
+				<li><a href="">연락처관리</a></li>
+			</ul>
+			<article>
+				<div>
+					<div></div>
+					<h1></h1>
+				</div>
+				<form action="#">
+					<div>
+						<aside><label for="name"></label>이름</aside>
+						<div>
+							<div>
+								<input type="text" placeholder="이름"/>
+								<div>사람들이 이름, 별명 또는 비즈니스 이름 등 회원님의 알려진 이름을 사용하여 회원님의 계정을 찾을 수 있도록 도와주세요.</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<aside><label for="id"></label>사용자 아이디</aside>
+						<div>
+							<div>
+								<input type="text" placeholder="사용자 아이디"/>
+								<div>대부분의 경우 14일 이내에 사용자 이름을 다시 (으)로 변경할 수 있습니다.</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<aside><label for="introduce"></label>소개</aside>
+						<div>
+							<div>
+								<input type="text" placeholder="소개글"/>
+							</div>
+						</div>
+					</div>
+					<div>
+						<aside><label for="email"></label>이메일</aside>
+						<div>
+							<div>
+								<input type="email" placeholder="이메일"/>
+							</div>
+						</div>
+					</div>
+					<!-- 이 버튼 누르면 프로필 작성한거로 변경되야함 아님말고 -->
+					<a href="">제출</a> 
+				</form>
+			</article>
+		</div>
+	</main>
+</section>
 </body>
 </html>

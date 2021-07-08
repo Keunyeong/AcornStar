@@ -16,7 +16,7 @@
     %>
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 	<div class="container-fluid">
 		<h1 class="d-flex align-items-center mb-0 ps-5" style="font-family: 'Lobster', cursive; display:inline-block; color: #6610f2;">
 			<a id="acornstar" href="" >
