@@ -131,8 +131,9 @@
 					  	</div>
 					</div>
 					<!-- card 게시글 댓글 list -->
-					<div>
+					<div data-num="<%=tmp.getNum() %>" id="commentList<%=tmp.getNum() %>" class="commentList" style="display: none;">
 						<ul>
+							<!-- 댓글의 data를 불러온다. -->
 							<%List<MusicCommentDto> commentList=MusicCommentDao.getInstance().getList(tmp.getNum()); %>
 							<%for(MusicCommentDto tmp2:commentList) {%>
 								<%if(tmp2.getDeleted().equals("yes")){ %>
@@ -140,11 +141,15 @@
 								<% // continue; 아래의 코드를 수행하지 않고 for문으로 실행 순서를 다시 보내기
 									continue;
 								}%>
-								<li id="comment<%=tmp2.getNum()%>">
+								<%if(tmp2.getComment_group()==tmp2.getNum()) {%>
+									<li id="comment<%=tmp2.getNum()%>">
+								<%} else {%>
+									<li id="comment<%=tmp2.getNum()%>" style="padding-left:50px;">
+								<%} %>
 									<dl>
 										<dt>
 											<span><%=tmp2.getWriter() %></span>
-											<a href="">댓글</a>
+											<a data-num="<%=tmp2.getNum() %>" class="recomment-link" href="javascript;">댓글</a>
 											<%if(tmp2.getWriter().equals(id)){ %>
 												<a data-num="<%=tmp2.getNum() %>" class="comment-update-link" href="javascript:">수정</a>
 												<a data-num="<%=tmp2.getNum() %>" class="comment-delete-link" href="javascript:">삭제</a>
@@ -155,23 +160,35 @@
 											<pre><%=tmp2.getContent() %></pre>
 										</dd>
 									</dl>
+									<!-- 댓글 수정하는 form(hidden) -->
+									<%if(tmp2.getWriter().equals(id)){ %>
+										<form data-num="<%=tmp2.getNum() %>" id="commentUpdateForm<%=tmp2.getNum() %>" class="commentUpdate" style="display:none;" action="update_comment.jsp" method="post">
+											<input type="hidden" name="num" value="<%=tmp2.getNum() %>"/>
+											<textarea name="commentUpdate" id="commentUpdate"><%=tmp2.getContent() %></textarea>
+											<button type="submit">수정하기</button>
+										</form>
+									<%} %>
+									<!-- 대댓글 form(hidden) -->
+									<form data-num="<%=tmp2.getNum() %>" id="recommentForm<%=tmp2.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
+										<input type="hidden" name="target_id" value="<%=tmp2.getWriter() %>"/>
+										<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
+										<input type="hidden" name="comment_group" value="<%=tmp2.getNum()%>"/>
+										<textarea name="comment" id="recomment"></textarea>
+										<button type="submit">댓글 달기</button>
+									</form>
 								</li>
-								<form data-num="<%=tmp2.getNum() %>" id="commentUpdateForm<%=tmp2.getNum() %>" class="commentUpdate" style="display:none;" action="update_comment.jsp" method="post">
-									<input type="hidden" name="num" value="<%=tmp2.getNum() %>"/>
-									<textarea name="commentUpdate" id="commentUpdate"></textarea>
-									<button type="submit">수정하기</button>
-								</form>
 							<%} %>
 						</ul>
-					</div>
-					<div>
-						<form data-num="<%=tmp.getNum() %>" id="commentForm<%=tmp.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
-							<input type="hidden" name="target_id" value="<%=tmp.getWriter() %>"/>
-							<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
-							<input type="hidden" name="comment_group" value="0"/>
-							<textarea name="comment" id="comment"></textarea>
-							<button type="submit">댓글 달기</button>
-						</form>
+						<!-- 댓글 작성하는 form(hidden) -->
+						<div>
+							<form data-num="<%=tmp.getNum() %>" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
+								<input type="hidden" name="target_id" value="<%=tmp.getWriter() %>"/>
+								<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
+								<input type="hidden" name="comment_group"/>
+								<textarea name="comment" id="comment"></textarea>
+								<button type="submit">댓글 달기</button>
+							</form>
+						</div>
 					</div>
 				</li>					
 			<%} %>
@@ -285,7 +302,8 @@
 				e.preventDefault();
 				
 				let num=this.getAttribute("data-num");
-				let commentForm=document.querySelector("#commentForm"+num);
+				
+				let commentForm=document.querySelector("#commentList"+num);
 				if(commentForm.style.display=="none"){
 					commentForm.style.display="block";
 				} else if(commentForm.style.display=="block"){
@@ -300,6 +318,8 @@
 			commentForms[i].addEventListener("submit", function(e){
 				// 일단 form 제출을 막고
 				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
 				
 				// ajax로 응답
 				ajaxFormPromise(this)
@@ -343,7 +363,7 @@
 		
 		// 댓글 수정 버튼을 눌렀을 때 작동하는 곳
 		let commentUpdateLinks=document.querySelectorAll(".comment-update-link");
-		for(let i=0; i<commentLinks.length; i++){
+		for(let i=0; i<commentUpdateLinks.length; i++){
 			commentUpdateLinks[i].addEventListener("click", function(e){
 				// 일단 막고
 				e.preventDefault();
@@ -361,7 +381,7 @@
 		
 		// 수정하기 버튼을 눌렀을 때 작동하는 곳
 		let commentUpdateForms=document.querySelectorAll(".commentUpdate");
-		for(let i=0; i<commentLinks.length; i++){
+		for(let i=0; i<commentUpdateLinks.length; i++){
 			commentUpdateForms[i].addEventListener("submit", function(e){
 				// 일단 form 제출을 막고
 				e.preventDefault();
@@ -381,6 +401,24 @@
 						alert("수정에 실패하였습니다. 다시 수정해주세요.");
 					}
 				});
+			});
+		}
+		
+		// 대댓글 버튼 눌렀을 때 작동하는 곳
+		let recommentLinks=document.querySelectorAll(".recomment-link");
+		for(let i=0; i<recommentLinks.length; i++){
+			recommentLinks[i].addEventListener("click", function(e){
+				// 일단 막고
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				let recommentForm=document.querySelector("#recommentForm"+num);
+				
+				if(recommentForm.style.display=="none"){
+					recommentForm.style.display="block";
+				} else if(recommentForm.style.display=="block"){
+					recommentForm.style.display="none";
+				}				
 			});
 		}
 	</script>
