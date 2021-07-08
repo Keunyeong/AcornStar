@@ -69,6 +69,8 @@
       }else if(condition.equals("writer")){ //작성자 검색인 경우
          dto.setWriter(keyword);
          list=SuggestDao.getInstance().getListW(dto);
+         totalRow=SuggestDao.getInstance().getCountW(dto);
+
       } // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
    }else{//검색 키워드가 넘어오지 않는다면
       //키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다. 

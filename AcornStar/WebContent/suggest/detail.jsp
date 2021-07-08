@@ -7,89 +7,89 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-   //자세히 보여줄 글번호를 읽어온다. 
-   int num=Integer.parseInt(request.getParameter("num"));
-   //조회수 올리기
-   SuggestDao.getInstance().addViewCount(num);
-   
-   /*
-      [ 검색 키워드에 관련된 처리 ]
-      -검색 키워드가 파라미터로 넘어올수도 있고 안넘어 올수도 있다.      
-   */
-   String keyword=request.getParameter("keyword");
-   String condition=request.getParameter("condition");
-   //만일 키워드가 넘어오지 않는다면 
-   if(keyword==null){
-      //키워드와 검색 조건에 빈 문자열을 넣어준다. 
-      //클라이언트 웹브라우저에 출력할때 "null" 을 출력되지 않게 하기 위해서  
-      keyword="";
-      condition=""; 
-   }
-   //CafeDto 객체를 생성해서 
-   SuggestDto dto=new SuggestDto();
-   //자세히 보여줄 글번호를 넣어준다. 
-   dto.setNum(num);
-   //만일 검색 키워드가 넘어온다면 
-   if(!keyword.equals("")){
-      //검색 조건이 무엇이냐에 따라 분기 하기
-      if(condition.equals("title_content")){//제목 + 내용 검색인 경우
-         //검색 키워드를 CafeDto 에 담아서 전달한다.
-         dto.setTitle(keyword);
-         dto.setContent(keyword);
-         dto=SuggestDao.getInstance().getDataTC(dto);
-      }else if(condition.equals("title")){ //제목 검색인 경우
-         dto.setTitle(keyword);
-         dto=SuggestDao.getInstance().getDataT(dto);
-      }else if(condition.equals("writer")){ //작성자 검색인 경우
-         dto.setWriter(keyword);
-         dto=SuggestDao.getInstance().getDataW(dto);
-      } // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
-   }else{//검색 키워드가 넘어오지 않는다면
-      dto=SuggestDao.getInstance().getData(dto);
-   }
-   //특수기호를 인코딩한 키워드를 미리 준비한다. 
-   String encodedK=URLEncoder.encode(keyword);
-   
-   
-   //로그인된 아이디 (로그인을 하지 않았으면 null 이다)
-   String id=(String)session.getAttribute("id");
-   //로그인 여부
-   boolean isLogin=false;
-   if(id != null){
-      isLogin=true;
-   }
-   
-   /*
-      [ 댓글 페이징 처리에 관련된 로직 ]
-   */
-   //한 페이지에 몇개씩 표시할 것인지
-   final int PAGE_ROW_COUNT=10;
-   
-   //detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
-   int pageNum=1;
-   
-   //보여줄 페이지의 시작 ROWNUM
-   int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
-   //보여줄 페이지의 끝 ROWNUM
-   int endRowNum=pageNum*PAGE_ROW_COUNT;
-   
-   //원글의 글번호를 이용해서 해당글에 달린 댓글 목록을 얻어온다.
-   SuggestCommentDto commentDto=new SuggestCommentDto();
-   commentDto.setRef_group(num);
-   //1페이지에 해당하는 startRowNum 과 endRowNum 을 dto 에 담아서  
-   commentDto.setStartRowNum(startRowNum);
-   commentDto.setEndRowNum(endRowNum);
-   
-   //1페이지에 해당하는 댓글 목록만 select 되도록 한다. 
-   List<SuggestCommentDto> commentList=
-         SuggestCommentDao.getInstance().getList(commentDto);
-   
-   //원글의 글번호를 이용해서 댓글 전체의 갯수를 얻어낸다.
-   int totalRow=SuggestCommentDao.getInstance().getCount(num);
-   //댓글 전체 페이지의 갯수
-   int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
-   
-   //글정보를 응답한다.
+	//자세히 보여줄 글번호를 읽어온다. 
+	int num=Integer.parseInt(request.getParameter("num"));
+	//조회수 올리기
+	SuggestDao.getInstance().addViewCount(num);
+	
+	/*
+		[ 검색 키워드에 관련된 처리 ]
+		-검색 키워드가 파라미터로 넘어올수도 있고 안넘어 올수도 있다.		
+	*/
+	String keyword=request.getParameter("keyword");
+	String condition=request.getParameter("condition");
+	//만일 키워드가 넘어오지 않는다면 
+	if(keyword==null){
+		//키워드와 검색 조건에 빈 문자열을 넣어준다. 
+		//클라이언트 웹브라우저에 출력할때 "null" 을 출력되지 않게 하기 위해서  
+		keyword="";
+		condition=""; 
+	}
+	//CafeDto 객체를 생성해서 
+	SuggestDto dto=new SuggestDto();
+	//자세히 보여줄 글번호를 넣어준다. 
+	dto.setNum(num);
+	//만일 검색 키워드가 넘어온다면 
+	if(!keyword.equals("")){
+		//검색 조건이 무엇이냐에 따라 분기 하기
+		if(condition.equals("title_content")){//제목 + 내용 검색인 경우
+			//검색 키워드를 CafeDto 에 담아서 전달한다.
+			dto.setTitle(keyword);
+			dto.setContent(keyword);
+			dto=SuggestDao.getInstance().getDataTC(dto);
+		}else if(condition.equals("title")){ //제목 검색인 경우
+			dto.setTitle(keyword);
+			dto=SuggestDao.getInstance().getDataT(dto);
+		}else if(condition.equals("writer")){ //작성자 검색인 경우
+			dto.setWriter(keyword);
+			dto=SuggestDao.getInstance().getDataW(dto);
+		} // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
+	}else{//검색 키워드가 넘어오지 않는다면
+		dto=SuggestDao.getInstance().getData(dto);
+	}
+	//특수기호를 인코딩한 키워드를 미리 준비한다. 
+	String encodedK=URLEncoder.encode(keyword);
+	
+	
+	//로그인된 아이디 (로그인을 하지 않았으면 null 이다)
+	String id=(String)session.getAttribute("id");
+	//로그인 여부
+	boolean isLogin=false;
+	if(id != null){
+		isLogin=true;
+	}
+	
+	/*
+		[ 댓글 페이징 처리에 관련된 로직 ]
+	*/
+	//한 페이지에 몇개씩 표시할 것인지
+	final int PAGE_ROW_COUNT=10;
+	
+	//detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
+	int pageNum=1;
+	
+	//보여줄 페이지의 시작 ROWNUM
+	int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
+	//보여줄 페이지의 끝 ROWNUM
+	int endRowNum=pageNum*PAGE_ROW_COUNT;
+	
+	//원글의 글번호를 이용해서 해당글에 달린 댓글 목록을 얻어온다.
+	SuggestCommentDto commentDto=new SuggestCommentDto();
+	commentDto.setRef_group(num);
+	//1페이지에 해당하는 startRowNum 과 endRowNum 을 dto 에 담아서  
+	commentDto.setStartRowNum(startRowNum);
+	commentDto.setEndRowNum(endRowNum);
+	
+	//1페이지에 해당하는 댓글 목록만 select 되도록 한다. 
+	List<SuggestCommentDto> commentList=
+			SuggestCommentDao.getInstance().getList(commentDto);
+	
+	//원글의 글번호를 이용해서 댓글 전체의 갯수를 얻어낸다.
+	int totalRow=SuggestCommentDao.getInstance().getCount(num);
+	//댓글 전체 페이지의 갯수
+	int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+	
+	//글정보를 응답한다.
 %>    
 <!DOCTYPE html>
 <html>
@@ -97,6 +97,7 @@
 <meta charset="UTF-8">
 <title>/suggest/detail.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
    .content{
       border: 1px dotted gray;

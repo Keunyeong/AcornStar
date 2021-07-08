@@ -65,14 +65,13 @@ import test.util.DbcpBean;
 		conn = new DbcpBean().getConn();
 		// 실행할 sql 문 작성
 		String sql = "insert into suggest"
-				+ " (num, writer, title, content, regdate)"
-				+ " values(suggest_seq.nextval, ?, ?, ?, sysdate)";
+				+ " (num, writer, title, content, viewCount, regdate)"
+				+ " values(suggest_seq.nextval, ?, ?, ?, 0, sysdate)";
 		pstmt = conn.prepareStatement(sql);
 		// ? 에 binding 할 내용이 있으면 여기서 binding
 		pstmt.setString(1, dto.getWriter());
 		pstmt.setString(2, dto.getTitle());
 		pstmt.setString(3, dto.getContent());
-		
 		// insert or update or delete 문 수행하고
 		// 변화된 row의 개수 return 받기
 		flag = pstmt.executeUpdate();
@@ -105,24 +104,32 @@ import test.util.DbcpBean;
 		// Connection 객체의 참조값 얻어오기
 		conn = new DbcpBean().getConn();
 		// 실행할 sql 문 작성
-		String sql = "select *"
-				+ " from suggest"
-				+ " order by num desc";
+        String sql = "SELECT *" + 
+                "      FROM" + 
+                "          (SELECT result1.*, ROWNUM AS rnum" + 
+                "          FROM" + 
+                "              (SELECT num,writer,title,viewCount,regdate" + 
+                "              FROM suggest" + 
+                "              ORDER BY num DESC) result1)" + 
+                "      WHERE rnum BETWEEN ? AND ?";
 		// PreparedStatement 객체의 참조값 얻어오기
 		pstmt = conn.prepareStatement(sql);
 		// ? 에 binding할 내용이 있으면 여기서 binding
+        pstmt.setInt(1, dto.getStartRowNum());
+        pstmt.setInt(2, dto.getEndRowNum());
 		// select 문 수행하고 결과를 ResultSet으로 받아옥
 		rs = pstmt.executeQuery();
 		// 반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서
 		// 원하는 Data type으로 포장하기
 		while (rs.next()) {
-			SuggestDto dto2=new SuggestDto();
-			dto2.setNum(rs.getInt("num"));
-			dto2.setWriter(rs.getString("writer"));
-			dto2.setTitle(rs.getString("title"));
-			dto2.setContent(rs.getString("content"));
-			dto2.setRegdate(rs.getString("regdate"));
-			list.add(dto2);
+            SuggestDto dto2=new SuggestDto();
+            dto2.setNum(rs.getInt("num"));
+            dto2.setWriter(rs.getString("writer"));
+            dto2.setTitle(rs.getString("title"));
+            dto2.setViewCount(rs.getInt("viewCount"));
+            dto2.setRegdate(rs.getString("regdate"));
+            list.add(dto2);
+
 		}
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -184,12 +191,13 @@ import test.util.DbcpBean;
 			conn = new DbcpBean().getConn();
 			// 실행할 sql 문 작성
 			String sql = "update suggest"
-					+ " set content=?"
+					+ " set title=?, content=?"
 					+ " where num=?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 binding 할 내용이 있으면 여기서 binding
-			pstmt.setString(1, dto.getContent());
-			pstmt.setInt(2, dto.getNum());
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setInt(3, dto.getNum());
 			// insert or update or delete 문 수행하고
 			// 변화된 row의 개수 return 받기
 			flag = pstmt.executeUpdate();
@@ -274,7 +282,7 @@ import test.util.DbcpBean;
 					"	(SELECT num,title,writer,content,viewCount,regdate," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
-					"	FROM board_cafe" + 
+					"	FROM suggest" + 
 					"	ORDER BY num DESC)" + 
 					" WHERE num=?";
 			
@@ -326,7 +334,7 @@ import test.util.DbcpBean;
 					"	(SELECT num,title,writer,content,viewCount,regdate," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
-					"	FROM board_cafe"+ 
+					"	FROM suggest"+ 
 					"   WHERE title LIKE '%'||?||'%'" + 
 					"	ORDER BY num DESC)" + 
 					" WHERE num=?";
@@ -379,7 +387,7 @@ import test.util.DbcpBean;
 					"	(SELECT num,title,writer,content,viewCount,regdate," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
-					"	FROM board_cafe"+ 
+					"	FROM suggest"+ 
 					"   WHERE writer LIKE '%'||?||'%'" + 
 					"	ORDER BY num DESC)" + 
 					" WHERE num=?";
@@ -432,7 +440,7 @@ import test.util.DbcpBean;
 					"	(SELECT num,title,writer,content,viewCount,regdate," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
-					"	FROM board_cafe"+ 
+					"	FROM suggest"+ 
 					"   WHERE title LIKE '%'||?||'%' OR content LIKE '%'||?||'%'" + 
 					"	ORDER BY num DESC)" + 
 					" WHERE num=?";
@@ -528,7 +536,7 @@ import test.util.DbcpBean;
 						"		    (SELECT result1.*, ROWNUM AS rnum" + 
 						"		    FROM" + 
 						"		        (SELECT num,writer,title,viewCount,regdate" + 
-						"		        FROM board_cafe"+ 
+						"		        FROM suggest"+ 
 						"			    WHERE title LIKE '%' || ? || '%' "+					
 						"		        ORDER BY num DESC) result1)" + 
 						"		WHERE rnum BETWEEN ? AND ?";

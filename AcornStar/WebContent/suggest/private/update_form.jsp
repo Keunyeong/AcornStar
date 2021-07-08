@@ -12,6 +12,8 @@
 <meta charset="UTF-8">
 <title>/suggest/private/update_form.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
+<style>
+</style>
 </head>
 <body>
 <jsp:include page="../../include/navbar.jsp"></jsp:include>
@@ -32,7 +34,7 @@
          <textarea name="content" id="content"><%=dto.getContent() %></textarea>
       </div>
       <button type="submit" onclick="submitContents(this);">수정확인</button>
-      <button type="reset">취소</button>
+      <button type="reset" onclick="location.href='../list.jsp'">취소</button>
    </form>
 </div>
 <!-- SmartEditor 에서 필요한 javascript 로딩  -->
