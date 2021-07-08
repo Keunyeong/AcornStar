@@ -55,7 +55,7 @@ public class InfoCommentDao {
          pstmt = conn.prepareStatement(sql);
          // ? 에 binding할 내용이 있으면 여기서 binding
 
-         // select 문 수행하고 결과를 ResultSet으로 받아옥
+         // select 문 수행하고 결과를 ResultSet으로 받아오기
          rs = pstmt.executeQuery();
          //  ResultSet 객체에 있는 내용을 추출해서
          // 원하는 Data type으로 포장하기
@@ -140,7 +140,7 @@ public class InfoCommentDao {
             "      inner join users" + 
             "      on info_comment.writer = users.id" + 
             "      where ref_group=?" + 
-            "      order by comment_group desc, num asc) result1)" + 
+            "      order by comment_group asc, num asc) result1)" + 
             " where rnum between ? and ?";
          // PreparedStatement 객체의 참조값 얻어오기
          pstmt = conn.prepareStatement(sql);

@@ -31,7 +31,7 @@
       dto.setComment_group(seq);
    }else{
       //전송된 comment_group 번호를 숫자로 바꿔서 dto 에 넣어준다. 
-      
+      dto.setComment_group(Integer.parseInt(comment_group));
    }
    //댓글 정보를 DB 에 저장하기
    InfoCommentDao.getInstance().insert(dto);

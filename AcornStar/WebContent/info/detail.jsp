@@ -25,7 +25,7 @@
       keyword="";
       condition=""; 
    }
-   //CafeDto 객체를 생성해서 
+   //InfoDto 객체를 생성해서 
    InfoDto dto=new InfoDto();
    //자세히 보여줄 글번호를 넣어준다. 
    dto.setNum(num);
@@ -33,7 +33,7 @@
    if(!keyword.equals("")){
       //검색 조건이 무엇이냐에 따라 분기 하기
       if(condition.equals("title_content")){//제목 + 내용 검색인 경우
-         //검색 키워드를 CafeDto 에 담아서 전달한다.
+         //검색 키워드를 InfoDto 에 담아서 전달한다.
          dto.setTitle(keyword);
          dto.setContent(keyword);
          dto=InfoDao.getInstance().getDataTC(dto);
@@ -99,6 +99,10 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
+	a{
+		text-decoration: none;
+		color: black;
+	}
    .content{
       border: 1px dotted gray;
    }
@@ -107,8 +111,7 @@
    .profile-image{
       width: 50px;
       height: 50px;
-      border: 1px solid #cecece;
-      border-radius: 50%;
+      color: indigo;
    }
    /* ul 요소의 기본 스타일 제거 */
    .comments ul{
@@ -134,10 +137,16 @@
    .comment-form textarea{
       width: 84%;
       height: 100px;
+      color: black;
+      background-color: white;
+      border: 1px solid #6610f2;
    }
    .comment-form button{
       width: 14%;
       height: 100px;
+      color: black;
+      background-color: white;
+      border: 1px solid #6610f2;
    }
    /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
    .comments .comment-form{
@@ -157,7 +166,7 @@
      display: block;
      padding: 9.5px;
      margin: 0 0 10px;
-     font-size: 13px;
+     font-size: 15px;
      line-height: 1.42857143;
      color: #333333;
      word-break: break-all;
