@@ -1,4 +1,3 @@
-
 <%@page import="test.feed.dao.FeedCommentDao"%>
 <%@page import="test.feed.dto.FeedCommentDto"%>
 <%@page import="test.feed.dao.MainFeedDao"%>
@@ -24,6 +23,9 @@
 	a{
 		text-decoration: none;
 	}
+	#acornstar {
+		color:indigo;
+	}
 	a.update {
 		color: black; 
 		text-decoration: none;
@@ -43,20 +45,17 @@
       border-radius: 20px;
    }
 
-   
    #acornstar {
    		cursor:pointer;
    }
    
-
    .comments .comment-form{
 		display: none;
 	}
-   
+
    ul, li {
    	list-style:none;
    	}
-   	
 
 </style>
 </head>
@@ -104,7 +103,6 @@
 					    </li>
 					    <%} %>
 					    <li class="list-group-item" >
-					    	<button data-num="<%=tmp.getNum() %>" class="commentBtn">댓글</button>
 					    	<a  data-num="<%=tmp.getNum() %>" class="commentBtn" href="javascript:">댓글</a>
 					    </li>
 					  </ul>
@@ -115,9 +113,9 @@
 						<ul class="list-group list-group-flush">
 						    <li class="list-group-item"><%=tmp.getWriter() %>님이 작성한 글.</li>
 						</ul>
-					  <div id="cardBody<%=tmp.getNum() %>" class="card-body" style="overflow:auto; height:400px;">
+					  <div id="cardBody<%=tmp.getNum() %>" class="card-body" style="overflow:auto; height:300px;">
 					  	<%  //한 페이지에 몇개씩 표시할 것인지
-						    	final int PAGE_ROW_COUNT=10;
+						    	final int PAGE_ROW_COUNT=100;
 	
 						    	//detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
 						    	int pageNum=1;
@@ -211,7 +209,6 @@
 								<textarea   name="content"></textarea>
 								<button data-num="<%=tmp.getNum() %>" type="submit">등록</button>
 							</form>
-							<button data-num="<%=tmp.getNum() %>" class="feedBtn">피드</button>
 					    	<a  data-num="<%=tmp.getNum() %>" class="feedBtn" href="javascript:">피드</a>
 					    </li>
 					  </ul>
@@ -404,7 +401,9 @@
 		      };
 		   }
 	
-	document.querySelector("#acornstar").addEventListener("click",function(){
+	/* acronstar 클릭하면 music main 으로 이동*/
+	document.querySelector("#acornstar").addEventListener("click",function(e){
+		e.preventDefault();
 		location.href="${pageContext.request.contextPath}/music/musicMain.jsp";
 	});
 	
@@ -549,24 +548,18 @@
 	let comment_btnLinks=document.querySelectorAll(".commentBtn");
 	for(let i=0; i<comment_btnLinks.length; i++){
 		comment_btnLinks[i].addEventListener("click", function(e){
-				document.querySelector(".commentBtn").addEventListener("click",function(){
-				let num=this.getAttribute("data-num");
-				document.querySelector("#card_front"+num).style.display="none";
-				document.querySelector("#card_back"+num).style.display="block";
-			});
-			
+			let num=this.getAttribute("data-num");
+			document.querySelector("#card_front"+num).style.display="none";
+			document.querySelector("#card_back"+num).style.display="block";
 		});
 	};
 	
 	let feed_btnLinks=document.querySelectorAll(".feedBtn");
 	for(let i=0; i<feed_btnLinks.length; i++){
 		feed_btnLinks[i].addEventListener("click", function(e){
-				document.querySelector(".feedBtn").addEventListener("click",function(){
-				let num=this.getAttribute("data-num");
-				document.querySelector("#card_front"+num).style.display="block";
-				document.querySelector("#card_back"+num).style.display="none";
-			});
-			
+			let num=this.getAttribute("data-num");
+			document.querySelector("#card_front"+num).style.display="block";
+			document.querySelector("#card_back"+num).style.display="none";
 		});
 	};
 </script>
