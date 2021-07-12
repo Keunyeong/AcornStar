@@ -7,7 +7,9 @@ public class MainFeedDto {
 	private String content;
 	private String image;
 	private int upCount;
+	private String upMember;
 	private String regdate;
+	private String profile;
 	private int startRowNum;
 	private int endRowNum;
 	private int prevNum;
@@ -16,8 +18,8 @@ public class MainFeedDto {
 	// default constructor
 	public MainFeedDto() {}
 
-	public MainFeedDto(int num, String writer, String tag, String content, String image, int upCount, String regdate,
-			int startRowNum, int endRowNum, int prevNum, int nextNum) {
+	public MainFeedDto(int num, String writer, String tag, String content, String image, int upCount, String upMember,
+			String regdate, String profile, int startRowNum, int endRowNum, int prevNum, int nextNum) {
 		super();
 		this.num = num;
 		this.writer = writer;
@@ -25,7 +27,9 @@ public class MainFeedDto {
 		this.content = content;
 		this.image = image;
 		this.upCount = upCount;
+		this.upMember = upMember;
 		this.regdate = regdate;
+		this.profile = profile;
 		this.startRowNum = startRowNum;
 		this.endRowNum = endRowNum;
 		this.prevNum = prevNum;
@@ -80,12 +84,28 @@ public class MainFeedDto {
 		this.upCount = upCount;
 	}
 
+	public String getUpMember() {
+		return upMember;
+	}
+
+	public void setUpMember(String upMember) {
+		this.upMember = upMember;
+	}
+
 	public String getRegdate() {
 		return regdate;
 	}
 
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
+	}
+
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 
 	public int getStartRowNum() {
@@ -119,6 +139,5 @@ public class MainFeedDto {
 	public void setNextNum(int nextNum) {
 		this.nextNum = nextNum;
 	}
-	
-	
+
 }
