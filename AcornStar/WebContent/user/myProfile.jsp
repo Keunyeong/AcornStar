@@ -162,10 +162,8 @@
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 <section>
 	<main>
-		<div>
-		
-				<!-- 마이프로필 사이드바 마크업 -->
-				
+		<div class="container">
+
 			<ul class="profile_list">
 				<li><a  href="${pageContext.request.contextPath}/user/update_form.jsp">프로필 수정</a></li>
 				<li><a style="letter-spacing:5px;" href="${pageContext.request.contextPath}/info/info.jsp">공지사항</a></li>
@@ -217,20 +215,25 @@
 							</div>
 						</div>
 					</div>
-					<div>
-						<aside><label for="email"></label>이메일</aside>
-						<div>
-							<div>
-								<input type="email" placeholder="이메일"/>
-							</div>
-						</div>
+						<input type="text" placeholder="소개글"/>
+						
+					<div class="m-2">
+						<aside>
+						<label for="email">이메일</label>
+						</aside>
 					</div>
-					
-							<!-- 경로 수정! 클릭하면 프로필 변경 -->
+						<input type="email" placeholder="이메일"/>
+						
+					<!-- 이 버튼 누르면 프로필 작성한거로 변경돼야함 아님말고 -->
+					<div class="container">
+					<button type="submit" style="margin-top: 30px; margin-right: 20px;">제출</button>
+					</div>
+			    <!-- 경로 수정! 클릭하면 프로필 변경 -->
 							
 					<button class="profile_btn" type="button" onclick="location.href='#'">제출</button> 
 				</form>
 			</article>
+			</div>
 		</div>
 	</main>
 </section>
