@@ -43,9 +43,9 @@
 			continue;
 		}%>
 		<%if(tmp2.getComment_group()==tmp2.getNum()) {%>
-			<li id="comment<%=tmp2.getNum()%>">
+			<li id="comment<%=tmp2.getNum()%>" class="page-<%=comment_pageNum%>">
 		<%} else {%>
-			<li id="comment<%=tmp2.getNum()%>" style="padding-left:50px;">
+			<li id="comment<%=tmp2.getNum()%>" class="page-<%=comment_pageNum%>" style="padding-left:50px;">
 		<%} %>
 			<dl>
 				<dt>

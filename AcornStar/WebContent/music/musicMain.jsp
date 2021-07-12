@@ -426,135 +426,155 @@
 			댓글 관련
 		*/
 		
+		commentBtnAddListener(".comment-link");
 		// 댓글 버튼을 눌렀을 때 작동하는 곳
-		let commentLinks=document.querySelectorAll(".comment-link");
-		for(let i=0; i<commentLinks.length; i++){
-			commentLinks[i].addEventListener("click", function(e){
-				// 일단 막고
-				e.preventDefault();
-				
-				let num=this.getAttribute("data-num");
-				
-				let commentForm=document.querySelector("#commentList"+num);
-				if(commentForm.style.display=="none"){
-					commentForm.style.display="block";
-				} else if(commentForm.style.display=="block"){
-					commentForm.style.display="none";
-				}				
-			});
-		}
-		
-		// 댓글 달기 버튼을 눌렀을 때 작동하는 곳
-		let commentForms=document.querySelectorAll(".comment");
-		for(let i=0; i<commentLinks.length; i++){
-			commentForms[i].addEventListener("submit", function(e){
-				// 일단 form 제출을 막고
-				e.preventDefault();
-				
-				let num=this.getAttribute("data-num");
-				
-				// ajax로 응답
-				ajaxFormPromise(this)
-				.then(function(response){
-					return response.json();
-				}).then(function(data){
-					if(data.beInserted){
-						let path="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=pageNum%>";
-						location.href=path;
-					} else {
-						console.log("댓글 등록 실패");
-					}
+		function commentBtnAddListener(sel){
+			let commentLinks=document.querySelectorAll(sel);
+			for(let i=0; i<commentLinks.length; i++){
+				commentLinks[i].addEventListener("click", function(e){
+					// 일단 막고
+					e.preventDefault();
+					
+					let num=this.getAttribute("data-num");
+					
+					let commentForm=document.querySelector("#commentList"+num);
+					if(commentForm.style.display=="none"){
+						commentForm.style.display="block";
+					} else if(commentForm.style.display=="block"){
+						commentForm.style.display="none";
+					}				
 				});
-			});
+			}
 		}
 		
-		// 댓글 삭제 버튼을 눌렀을 때 작동하는 곳
-		let commentDeleteLinks=document.querySelectorAll(".comment-delete-link");
-		for(let i=0; i<commentDeleteLinks.length; i++){
-			commentDeleteLinks[i].addEventListener("click", function(e){
-				e.preventDefault();
-				
-				let num=this.getAttribute("data-num");
-				
-				let wantDelete=confirm("이 댓글을 삭제하시겠습니까?");
-				if(wantDelete){
+		commentAddListener(".comment");
+		// 댓글 달기 버튼을 눌렀을 때 작동하는 곳
+		function commentAddListener(sel){
+			let commentForms=document.querySelectorAll(sel);
+			for(let i=0; i<commentForms.length; i++){
+				commentForms[i].addEventListener("submit", function(e){
+					// 일단 form 제출을 막고
+					e.preventDefault();
+					
+					let num=this.getAttribute("data-num");
+					
 					// ajax로 응답
-					ajaxPromise("delete_comment.jsp", "post", "num="+num)
+					ajaxFormPromise(this)
 					.then(function(response){
 						return response.json();
 					}).then(function(data){
-						if(data.beDeleted){
-							document.querySelector("#comment"+num).innerText="삭제된 댓글입니다.";
+						if(data.beInserted){
+							let path="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=pageNum%>";
+							location.href=path;
 						} else {
-							alert("삭제에 실패했습니다.");
+							console.log("댓글 등록 실패");
 						}
-					});	
-				}
-			});
+					});
+				});
+			}
 		}
 		
-		// 댓글 수정 버튼을 눌렀을 때 작동하는 곳
-		let commentUpdateLinks=document.querySelectorAll(".comment-update-link");
-		for(let i=0; i<commentUpdateLinks.length; i++){
-			commentUpdateLinks[i].addEventListener("click", function(e){
-				// 일단 막고
-				e.preventDefault();
-				
-				let num=this.getAttribute("data-num");
-				let commentForm=document.querySelector("#commentUpdateForm"+num);
-				
-				if(commentForm.style.display=="none"){
-					commentForm.style.display="block";
-				} else if(commentForm.style.display=="block"){
-					commentForm.style.display="none";
-				}				
-			});
-		}
-		
-		// 수정하기 버튼을 눌렀을 때 작동하는 곳
-		let commentUpdateForms=document.querySelectorAll(".commentUpdate");
-		for(let i=0; i<commentUpdateLinks.length; i++){
-			commentUpdateForms[i].addEventListener("submit", function(e){
-				// 일단 form 제출을 막고
-				e.preventDefault();
-				
-				let num=this.getAttribute("data-num");
-				let commentForm=document.querySelector("#commentUpdateForm"+num);
-				
-				// ajax로 응답
-				ajaxFormPromise(this)
-				.then(function(response){
-					return response.json();
-				}).then(function(data){
-					if(data.beUpdated){
-						document.querySelector("#comment"+num+" pre").innerText=data.newContent;
-						commentForm.style.display="none";
-					} else {
-						alert("수정에 실패하였습니다. 다시 수정해주세요.");
+		commentDeleteBtnAddListener(".comment-delete-link");
+		function commentDeleteBtnAddListener(sel){
+			// 댓글 삭제 버튼을 눌렀을 때 작동하는 곳
+			let commentDeleteLinks=document.querySelectorAll(sel);
+			for(let i=0; i<commentDeleteLinks.length; i++){
+				commentDeleteLinks[i].addEventListener("click", function(e){
+					e.preventDefault();
+					
+					let num=this.getAttribute("data-num");
+					
+					let wantDelete=confirm("이 댓글을 삭제하시겠습니까?");
+					if(wantDelete){
+						// ajax로 응답
+						ajaxPromise("delete_comment.jsp", "post", "num="+num)
+						.then(function(response){
+							return response.json();
+						}).then(function(data){
+							if(data.beDeleted){
+								document.querySelector("#comment"+num).innerText="삭제된 댓글입니다.";
+							} else {
+								alert("삭제에 실패했습니다.");
+							}
+						});	
 					}
 				});
-			});
+			}
+		}
+	
+		commentUpdateBtnAddListener(".comment-update-link");
+		// 댓글 수정 버튼을 눌렀을 때 작동하는 곳
+		function commentUpdateBtnAddListener(sel){
+			let commentUpdateLinks=document.querySelectorAll(sel);
+			for(let i=0; i<commentUpdateLinks.length; i++){
+				commentUpdateLinks[i].addEventListener("click", function(e){
+					// 일단 막고
+					e.preventDefault();
+					
+					let num=this.getAttribute("data-num");
+					let commentForm=document.querySelector("#commentUpdateForm"+num);
+					
+					if(commentForm.style.display=="none"){
+						commentForm.style.display="block";
+					} else if(commentForm.style.display=="block"){
+						commentForm.style.display="none";
+					}				
+				});
+			}	
 		}
 		
+		commentUpdateAddListener(".commentUpdate");
+		// 수정하기 버튼을 눌렀을 때 작동하는 곳
+		function commentUpdateAddListener(sel){
+			let commentUpdateForms=document.querySelectorAll(sel);
+			for(let i=0; i<commentUpdateForms.length; i++){
+				commentUpdateForms[i].addEventListener("submit", function(e){
+					// 일단 form 제출을 막고
+					e.preventDefault();
+					
+					let num=this.getAttribute("data-num");
+					let commentForm=document.querySelector("#commentUpdateForm"+num);
+					
+					// ajax로 응답
+					ajaxFormPromise(this)
+					.then(function(response){
+						return response.json();
+					}).then(function(data){
+						if(data.beUpdated){
+							document.querySelector("#comment"+num+" pre").innerText=data.newContent;
+							commentForm.style.display="none";
+						} else {
+							alert("수정에 실패하였습니다. 다시 수정해주세요.");
+						}
+					});
+				});
+			}
+		}
+		
+		recommentBtnAddListener(".recomment-link");
 		// 대댓글 버튼 눌렀을 때 작동하는 곳
-		let recommentLinks=document.querySelectorAll(".recomment-link");
-		for(let i=0; i<recommentLinks.length; i++){
-			recommentLinks[i].addEventListener("click", function(e){
-				// 일단 막고
-				e.preventDefault();
-				
-				let num=this.getAttribute("data-num");
-				let recommentForm=document.querySelector("#recommentForm"+num);
-				
-				if(recommentForm.style.display=="none"){
-					recommentForm.style.display="block";
-				} else if(recommentForm.style.display=="block"){
-					recommentForm.style.display="none";
-				}				
-			});
+		function recommentBtnAddListener(sel){
+			let recommentLinks=document.querySelectorAll(sel);
+			for(let i=0; i<recommentLinks.length; i++){
+				recommentLinks[i].addEventListener("click", function(e){
+					// 일단 막고
+					e.preventDefault();
+					
+					let num=this.getAttribute("data-num");
+					let recommentForm=document.querySelector("#recommentForm"+num);
+					
+					if(recommentForm.style.display=="none"){
+						recommentForm.style.display="block";
+					} else if(recommentForm.style.display=="block"){
+						recommentForm.style.display="none";
+					}				
+				});
+			}
 		}
-		
-		// 댓글 더 보기를 눌렀을 때 작동하는 곳
+	
+		/*
+			댓글 더보기
+		*/
 		
 		// 댓글의 현재 page를 관리할 variable. 초기값=1
 		let currentPage=1;
@@ -564,35 +584,47 @@
 		// 추가로 댓글을 요청하고 그 작업이 끝났는지 여부를 관리할 변수
 		let beLoading=false; // 현재 loading 중인지 여부
 		
-		let morelinks=document.querySelectorAll(".moreComment");
-		for(let i=0; i<morelinks.length; i++){
-			morelinks[i].addEventListener("click", function(e){
-				// 링크 이동을 막고
-				e.preventDefault();
-				
-				let num=this.getAttribute("data-num");
-				// 마지막 page는 for문 안에다가
-				let lastPage=this.getAttribute("data-num2");
-				
-				let beLast= currentPage==lastPage;
-				
-				if(!beLoading && !beLast){
-					beLoading = true;
+		moreComment(".moreComment");
+		// 댓글 더 보기를 눌렀을 때 작동하는 곳
+		function moreComment(sel){
+			let morelinks=document.querySelectorAll(sel);
+			for(let i=0; i<morelinks.length; i++){
+				morelinks[i].addEventListener("click", function(e){
+					// 링크 이동을 막고
+					e.preventDefault();
 					
-					currentPage++;
+					let num=this.getAttribute("data-num");
+					// 마지막 page는 for문 안에다가
+					let lastPage=this.getAttribute("data-num2");
 					
-					// ajax로 응답
-					ajaxPromise("comment_list.jsp", "get",
-							"pageNum="+currentPage+"&num="+num)
-					.then(function(response){
-						return response.text();
-					}).then(function(data){
-						document.querySelector(".commentList ul").insertAdjacentHTML("beforeend", data);
-						morelinks[i].style.display="none";
-						beLoading = false;
-					});					
-				}
-			});
+					let beLast= currentPage==lastPage;
+					
+					if(!beLoading && !beLast){
+						beLoading = true;
+						
+						currentPage++;
+						
+						// ajax로 응답
+						ajaxPromise("comment_list.jsp", "get",
+								"pageNum="+currentPage+"&num="+num)
+						.then(function(response){
+							return response.text();
+						}).then(function(data){
+							document.querySelector(".commentList ul").insertAdjacentHTML("beforeend", data);
+							morelinks[i].style.display="none";
+							beLoading = false;
+							
+							// 새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 event listener를 등록하기
+							recommentBtnAddListener(".page-"+currentPage+" .recomment-link");
+							commentAddListener(".page-"+currentPage+" .comment");
+							commentDeleteBtnAddListener(".page-"+currentPage+" .comment-delete-link");
+							commentUpdateBtnAddListener(".page-"+currentPage+" .comment-update-link");
+							commentUpdateAddListener(".page-"+currentPage+" .commentUpdate");
+							moreComment(".moreComment");
+						});					
+					}
+				});
+			}
 		}
 	</script>
 </body>
