@@ -9,8 +9,51 @@
 	// session scope의 data를 가져온다.
 	String id=(String)session.getAttribute("id");
 	
-	// db music feed data를 불러온다.
-	List<MusicFeedDto> list=MusicFeedDao.getInstance().getList();
+	/*
+		게시글 paging 처리
+	*/
+
+	// 한 페이지에 표시할 게시물 수
+	final int page_row_count=5;
+	// 하단 페이지를 표시할 수
+	final int page_display_count=5;
+	
+	// 보여줄 페이지의 번호를 초기값으로 1로 지정
+	int pageNum=1;
+	
+	// page 번호가 parameter로 전달되는지 확인
+	String strPageNum=request.getParameter("pageNum");
+	// 넘어온다면
+	if(strPageNum!=null){
+		// String을 숫자로 바꿔서 page 번호로 저장한다.
+		pageNum=Integer.parseInt(strPageNum);
+	}
+	
+	// 보여줄 page의 시작 rownum
+	int startRowNum=1+(pageNum-1)*page_row_count;
+	// 보여줄 page의 끝 rownum
+	int endRowNum=pageNum*page_row_count;
+	
+	MusicFeedDto dto=new MusicFeedDto();
+	dto.setStartRowNum(startRowNum);
+	dto.setEndRowNum(endRowNum);
+	
+	// db에서 music feed data를 불러온다.
+	List<MusicFeedDto> list=MusicFeedDao.getInstance().getList(dto);
+	// 전체 게시글 개수
+	int totalRow=MusicFeedDao.getInstance().getCount();
+	
+	
+	// 하단의 시작 page 번호
+	int startPageNum=1+((pageNum-1)/page_display_count)*page_display_count;
+	int endPageNum=startPageNum+page_display_count-1;
+	
+	// 전체 page의 수
+	int totalPageCount=(int)Math.ceil(totalRow/(double)page_row_count);
+	// 끝 page의 번호가 전체 page 수 보다 크다면 잘못된 값
+	if(endPageNum > totalPageCount){
+		endPageNum=totalPageCount; // 보정
+	}
 	
 	// 댓글의 data를 불러온다.
 	
@@ -29,7 +72,28 @@
 		width: 100%;
 		height: 100%;
 	}
+	.page-ui a{
+		text-decoration: none;
+		color: #000;
+	}
+	.page-ui a:hover{
+		text-decoration: underline;
+	}
 	
+	.page-ui a.active{
+		color: red;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	
+	.page-ui ul{
+		list-style-type: none;
+		padding: 0;
+	}
+	.page-ui li{
+		float: left;
+		padding: 10px;
+	}
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 </style>
 <jsp:include page="../include/resource.jsp"></jsp:include>
@@ -132,11 +196,38 @@
 					    	</div>
 					  	</div>
 					</div>
+					<%
+						/*
+							댓글 paging 처리
+						*/
+						
+						// 한 번에 몇 개 씩 보이게 할 것인지
+						final int comment_row_count=5;
+						
+						// 보여줄 댓글 page의 번호에 초기값 1 부여
+						int comment_pageNum=1;
+						
+						// 보여줄 댓글 page의 시작 rownum
+						int comment_startRowNum=1+(comment_pageNum-1)*comment_row_count;
+						// 보여줄 댓글 page의 끝 rownum
+						int comment_endRowNum=comment_pageNum*comment_row_count;
+						
+						MusicCommentDto comment_dto=new MusicCommentDto();
+						comment_dto.setNum(tmp.getNum());
+						comment_dto.setStartRowNum(comment_startRowNum);
+						comment_dto.setEndRowNum(comment_endRowNum);
+						
+						// 댓글 전체의 개수 얻어내기
+						int comment_totalRow=MusicCommentDao.getInstance().getCount(tmp.getNum());
+						
+						// 전체 page의 수
+						int comment_totalPageCount=(int)Math.ceil(comment_totalRow/(double)comment_row_count);
+					%>
 					<!-- card 게시글 댓글 list -->
 					<div data-num="<%=tmp.getNum() %>" id="commentList<%=tmp.getNum() %>" class="commentList" style="display: none;">
 						<ul>
 							<!-- 댓글의 data를 불러온다. -->
-							<%List<MusicCommentDto> commentList=MusicCommentDao.getInstance().getList(tmp.getNum()); %>
+							<%List<MusicCommentDto> commentList=MusicCommentDao.getInstance().getList(comment_dto); %>
 							<%for(MusicCommentDto tmp2:commentList) {%>
 								<%if(tmp2.getDeleted().equals("yes")){ %>
 									<li>삭제된 댓글입니다.</li>
@@ -174,19 +265,21 @@
 									<form data-num="<%=tmp2.getNum() %>" id="recommentForm<%=tmp2.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
 										<input type="hidden" name="target_id" value="<%=tmp2.getWriter() %>"/>
 										<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
-										<input type="hidden" name="comment_group" value="<%=tmp2.getNum()%>"/>
+										<input type="hidden" name="comment_group" value="<%=tmp2.getComment_group()%>"/>
 										<textarea name="comment" id="recomment"></textarea>
 										<button type="submit">댓글 달기</button>
 									</form>
 								</li>
 							<%} %>
 						</ul>
+						<%if(comment_totalPageCount > 1){ %>
+							<a data-num="<%=tmp.getNum() %>" data-num2="<%=comment_totalPageCount %>" class="moreComment" href="javascript:">더보기</a>
+						<%} %>
 						<!-- 댓글 작성하는 form(hidden) -->
 						<div>
 							<form data-num="<%=tmp.getNum() %>" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
 								<input type="hidden" name="target_id" value="<%=tmp.getWriter() %>"/>
 								<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
-								<input type="hidden" name="comment_group"/>
 								<textarea name="comment" id="comment"></textarea>
 								<button type="submit">댓글 달기</button>
 							</form>
@@ -195,6 +288,35 @@
 				</li>					
 			<%} %>
 		</ul>
+		<!-- page 넘길 수 있는 부분 -->
+		<div class="page-ui clearfix">
+			<ul>
+				<!-- 이전 묶음 -->
+				<%if(startPageNum>1) {%>
+					<li>
+						<a href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=startPageNum-1%>">prev</a>
+					</li>
+				<%} %>
+				<!-- 각 page -->
+				<%for(int i=startPageNum; i<=endPageNum; i++){ %>
+					<%if(pageNum==i){ %>
+						<li>
+							<a class="active" href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=i%>"><%=i %></a>
+						</li>
+					<%} else { %>
+						<li>
+							<a href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=i%>"><%=i %></a>
+						</li>
+					<%} %>
+				<%} %>
+				<!-- 다음 묶음 -->
+				<%if(endPageNum<totalPageCount){ %>
+					<li>
+						<a href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=endPageNum+1%>">next</a>
+					</li>
+				<%} %>
+			</ul>
+		</div>
 	</div>
 	
 	<script>
@@ -204,7 +326,11 @@
 			let music = document.querySelector("#music");
 			document.getElementById("#star").style.display = "none";
 		});
-	
+		
+		/*
+			게시글 관련
+		*/
+		
 		// insert modal 에서 글 작성 버튼을 눌렀을 때 작동하는 곳
 		document.querySelector("#insertForm").addEventListener("submit", function(e){
 			// 일단 form 제출을 막고
@@ -296,6 +422,10 @@
 			});
 		});
 		
+		/*
+			댓글 관련
+		*/
+		
 		// 댓글 버튼을 눌렀을 때 작동하는 곳
 		let commentLinks=document.querySelectorAll(".comment-link");
 		for(let i=0; i<commentLinks.length; i++){
@@ -329,8 +459,8 @@
 					return response.json();
 				}).then(function(data){
 					if(data.beInserted){
-						console.log("댓글 등록 성공");
-						location.href="${pageContext.request.contextPath}/music/musicMain.jsp";
+						let path="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=pageNum%>";
+						location.href=path;
 					} else {
 						console.log("댓글 등록 실패");
 					}
@@ -421,6 +551,47 @@
 				} else if(recommentForm.style.display=="block"){
 					recommentForm.style.display="none";
 				}				
+			});
+		}
+		
+		// 댓글 더 보기를 눌렀을 때 작동하는 곳
+		
+		// 댓글의 현재 page를 관리할 variable. 초기값=1
+		let currentPage=1;
+		
+		// 마지막 page는 for문 안에다가
+		
+		// 추가로 댓글을 요청하고 그 작업이 끝났는지 여부를 관리할 변수
+		let beLoading=false; // 현재 loading 중인지 여부
+		
+		let morelinks=document.querySelectorAll(".moreComment");
+		for(let i=0; i<morelinks.length; i++){
+			morelinks[i].addEventListener("click", function(e){
+				// 링크 이동을 막고
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				// 마지막 page는 for문 안에다가
+				let lastPage=this.getAttribute("data-num2");
+				
+				let beLast= currentPage==lastPage;
+				
+				if(!beLoading && !beLast){
+					beLoading = true;
+					
+					currentPage++;
+					
+					// ajax로 응답
+					ajaxPromise("comment_list.jsp", "get",
+							"pageNum="+currentPage+"&num="+num)
+					.then(function(response){
+						return response.text();
+					}).then(function(data){
+						document.querySelector(".commentList ul").insertAdjacentHTML("beforeend", data);
+						morelinks[i].style.display="none";
+						beLoading = false;
+					});					
+				}
 			});
 		}
 	</script>
