@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="test.feed.dao.FeedCommentDao"%>
 <%@page import="test.feed.dto.FeedCommentDto"%>
 <%@page import="test.feed.dao.MainFeedDao"%>
@@ -6,11 +7,86 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+	
 	// session scope에서 id 정보 불러오기
 	String id=(String)session.getAttribute("id");	
 	
-	// method를 이용, DB에서 data를 불러온다.
-	List<MainFeedDto> list=MainFeedDao.getInstance().getList();
+	//한 페이지에 몇개씩 표시할 것인지
+	final int PAGE_ROW_COUNT=6;
+	//하단 페이지를 몇개씩 표시할 것인지
+	final int PAGE_DISPLAY_COUNT=5;
+	
+	//보여줄 페이지의 번호를 일단 1이라고 초기값 지정
+	int pageNum=1;
+	//페이지 번호가 파라미터로 전달되는지 읽어와 본다.
+	String strPageNum=request.getParameter("pageNum");
+	//만일 페이지 번호가 파라미터로 넘어 온다면
+	if(strPageNum != null){
+		//숫자로 바꿔서 보여줄 페이지 번호로 지정한다.
+		pageNum=Integer.parseInt(strPageNum);
+	}
+	
+	//보여줄 페이지의 시작 ROWNUM
+	int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
+	//보여줄 페이지의 끝 ROWNUM
+	int endRowNum=pageNum*PAGE_ROW_COUNT;
+	
+	/*
+		[ 검색 키워드에 관련된 처리 ]
+		-검색 키워드가 파라미터로 넘어올수도 있고 안넘어 올수도 있다.		
+	*/
+	String keyword=request.getParameter("keyword");
+	String condition=request.getParameter("condition");
+	//만일 키워드가 넘어오지 않는다면 
+	if(keyword==null){
+		//키워드와 검색 조건에 빈 문자열을 넣어준다. 
+		//클라이언트 웹브라우저에 출력할때 "null" 을 출력되지 않게 하기 위해서  
+		keyword="";
+		condition=""; 
+	}
+
+	//특수기호를 인코딩한 키워드를 미리 준비한다. 
+	String encodedK=URLEncoder.encode(keyword);
+		
+		
+	//CafeDto 객체에 startRowNum 과 endRowNum 을 담는다.
+	MainFeedDto dto=new MainFeedDto();
+	dto.setStartRowNum(startRowNum);
+	dto.setEndRowNum(endRowNum);
+	
+	//ArrayList 객체의 참조값을 담을 지역변수를 미리 만든다.
+	
+	List<MainFeedDto> list=null;
+	
+	//전체 row 의 갯수를 담을 지역변수를 미리 만든다.
+	int totalRow=0;
+
+	//만일 검색 키워드가 넘어온다면 
+	if(!keyword.equals("")){
+		dto.setTag(keyword);
+		list=MainFeedDao.getInstance().getListT(dto);
+		totalRow=MainFeedDao.getInstance().getCountT(dto);
+	}else{//검색 키워드가 넘어오지 않는다면
+		//키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다. 
+		list=MainFeedDao.getInstance().getList(dto);
+		//키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
+		totalRow=MainFeedDao.getInstance().getCount();
+	}
+
+	//하단 시작 페이지 번호 
+	int startPageNum = 1 + ((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
+	//하단 끝 페이지 번호
+	int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
+	
+
+	//전체 페이지의 갯수
+	int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+	//끝 페이지 번호가 전체 페이지 갯수보다 크다면 잘못된 값이다.
+	if(endPageNum > totalPageCount){
+		endPageNum=totalPageCount; //보정해 준다.
+	}
+
+	
 %>
 
 <!DOCTYPE html>
@@ -38,7 +114,7 @@
 		color: black; 
 		text-decoration: none;
 	}
-	   .drag-area,.updrag-area{
+	.drag-area,.updrag-area{
       width: 200px;
       height: 300px;
       border: 2px dashed gray;
@@ -69,12 +145,29 @@
 				<div id="card_front<%=tmp.getNum() %>" class="col item front front_feed">
 					<div class="card h-100" style="width: 18rem;">
 						<ul class="list-group list-group-flush">
-						    <li class="list-group-item"><%=tmp.getWriter() %>님이 작성한 글.</li>
+						    <li class="list-group-item">
+						    	<%if(tmp.getProfile() == null){ %>
+									<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+										  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+										  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+									</svg>
+								<%}else{ %>
+									<img class="profile-image" src="<%=tmp.getProfile()%>" style="width:20px; rounded;"/>
+								<%} %>
+						    	<%=tmp.getWriter() %>님이 작성한 글. 
+						    	<a data-num="<%=tmp.getNum() %>" class="likeBtn"  href="javascript:">
+						    		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="indigo" class="bi bi-suit-heart" viewBox="0 0 16 16">
+									  <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+									</svg>
+									<%=tmp.getUpCount()%>
+						    	</a>
+						    </li>
 						</ul>
 					  <img id="img<%=tmp.getNum() %>" src="<%=tmp.getImage() %>" class="card-img-top" style="
-					         width: 100%;
-					         height: 100%;
+					         width: 80%;
+					         height: 80%;
 					         object-fit: contain;
+					         margin:25px;
 					   " >
 					  <div id="content<%=tmp.getNum() %>"class="card-body" >
 					    <p class="card-text">
@@ -82,9 +175,9 @@
 					    </p>
 					  </div>
 					  <ul class="list-group list-group-flush">
-					    <li id="tag<%=tmp.getNum() %> class="list-group-item"><%=tmp.getTag() %></li>
+					    <li id="tag<%=tmp.getNum() %>" class="list-group-item" style="text-margin-left:10px;"><%=tmp.getTag() %></li>
 					    <%if(tmp.getWriter().equals(id)){ %>
-					    <li id="update<%=tmp.getNum() %> class="list-group-item">
+					    <li id="update<%=tmp.getNum() %>" class="list-group-item" style="text-margin-left:10px;">
 					    		<!-- 피드 수정 -->
 								<a data-num="<%=tmp.getNum() %>" class="update" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
@@ -111,26 +204,42 @@
 				<div id="card_back<%=tmp.getNum() %>" class="col item front back_comment" style="display:none;">
 					<div class="card h-100" style="width: 18rem;">
 						<ul class="list-group list-group-flush">
-						    <li class="list-group-item"><%=tmp.getWriter() %>님이 작성한 글.</li>
+						    <li class="list-group-item">
+						    	<%if(tmp.getProfile() == null){ %>
+									<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+										  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+										  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+									</svg>
+								<%}else{ %>
+									<img class="profile-image" src="<%=tmp.getProfile()%>" style="width:20px; rounded;"/>
+								<%} %>
+						    	<%=tmp.getWriter() %>님이 작성한 글.
+						    	<a data-num="<%=tmp.getNum() %>" class="likeBtn"  href="javascript:">
+						    		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="indigo" class="bi bi-suit-heart" viewBox="0 0 16 16">
+									  <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+									</svg>
+									<%=tmp.getUpCount()%>
+						    	</a>
+						    </li>
 						</ul>
 					  <div id="cardBody<%=tmp.getNum() %>" class="card-body" style="overflow:auto; height:300px;">
 					  	<%  //한 페이지에 몇개씩 표시할 것인지
-						    	final int PAGE_ROW_COUNT=100;
+						    	final int PAGE_ROW_COUNT2=100;
 	
 						    	//detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
-						    	int pageNum=1;
+						    	int pageNum2=1;
 	
 						    	//보여줄 페이지의 시작 ROWNUM
-						    	int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
+						    	int startRowNum2=1+(pageNum2-1)*PAGE_ROW_COUNT2;
 						    	//보여줄 페이지의 끝 ROWNUM
-						    	int endRowNum=pageNum*PAGE_ROW_COUNT;
+						    	int endRowNum2=pageNum2*PAGE_ROW_COUNT2;
 	
 						    	//원글의 글번호를 이용해서 해당글에 달린 댓글 목록을 얻어온다.
 								FeedCommentDto commentDto=new FeedCommentDto();
 								commentDto.setRef_group(tmp.getNum());
 								//1페이지에 해당하는 startRowNum 과 endRowNum 을 dto 에 담아서  
-								commentDto.setStartRowNum(startRowNum);
-								commentDto.setEndRowNum(endRowNum);
+								commentDto.setStartRowNum(startRowNum2);
+								commentDto.setEndRowNum(endRowNum2);
 								
 								//1페이지에 해당하는 댓글 목록만 select 되도록 한다. 
 								List<FeedCommentDto> commentList=
@@ -154,19 +263,19 @@
 										<dl>
 											<dt>
 												<%if(mp.getProfile() == null){ %>
-													<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+													<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
 														  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
 														  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 													</svg>
 												<%}else{ %>
-													<img class="profile-image" src="${pageContext.request.contextPath}<%=mp.getProfile()%>"/>
+													<img class="profile-image" src="<%=mp.getProfile()%>" style="width:20px;height:20px;rounded;"/>
 												<%} %>
 													<span><%=mp.getWriter() %></span>
 												<%if(mp.getNum() != mp.getComment_group()){ %>
 													@<i><%=mp.getTarget_id() %></i>
 												<%} %>
 													<span><%=mp.getRegdate() %></span>
-													<a data-num="<%=mp.getNum() %>" href="javascript:" class="reply-link">답글</a>
+													<a data-num="<%=mp.getNum() %>" class="reply-link" href="javascript:" >답글</a>
 												<%if(id != null && mp.getWriter().equals(id)){ %>
 													<a data-num="<%=mp.getNum() %>" class="update-link" href="javascript:">수정</a>
 													<a data-num="<%=mp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
@@ -176,7 +285,7 @@
 												<pre id="pre<%=mp.getNum()%>"><%=mp.getContent() %></pre>						
 											</dd>
 										</dl>	
-										<form id="reForm<%=mp.getNum() %>" class="animate__animated comment-form re-insert-form" 
+										<form id="reForm<%=mp.getNum() %>" class="reComment animate__animated comment-form re-insert-form" 
 											action="comment_insert.jsp" method="post" style="display:none;">
 											<input type="hidden" name="ref_group"
 												value="<%=tmp.getNum() %>"/>
@@ -237,11 +346,12 @@
 			   "/></div>
 	        	<label class="form-label" for="image">IMAGE</label>
 				<textarea style="display:none;" class="form-control"  name="image" id="image"></textarea>
-				
+
 				<div class="mb-3">
 					<label class="form-label" for="content">CONTENT</label>
 					<textarea class="form-control"  name="content" id="content"></textarea>
 				</div>
+				
 				<div class="mb-3">
 					<label class="form-label" for="tag">TAG</label>
 					<input class="form-control" type="text" name="tag" id="tag"/>
@@ -287,7 +397,40 @@
     </div>
   </div>
 </div>
-
+  	<div class="page-ui clearfix">
+		<ul>
+			<%if(startPageNum != 1){ %>
+				<li>
+					<a href="main.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Prev</a>
+				</li>	
+			<%} %>
+			
+			<%for(int i=startPageNum; i<=endPageNum ; i++){ %>
+				<li>
+					<%if(pageNum == i){ %>
+						<a class="active" href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+					<%}else{ %>
+						<a href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+					<%} %>
+				</li>	
+			<%} %>
+			<%if(endPageNum < totalPageCount){ %>
+				<li>
+					<a href="main.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Next</a>
+				</li>
+			<%} %>
+		</ul>
+	</div>
+	<form action="main.jsp" method="get"> 
+		<input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
+		<button type="submit">검색</button>
+	</form>	
+	
+	<%if(!keyword.equals("")){ %>
+		<p>
+			<strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
+		</p>
+	<%} %>
 <script>
 		
 		// 로그아웃 버튼을 눌렀을 때 수행되는 기능
@@ -410,6 +553,25 @@
 	let comment_submitLinks=document.querySelectorAll(".comment");
 	for(let i=0; i<comment_submitLinks.length; i++){
 		comment_submitLinks[i].addEventListener("submit", function(e){
+			e.preventDefault();
+			ajaxFormPromise(this)
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				if(data.isSuccess){
+					alert("댓글이 등록되었습니다.");
+					location.href="${pageContext.request.contextPath}/main/main.jsp";
+				} else {
+					alert("댓글이 등록이 실패 하였습니다.");
+				}
+			});
+		});
+	};
+	
+	let recomment_submitLinks=document.querySelectorAll(".reComment");
+	for(let i=0; i<recomment_submitLinks.length; i++){
+		recomment_submitLinks[i].addEventListener("submit", function(e){
 			e.preventDefault();
 			ajaxFormPromise(this)
 			.then(function(response){
@@ -560,6 +722,70 @@
 			let num=this.getAttribute("data-num");
 			document.querySelector("#card_front"+num).style.display="block";
 			document.querySelector("#card_back"+num).style.display="none";
+		});
+	};
+	
+	let like_btnLinks=document.querySelectorAll(".likeBtn");
+	for(let i=0; i<like_btnLinks.length; i++){
+		like_btnLinks[i].addEventListener("click", function(e){
+			//좋아요 클릭한 게시글의 글 넘버 가져오기
+			//글 넘버를 넘겨주어 글에 해당하는 좋아요 누른 아이디 배열 가져오기
+			//좋아요 아이디 배열에서 현재 좋아요 누른 아이디가 있는지 검사하여 있다면 카운트를 올리지않고
+			//없다면 아이디를 배열에 넣고 upcount 올리기
+			
+			let num=this.getAttribute("data-num");
+			ajaxPromise("upmember.jsp", "post", "num="+num)
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//게시글의 좋아요를 누른 아이디 문자열 가져오기
+				let beforeMember = data.upMember; //좋아요 누른 아이디 문자열
+				console.log(data.upMember);
+				// 좋아요 누른 아이디가 하나도 없다면
+				let num = data.num;
+				if(data.upMember==""){
+					// 배열 만들기
+					beforMember = [];
+					// 배열에 좋아요 누른 아이디 추가
+					beforMember.push("<%=id%>");
+					let member=beforMember.join();
+					console.log(member);
+					ajaxPromise("upcount.jsp","post","upmember="+member+"&num="+num)
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						if(data.isSuccess){
+							//댓글이 있는 곳에 삭제된 댓글입니다를 출력해 준다. 
+							alert("좋아요.");
+							location.href="${pageContext.request.contextPath}/main/main.jsp";
+						}
+					});
+				} else {
+					//배열로 만들기
+					let member = beforeMember.split(",");
+					console.log("else"+member);
+					if(!member.includes("<%=id%>")){
+						member.push("<%=id%>");
+						let upmember=member.join();
+						
+						ajaxPromise("upcount.jsp","post","upmember="+upmember+"&num="+num)
+						.then(function(response){
+							return response.json();
+						})
+						.then(function(data){
+							if(data.isSuccess){
+								//댓글이 있는 곳에 삭제된 댓글입니다를 출력해 준다. 
+								alert("좋아요.");
+								location.href="${pageContext.request.contextPath}/main/main.jsp";
+							}
+						});
+					}else{
+						alert("중복할 수 없습니다.");
+					}	
+				};
+			});
 		});
 	};
 </script>

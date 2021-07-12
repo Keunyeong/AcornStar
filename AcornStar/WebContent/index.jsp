@@ -32,7 +32,7 @@ body {
 </div>
 
 <div class="container" >
-   <div style="margin:auto; text-align:center; margin-top:80px;">
+   <div style="margin:auto; text-align:center; margin-top:80px; rounded:50px;">
    <form id="loginForm" action="user/login.jsp" method="post" style="display:inline-block;">
 	  <div class="row mb-3">
 	    <label for="loginId" class="col-sm-5 col-form-label" style="color: white;">ID</label>
