@@ -42,7 +42,7 @@
    //특수기호를 인코딩한 키워드를 미리 준비한다. 
    String encodedK=URLEncoder.encode(keyword);
       
-   //InfoDto 객체에 startRowNum 과 endRowNum 을 담는다.
+   //SuggestDto 객체에 startRowNum 과 endRowNum 을 담는다.
    SuggestDto dto=new SuggestDto();
    dto.setStartRowNum(startRowNum);
    dto.setEndRowNum(endRowNum);
@@ -55,7 +55,7 @@
    if(!keyword.equals("")){
       //검색 조건이 무엇이냐에 따라 분기 하기
       if(condition.equals("title_content")){//제목 + 내용 검색인 경우
-         //검색 키워드를 FeedDto 에 담아서 전달한다.
+         //검색 키워드를 SuggestDto 에 담아서 전달한다.
          dto.setTitle(keyword);
          dto.setContent(keyword);
          //제목+내용 검색일때 호출하는 메소드를 이용해서 목록 얻어오기 
@@ -111,7 +111,20 @@
 <meta charset="UTF-8">
 <title>suggest/list.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
+
+	body {
+		font-family: 'Nanum Gothic', sans-serif;
+		font-size: 15px;
+	}
+
    .page-ui a{
       text-decoration: none;
       color: #000;
@@ -122,101 +135,239 @@
    }
    
    .page-ui a.active{
-      color: red;
-      font-weight: bold;
-      text-decoration: underline;
+      color: purple;
+      font-weight: 700;
    }
+   
    .page-ui ul{
       list-style-type: none;
       padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content:center;
    }
    
    .page-ui ul > li{
-      float: left;
-      padding: 5px;
+   	display: inline;
+   	padding: 5px;
    }
+   
+	.page-ui {
+		margin: 10px 0;
+	}
+   
+   .suggest_header {
+   		display: flex;
+   		align-items:center;
+   		flex-direction:column;
+   		justify-content:center;
+   		margin : 50px 20px 40px 30px;
+   		
+   }
+   
+   .suggest_title {
+   		font-weight:700;
+   }
+   
+   .suggest_subtitle {
+   		padding-left: 20px;
+   		font-size: 12px;
+   		color:gray;
+   }
+   
+   .suggest_box {
+   		display: flex;
+   		justify-content:center;
+   		flex-direction:column;
+   		margin-left : 20px;
+   		width:70vw;
+   }
+   
+	.suggest_row {
+		text-align:center;
+	}
+	
+	
+	.suggest_row .col {
+		text-align:center;
+		padding:15px;
+	}
+	
+	.suggest_row .col_content {
+		text-align:left;
+	}
+	
+	.suggest_box {
+		margin: 0 auto;
+	}
+
+	.suggest_row_space {
+		border-bottom: 15px solid #fff;
+		border-top: 15px solid #fff;
+		border-left: 3px solid #fff;
+	}
+
+
+	.suggest_row_effect {
+		border-bottom: 1px solid #c465f0;
+		
+	}
+	
+	.suggest_row_effect:hover {
+		border-left: 3px solid gray;
+		background-color: #c465f0;
+		color: #fff;
+		font-weight: 700;
+
+	}
+	
+	.content_effect:hover {
+		cursor:pointer;
+	}
+	
+	.suggest_btn {
+		display:flex;
+		justify-content: flex-end;
+	}
+	
+	.suggest_form {
+		display:flex;
+		justify-content: center;
+		margin-right:40px;
+		margin-bottom:30px;
+	}
+	
+	.form_input {
+		border:none;
+		border-bottom:2px solid gray;
+		margin: 0px 4px;
+	}
+	
+	.form_input:focus {
+		outline:none;
+	}
+	
+	.form_search {
+		border:none;
+	}
+	
+	.form_search svg:hover {
+		color:purple;
+		font-weight:700;
+		width:20px;
+		height:20px;
+	}
+	
+	.form_search svg {
+		transition: all 0.1s ease-in;
+	}
+	
+	.btn_color {
+		background-color: #fff;
+		border-radius: 10px;
+		padding:8px 10px;
+	}
+	
+	.btn_color:hover {
+		background-color: #c465f0;
+		color:white;
+	}
+	
+	
 </style>
 </head>
 <body>
-<jsp:include page="../include/navbar.jsp"></jsp:include>
-<div class="container">
-   <a href="private/insert_form.jsp">글 작성</a>
-   <br/>
-   <%if(id==null){ %>
-	   <a href="${pageContext.request.contextPath}/index.jsp">로그인</a>
-   <%}else{ %>
-	   <a href="${pageContext.request.contextPath}/main/myProfile.jsp"><%=id %></a> 로그인 중...
-	   <a href="${pageContext.request.contextPath}/user/logout.jsp">로그아웃</a>
-   <%} %>
+<jsp:include page="../include/navbar.jsp"></jsp:include>	
+   <section class="container-fluid">
+   	<article class="suggest_box">
+   	<div class="suggest_header animate__animated animate__fadeInDown">
+	   <h2 class="suggest_title">Q&A</h2>
+	   <span class="suggest_subtitle">궁금한 점이 있다면 하단의 검색창을 이용해 보세요.</span>   	
+   	</div>
+	   <table>
+	      <thead>
+	         <tr class="suggest_row suggest_row_space">
+	            <th class="col">NO.</th>
+	            <th class="col">작성자</th>
+	            <th class="col">제목</th>
+	            <th class="col">조회수</th>
+	            <th class="col">등록일</th>
+	         </tr>
+	      </thead>
+	      <tbody>
+	      <%for(SuggestDto tmp:list){%>
+	         <tr class="suggest_row suggest_row_effect">
+	            <td class="col"><%=tmp.getNum() %></td>
+	            <td class="col"><%=tmp.getWriter() %></td>
+	            <td class="col col_content">
+	               <div class="content_effect" Onclick="location.href='detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK %>&condition=<%=condition%>'"><%=tmp.getTitle() %></div>
+	            </td>
+	            <td class="col"><%=tmp.getViewCount() %></td>
+	            <td class="col"><%=tmp.getRegdate() %></td>
+	         </tr>
+	      <%} %>
+	      </tbody>
+	   </table>
+	   
+	   <div class="page-ui clearfix">
+	      <ul>
+	         <%if(startPageNum != 1){ %>
+	            <li>
+	               <a href="list.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Prev</a>
+	            </li>   
+	         <%} %>
+	         
+	         <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
+	            <li>
+	               <%if(pageNum == i){ %>
+	                  <a class="active" href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+	               <%}else{ %>
+	                  <a href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+	               <%} %>
+	            </li>   
+	         <%} %>
+	         <%if(endPageNum < totalPageCount){ %>
+	            <li>
+	               <a href="list.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Next</a>
+	            </li>
+	         <%} %>
+	      </ul>
+	   </div>
+	   
+	   <div class="suggest_btn">
+		   <a class="btn btn_color" href="private/insert_form.jsp">
+		   	문의하기
+		   	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+	  			<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+			</svg>
+		   </a>
+	   </div>
+	   
+	   <div style="clear:both;"></div>
+	   
+	   <form class="suggest_form" action="list.jsp" method="get"> 
+	      <label style="visibility:hidden;" for="condition">검색조건</label>
+	      <select name="condition" id="condition">
+	         <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
+	         <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
+	         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
+	      </select>
+	      <input class="form_input" type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
+	      <button class="form_search" type="submit">
+	      	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+			  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+			</svg>
+	      </button>
+	   </form>   
+	   
+	   <%if(!condition.equals("")){ %>
+	      <p>
+	         <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
+	      </p>
+	   <%} %>
+   	</article>
+   </section>
    
-   <h1>Q&A</h1>
-   <table>
-      <thead>
-         <tr>
-            <th>글번호</th>
-            <th>작성자</th>
-            <th>제목</th>
-            <th>조회수</th>
-            <th>등록일</th>
-         </tr>
-      </thead>
-      <tbody>
-      <%for(SuggestDto tmp:list){%>
-         <tr>
-            <td><%=tmp.getNum() %></td>
-            <td><%=tmp.getWriter() %></td>
-            <td>
-               <a href="detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK %>&condition=<%=condition%>"><%=tmp.getTitle() %></a>
-            </td>
-            <td><%=tmp.getViewCount() %></td>
-            <td><%=tmp.getRegdate() %></td>
-         </tr>
-      <%} %>
-      </tbody>
-   </table>
-   <div class="page-ui clearfix">
-      <ul>
-         <%if(startPageNum != 1){ %>
-            <li>
-               <a href="list.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Prev</a>
-            </li>   
-         <%} %>
-         
-         <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
-            <li>
-               <%if(pageNum == i){ %>
-                  <a class="active" href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
-               <%}else{ %>
-                  <a href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
-               <%} %>
-            </li>   
-         <%} %>
-         <%if(endPageNum < totalPageCount){ %>
-            <li>
-               <a href="list.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Next</a>
-            </li>
-         <%} %>
-      </ul>
-   </div>
    
-   <div style="clear:both;"></div>
-   
-   <form action="list.jsp" method="get"> 
-      <label for="condition">검색조건</label>
-      <select name="condition" id="condition">
-         <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
-         <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
-         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
-      </select>
-      <input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
-      <button type="submit">검색</button>
-   </form>   
-   
-   <%if(!condition.equals("")){ %>
-      <p>
-         <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
-      </p>
-   <%} %>
-</div>
 </body>
 </html>
