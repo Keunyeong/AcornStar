@@ -98,9 +98,35 @@
 <title>/suggest/detail.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+<style>	
+	body {
+		font-family: 'Nanum Gothic', sans-serif;
+		font-size: 15px;
+	}
+	
+	::-webkit-scrollbar {
+	  display: none;
+	}
+	
+	.container {
+		display: flex;
+		flex-direction:column;
+		align-items:center;
+		width: 100vw;
+	}
+	
    .content{
-      border: 1px dotted gray;
+      border-bottom: 1px solid gray;
+      width:830px;
+      height:300px;
+      overflow:auto;
+      padding: 10px;
+      margin: 0 auto;
+      padding-top: 30px;
+      margin-bottom: 20px;
    }
    
    /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
@@ -128,17 +154,28 @@
    .comments li{
       clear: left;
    }
-   .comments ul li{
-      border-top: 1px solid #888;
-   }
+
    .comment-form textarea{
-      width: 84%;
-      height: 100px;
+      width: 700px;
+      height: 50px;
+      border-radius: 5px;
+      margin-bottom:20px;
    }
    .comment-form button{
-      width: 14%;
-      height: 100px;
+      width: 50px;
+      height: 50px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      margin-left: 15px;
+      transition: all 0.3s ease-out;
    }
+   
+   .comment-form button:hover{
+   		background-color: #c465f0;
+   		color: #fff;
+   }
+   
    /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
    .comments .comment-form{
       display: none;
@@ -162,8 +199,7 @@
      color: #333333;
      word-break: break-all;
      word-wrap: break-word;
-     background-color: #f5f5f5;
-     border: 1px solid #ccc;
+     border: 2px solid #c465f0;
      border-radius: 4px;
    }   
    
@@ -177,63 +213,129 @@
    .loader svg{
       animation: rotateAni 1s ease-out infinite;
    }
+	
+	.detail_box {
+		display:flex;
+		align-items: center;
+		margin:0 auto;
+		border-top: 2px solid gray;
+		border-bottom: 1px solid gray;
+		margin-top: 30px;
+		width:830px;
+		justify-content:space-around;
+	}
+	
+	.detail_contents {
+		display:inline-block;
+		padding: 5px 15px;
+		font-size: 15px;
+		align-items:center;
+	}
+	
+	.detail_contents > td {
+		font-size: 14px;
+		color: gray;
+	}
+	
+	.contents_title {
+		padding: 5px 50px;
+	}
+	
+	.detail_ul {
+		list-style:none;
+		display:flex;
+		flex-direction:row;
+		margin: 0px auto;
+		color:#c465f0;
+		padding-left: 820px;
+	}
+	
+	.detail_ul > li {
+		margin-left:10px;
+	}
+	
+	.detail_ul > li > div {
+		font-size: 13px;
+		cursor: pointer;
+	}
+	
+	.detail_ul > li > div:hover {
+		font-size: 13px;
+		cursor: pointer;
+		font-weight:bold;
+	}
+	
+	.page_change > a > svg{
+		margin:15px;
+	}
 
+	.comments_dt > a {
+		text-decoration: none;
+		color: gray;
+		margin-left:10px;
+		font-size:13px;
+	}
 </style>
 </head>
 <body>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
-<div class="container">
+ 
+ 
+<div class="container" style="width:950px; margin-top:20px;">
 
-   <%if(dto.getPrevNum()!=0){ %>
-      <a href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
-   <%} %>
-   <%if(dto.getNextNum()!=0){ %>
-      <a href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
-   <%} %>
-   <% if(!keyword.equals("")){ %>
-      <p>   
-         <strong><%=condition %></strong> 조건, 
-         <strong><%=keyword %></strong> 검색어로 검색된 내용 자세히 보기 
-      </p>
-   <%} %>
-   
-   <table>
-      <tr>
-         <th>글번호</th>
+   <table class="detail_box" style="width:950px;">
+      <tr class="detail_contents">
+         <th>글번호</th> 
          <td><%=dto.getNum() %></td>
       </tr>
-      <tr>
+      <tr class="detail_contents">
          <th>작성자</th>
          <td><%=dto.getWriter() %></td>
       </tr>
-      <tr>
+      <tr class="detail_contents contents_title">
          <th>제목</th>
          <td><%=dto.getTitle() %></td>
       </tr>
-      <tr>
-         <th>조회수</th>
+      <tr class="detail_contents ">
+         <th >조회수</th>
          <td><%=dto.getViewCount() %></td>
       </tr>
-      <tr>
+      <tr class="detail_contents">
          <th>등록일</th>
          <td><%=dto.getRegdate() %></td>
       </tr>
-      <tr>
-         <td colspan="2">
-            <div class="content"><%=dto.getContent() %></div>
-         </td>
-      </tr>
    </table>
-   <ul>
-      <li><a href="list.jsp">목록보기</a></li>
+	<div class="content" style="width:950px;"><%=dto.getContent() %></div>
+   <ul class="detail_ul" style="width:950px;">
+      	<li><div onclick="location.href='list.jsp'">목록보기</a></li>
       <%if(dto.getWriter().equals(id)){ %>
-         <li><a href="private/update_form.jsp?num=<%=dto.getNum()%>">수정</a></li>
-         <li><a href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a></li>
+         <li><div onclick="location.href='private/update_form.jsp?num=<%=dto.getNum()%>'">수정</a></li>
+         <li><div onclick="location.href='private/delete.jsp?num=<%=dto.getNum()%>'">삭제</a></li>
       <%} %>
-      
    </ul>
+</div>
+   
+<div class="container" >
+
+	<div class="page_change" style="display:flex; flex-direction:row;">
+	   <%if(dto.getPrevNum()!=0){ %>
+	      <a  href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">
+	      	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray" class="bi bi-chevron-left" viewBox="0 0 16 16">
+			  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+			</svg>
+	      </a>
+	   <%} %>
+	   <%if(dto.getNextNum()!=0){ %>
+	      <a href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">
+	      	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray" class="bi bi-chevron-right" viewBox="0 0 16 16">
+			  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+			</svg>
+	      </a>
+	   <%} %>
+	</div>
+   
    <!-- 댓글 목록 -->
-   <div class="comments">
+   <div class="comments" style="width:800px;">
       <ul>
          <%for(SuggestCommentDto tmp: commentList){ %>
             <%if(tmp.getDeleted().equals("yes")){ %>
@@ -252,7 +354,7 @@
                </svg>
             <%} %>
                <dl>
-                  <dt>
+                  <dt class="comments_dt">
                   <%if(tmp.getProfile() == null){ %>
                      <svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                           <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -265,7 +367,6 @@
                   <%if(tmp.getNum() != tmp.getComment_group()){ %>
                      <i><%=tmp.getTarget_id() %></i>
                   <%} %>
-                     <span><%=tmp.getRegdate() %></span>
                      <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">답글</a>
                   <%if(id != null && tmp.getWriter().equals(id)){ %>
                      <a data-num="<%=tmp.getNum() %>" class="update-link" href="javascript:">수정</a>
