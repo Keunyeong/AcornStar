@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="test.musicfeed.dao.MusicCommentDao"%>
 <%@page import="test.musicfeed.dto.MusicCommentDto"%>
 <%@page import="test.musicfeed.dto.MusicFeedDto"%>
@@ -34,14 +35,62 @@
 	// 보여줄 page의 끝 rownum
 	int endRowNum=pageNum*page_row_count;
 	
+	/*
+		[검색 keyword에 대한 처리]
+		- 검색 keyword가 parameter로 넘어올 수도 있고 안 넘어올 수도 있다.
+	*/
+	String keyword=request.getParameter("keyword");
+	String condition=request.getParameter("condition");
+	// 만약 keyword가 넘어오지 않는다면
+	if(keyword==null){
+		// keyword와 condion에 빈 문자열을 넣어준다.
+		// client web browser에 출력할 때, null을 출력시키지 않기 위해서
+		keyword="";
+		condition="";
+	}
+	
+	// 특수기호를 encoding한 keyword를 미리 준비한다.
+		String encodedK=URLEncoder.encode(keyword);
+	
+	
+	
 	MusicFeedDto dto=new MusicFeedDto();
 	dto.setStartRowNum(startRowNum);
 	dto.setEndRowNum(endRowNum);
 	
 	// db에서 music feed data를 불러온다.
-	List<MusicFeedDto> list=MusicFeedDao.getInstance().getList(dto);
+	List<MusicFeedDto> list=null;
 	// 전체 게시글 개수
-	int totalRow=MusicFeedDao.getInstance().getCount();
+	int totalRow=0;
+	
+	//만일 검색 키워드가 넘어온다면 
+	if(!keyword.equals("")){
+	   	//검색 조건이 무엇이냐에 따라 분기 하기
+	   	if(condition.equals("title_content")){//제목 + 내용 검색인 경우
+			//검색 키워드를 CafeDto 에 담아서 전달한다.
+			dto.setTitle(keyword);
+			dto.setContent(keyword);
+			//제목+내용 검색일때 호출하는 메소드를 이용해서 목록 얻어오기 
+			list=MusicFeedDao.getInstance().getListTC(dto);
+			//제목+내용 검색일때 호출하는 메소드를 이용해서 row  의 갯수 얻어오기
+			totalRow=MusicFeedDao.getInstance().getCountTC(dto);
+	   	}else if(condition.equals("title")){ //제목 검색인 경우
+	      	dto.setTitle(keyword);
+	      	list=MusicFeedDao.getInstance().getListT(dto);
+	      	totalRow=MusicFeedDao.getInstance().getCountT(dto);
+	  	}else if(condition.equals("writer")){ //작성자 검색인 경우
+	      	dto.setWriter(keyword);
+	      	list=MusicFeedDao.getInstance().getListW(dto);
+	      	totalRow=MusicFeedDao.getInstance().getCountW(dto);
+	   	} // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
+	} else { //검색 키워드가 넘어오지 않는다면
+	   	//키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다. 
+	   	list=MusicFeedDao.getInstance().getList(dto);
+	   	//키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
+	   	totalRow=MusicFeedDao.getInstance().getCount();
+	}
+	
+	
 	
 	
 	// 하단의 시작 page 번호
@@ -94,10 +143,21 @@
 		float: left;
 		padding: 10px;
 	}
+	
+	.cardlist{
+		padding: 0;
+	}
+	
+	.cardlist li{
+		list-style-type: none;
+		padding: 0;
+		margin: 0 auto;
+	}
+
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 </style>
-<jsp:include page="../include/resource.jsp"></jsp:include>
 </head>
+<jsp:include page="../include/resource.jsp"></jsp:include>
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
@@ -107,6 +167,7 @@
 			<button id="writeBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">
 			  	새 글 작성
 			</button>
+			<a href="${pageContext.request.contextPath}/music/musicMain.jsp">글 전체 보기</a>
 		</div>
 		
 		<!-- 새 글 작성 modal -->
@@ -173,12 +234,12 @@
 		</div>
 		
 		<!-- card 게시글 list -->
-		<ul>
+		<ul class="cardlist">
 			<%for(MusicFeedDto tmp:list) {%>
-				<li>
-					<div class="card mb-3" style="max-width: 540px;">
+				<li class="mb-3 col-8">
+					<div class="card mb-3">
 					  	<div class="row g-0">
-					    	<div class="col-md-4 iframeBox">
+					    	<div class="col-md-4 mb-3 iframeBox">
 					      		<iframe class="" src="<%=tmp.getLink()%>"></iframe>
 					    	</div>
 					    	<div class="col-md-8">
@@ -188,6 +249,7 @@
 					        		<p class="card-text"><%=tmp.getContent() %></p>
 					        		<p class="card-text"><small class="text-muted">to be continued</small></p>
 					      		</div>
+					      		<a data-num="<%=tmp.getNum() %>" class="up-link" href="javascript:">좋아요</a>
 					      		<a data-num="<%=tmp.getNum() %>" class="comment-link" href="javascript:">댓글</a>
 					      		<%if(tmp.getWriter().equals(id)){ %>
 						      		<a data-num="<%=tmp.getNum() %>" class="update-link" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">수정</a>
@@ -285,11 +347,11 @@
 							</form>
 						</div>
 					</div>
-				</li>					
+				</li>				
 			<%} %>
 		</ul>
 		<!-- page 넘길 수 있는 부분 -->
-		<div class="page-ui clearfix">
+		<div class="page-ui pagination justify-content-center">
 			<ul>
 				<!-- 이전 묶음 -->
 				<%if(startPageNum>1) {%>
@@ -318,8 +380,27 @@
 			</ul>
 		</div>
 	</div>
-	
+	<form id="searchForm"action="musicMain.jsp" method="get">
+		<label for="condition">검색 조건</label>
+		<select name="condition" id="condition">
+			<option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
+			<option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
+			<option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
+		</select>
+		<input id="keyword" type="text" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
+		<button type="submit">검색</button>
+	</form>
+	<%if(!condition.equals("")){ %>
+		<p>
+			<strong><%=totalRow %></strong> 개의 글이 검색되습니다.
+		</p>
+	<%} else {%>
+		<p>
+			<strong><%=totalRow %></strong> 개의 글이 있습니다.
+		</p>
+	<%} %>
 	<script>
+		// 로고
 		document.querySelector("#acornstar").addEventListener("click",function(){
 			location.href="${pageContext.request.contextPath}/main/main.jsp";
 			let star = document.querySelector("#star");
@@ -327,8 +408,15 @@
 			document.getElementById("#star").style.display = "none";
 		});
 		
+		// 검색 관련 : 입력값이 없으면 제출하지 않는다.
+		document.querySelector("#searchForm").addEventListener("submit", function(e){
+			if(document.querySelector("#keyword").value==""){
+				e.preventDefault();
+			}
+		});
+		
 		/*
-			게시글 관련
+			게시글 기능 관련
 		*/
 		
 		// insert modal 에서 글 작성 버튼을 눌렀을 때 작동하는 곳
@@ -570,7 +658,7 @@
 					}				
 				});
 			}
-		}
+		}		
 	
 		/*
 			댓글 더보기
