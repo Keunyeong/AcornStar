@@ -6,20 +6,51 @@
 <meta charset="UTF-8">
 <title>insert_form</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
+
+	body {
+		font-family: 'Nanum Gothic', sans-serif;
+		font-size: 15px;
+	}
+	
 	#content{
 		height: 400px;
 		display:none;
 	}
+	
+	.form_title {
+		font-weight:700;
+		margin-top:10px;
+	}
+	
+	.form_btn {
+		border: 2px solid #c465f0;
+		border-radius: 5px;
+		outline: none;
+		background-color: #fff;
+		width:60px;
+		height:35px;
+		margin-bottom: 20px;
+		transition: all 0.3s ease-in;
+	}
+	
+	.form_btn:hover {
+		background-color: #c465f0;
+		color: #fff;
+	}
+	
 </style>
 </head>
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container">
-   <h1>새 글 작성 폼</h1>
+   <h2 class="form_title">Q&A</h2>
    <form action="insert.jsp" method="post" id="insertForm">
-      <div class="mb-3">
+      <div class="mb-3 mt-4">
          <label class="form-label" for="title">제목</label>
          <input class="form-control" type="text" name="title" id="title"/>
       </div>
@@ -27,7 +58,7 @@
          <label class="form-label" for="content">내용</label>
          <textarea class="form-control"  name="content" id="content"></textarea>
       </div>
-      <button class="btn btn-primary" type="submit">저장</button>
+      <button class="form_btn" type="submit">저장</button>
    </form>
 </div>
 <%--

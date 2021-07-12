@@ -10,14 +10,16 @@ public class MusicCommentDto {
 	private int comment_group;
 	private String deleted;
 	private String regdate;
+	private int	startRowNum;
+	private int endRowNum;
 	
 	//default constructor
 	public MusicCommentDto() {
 		
 	}
-	
+
 	public MusicCommentDto(int num, String writer, String content, String target_id, int ref_group, int comment_group,
-			String deleted, String regdate) {
+			String deleted, String regdate, int startRowNum, int endRowNum) {
 		super();
 		this.num = num;
 		this.writer = writer;
@@ -27,6 +29,8 @@ public class MusicCommentDto {
 		this.comment_group = comment_group;
 		this.deleted = deleted;
 		this.regdate = regdate;
+		this.startRowNum = startRowNum;
+		this.endRowNum = endRowNum;
 	}
 
 	public int getNum() {
@@ -93,4 +97,20 @@ public class MusicCommentDto {
 		this.regdate = regdate;
 	}
 
+	public int getStartRowNum() {
+		return startRowNum;
+	}
+
+	public void setStartRowNum(int startRowNum) {
+		this.startRowNum = startRowNum;
+	}
+
+	public int getEndRowNum() {
+		return endRowNum;
+	}
+
+	public void setEndRowNum(int endRowNum) {
+		this.endRowNum = endRowNum;
+	}
+	
 }

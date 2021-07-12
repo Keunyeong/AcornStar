@@ -100,18 +100,18 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
 	a{
-		text-decoration: none;
-		color: black;
+	  text-decoration: none;
+	  color: black;
 	}
    .content{
-      border: 1px dotted gray;
+   		
    }
    
    /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
    .profile-image{
       width: 50px;
       height: 50px;
-      color: indigo;
+      color: #652dc1;
    }
    /* ul 요소의 기본 스타일 제거 */
    .comments ul{
@@ -135,18 +135,18 @@
       border-top: 1px solid #888;
    }
    .comment-form textarea{
-      width: 84%;
-      height: 100px;
+      width: 80%;
+      height: 70px;
       color: black;
       background-color: white;
-      border: 1px solid #6610f2;
+      border: 1px solid #652dc1;
    }
    .comment-form button{
       width: 14%;
-      height: 100px;
+      height: 70px;
       color: black;
       background-color: white;
-      border: 1px solid #6610f2;
+      border: 10px solid #6610f2;
    }
    /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
    .comments .comment-form{
@@ -160,10 +160,10 @@
       position: absolute;
       top: 1em;
       left: 1em;
-      color: red;
+      color: #a385cf;
    }
    pre {
-     display: block;
+     display: inline-block;
      padding: 9.5px;
      margin: 0 0 10px;
      font-size: 15px;
@@ -195,16 +195,31 @@
          transform: rotate(360deg);
       }
    }
+   table{
+   	  width: 70%;
+   	  margin-left: auto;
+   	  margin-light: auto;
+   	  text-align: center;
+   }
+   #Btn{
+   	  border-top-left-radius: 50px;
+   	  border-bottom-left-radius: 50px;
+   	  border-top-right-radius: 50px;
+   	  border-bottom-right-radius: 50px;
+   	  background-color: #a385cf;
+   	  color: white;
+   	  border: none;
+   }
 </style>
 </head>
 <body>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
    <%if(dto.getPrevNum()!=0){ %>
-      <a href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
+      <a href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">Prev</a>
    <%} %>
    <%if(dto.getNextNum()!=0){ %>
-      <a href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
+      <a href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">Next</a>
    <%} %>
    <% if(!keyword.equals("")){ %>
       <p>   
@@ -212,9 +227,9 @@
          <strong><%=keyword %></strong> 검색어로 검색된 내용 자세히 보기 
       </p>
    <%} %>
-   <table>
+   <table class="table table-striped table-bordered table-hover">
       <tr>
-         <th>글번호</th>
+         <th>NO.</th>
          <td><%=dto.getNum() %></td>
       </tr>
       <tr>
@@ -239,7 +254,7 @@
          </td>
       </tr>
    </table>
-   <ul>
+   <ul style="list-style-type: circle; color: indigo;" >
       <li><a href="info.jsp">목록보기</a></li>
       <%if(dto.getWriter().equals(id)){ %>
          <li><a href="private/update_form.jsp?num=<%=dto.getNum()%>">수정</a></li>
@@ -300,7 +315,7 @@
                   <input type="hidden" name="comment_group"
                      value="<%=tmp.getComment_group()%>"/>
                   <textarea name="content"></textarea>
-                  <button type="submit">등록</button>
+                  <button type="submit" id="Btn">등록</button>
                </form>   
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
@@ -328,7 +343,7 @@
       <input type="hidden" name="target_id" value="<%=dto.getWriter()%>"/>
       
       <textarea name="content"><%if(!isLogin){%>댓글 작성을 위해 로그인이 필요 합니다.<%}%></textarea>
-      <button type="submit">등록</button>
+      <button type="submit" id="Btn">등록</button>
    </form>
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>

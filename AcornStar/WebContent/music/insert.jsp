@@ -10,7 +10,12 @@
 	String title=request.getParameter("title");
 	String content=request.getParameter("content");
 	String link=request.getParameter("link");
-	
+	if(link.length()<=30){
+		link="https://www.youtube.com/embed/"+link.substring(16);
+	} else if(link.length()>30){
+		link="https://www.youtube.com/embed/"+link.substring(32);
+	}
+
 	// dto에 넣고
 	MusicFeedDto dto=new MusicFeedDto();
 	dto.setWriter(writer);
