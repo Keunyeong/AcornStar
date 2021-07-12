@@ -105,7 +105,7 @@ public class MusicCommentDao {
 	}
 	
 	// 해당 댓글을 불러오는 method
-	public List<MusicCommentDto> getList(int num) {
+	public List<MusicCommentDto> getList(MusicCommentDto dto) {
 		List<MusicCommentDto> list=new ArrayList<>();
 		
 		Connection conn = null;
@@ -115,28 +115,36 @@ public class MusicCommentDao {
 			// Connection 객체의 참조값 얻어오기
 			conn = new DbcpBean().getConn();
 			// 실행할 sql 문 작성
-			String sql = "select * from music_comment"
-					+ " where ref_group=?"
-					+ " order by comment_group asc, num asc";
+			String sql = "select *"
+					+ " from"
+					+ 		" (select result1.*, rownum as rnum"
+					+ 		" from"
+					+ 			" (select *"
+					+ 			" from music_comment"
+					+ 			" where ref_group=?"
+					+ 			" order by comment_group asc, num asc) result1)"
+					+ " where rnum between ? and ?";
 			// PreparedStatement 객체의 참조값 얻어오기
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 binding할 내용이 있으면 여기서 binding
-			pstmt.setInt(1, num);
+			pstmt.setInt(1, dto.getNum());
+			pstmt.setInt(2, dto.getStartRowNum());
+			pstmt.setInt(3, dto.getEndRowNum());
 			// select 문 수행하고 결과를 ResultSet으로 받아옥
 			rs = pstmt.executeQuery();
 			// 반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서
 			// 원하는 Data type으로 포장하기
 			while (rs.next()) {
-				MusicCommentDto dto=new MusicCommentDto();
-				dto.setNum(rs.getInt("num"));
-				dto.setWriter(rs.getString("writer"));
-				dto.setContent(rs.getString("content"));
-				dto.setTarget_id(rs.getString("target_id"));
-				dto.setRef_group(rs.getInt("ref_group"));
-				dto.setComment_group(rs.getInt("comment_group"));
-				dto.setDeleted(rs.getString("deleted"));
-				dto.setRegdate(rs.getString("regdate"));
-				list.add(dto);
+				MusicCommentDto dto2=new MusicCommentDto();
+				dto2.setNum(rs.getInt("num"));
+				dto2.setWriter(rs.getString("writer"));
+				dto2.setContent(rs.getString("content"));
+				dto2.setTarget_id(rs.getString("target_id"));
+				dto2.setRef_group(rs.getInt("ref_group"));
+				dto2.setComment_group(rs.getInt("comment_group"));
+				dto2.setDeleted(rs.getString("deleted"));
+				dto2.setRegdate(rs.getString("regdate"));
+				list.add(dto2);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,6 +162,49 @@ public class MusicCommentDao {
 
 		return list;
 	}
+	
+	// 댓글의 총 수를 얻어내는 method
+	public int getCount(int ref_group) {
+		int count=0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "select nvl(max(rownum),0) as count"
+					+ " from music_comment"
+					+ " where ref_group=?";
+			// PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding할 내용이 있으면 여기서 binding
+			pstmt.setInt(1, ref_group);
+			// select 문 수행하고 결과를 ResultSet으로 받아옥
+			rs = pstmt.executeQuery();
+			// 반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서
+			// 원하는 Data type으로 포장하기
+			if (rs.next()) {
+				count=rs.getInt("count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return count;
+	}
+	
 	
 	// 해당 댓글을 삭제하는 method
 	// 사실 삭제하는게 아니라 deleted를 yes로

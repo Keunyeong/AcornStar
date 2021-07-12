@@ -10,6 +10,8 @@ public class MusicFeedDto {
 	private int upCount;
 	private String tag;
 	private String regdate;
+	private int startRowNum;
+	private int endRowNum;
 	
 	// default constructor
 	public MusicFeedDto() {
@@ -17,7 +19,7 @@ public class MusicFeedDto {
 	}
 
 	public MusicFeedDto(int num, String writer, String title, String content, String link, int upCount, String tag,
-			String regdate) {
+			String regdate, int startRowNum, int endRowNum) {
 		super();
 		this.num = num;
 		this.writer = writer;
@@ -27,6 +29,8 @@ public class MusicFeedDto {
 		this.upCount = upCount;
 		this.tag = tag;
 		this.regdate = regdate;
+		this.startRowNum = startRowNum;
+		this.endRowNum = endRowNum;
 	}
 
 	public int getNum() {
@@ -91,6 +95,22 @@ public class MusicFeedDto {
 
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
+	}
+
+	public int getStartRowNum() {
+		return startRowNum;
+	}
+
+	public void setStartRowNum(int startRowNum) {
+		this.startRowNum = startRowNum;
+	}
+
+	public int getEndRowNum() {
+		return endRowNum;
+	}
+
+	public void setEndRowNum(int endRowNum) {
+		this.endRowNum = endRowNum;
 	}
 	
 }

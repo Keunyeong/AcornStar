@@ -8,7 +8,12 @@
 	String title=request.getParameter("update_title");
 	String content=request.getParameter("update_content");
 	String link=request.getParameter("update_link");
-
+	if(link.length()<=30){
+		link="https://www.youtube.com/embed/"+link.substring(16);
+	} else if(link.length()>30){
+		link="https://www.youtube.com/embed/"+link.substring(32);
+	}
+	
 	// dto에 담아서
 	MusicFeedDto dto=new MusicFeedDto();
 	dto.setNum(num);
