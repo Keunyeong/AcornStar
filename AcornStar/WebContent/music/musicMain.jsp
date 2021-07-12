@@ -403,9 +403,6 @@
 		// 로고
 		document.querySelector("#acornstar").addEventListener("click",function(){
 			location.href="${pageContext.request.contextPath}/main/main.jsp";
-			let star = document.querySelector("#star");
-			let music = document.querySelector("#music");
-			document.getElementById("#star").style.display = "none";
 		});
 		
 		// 검색 관련 : 입력값이 없으면 제출하지 않는다.
