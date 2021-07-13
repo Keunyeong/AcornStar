@@ -7,6 +7,7 @@
 	int num=Integer.parseInt(request.getParameter("num"));
 	String title=request.getParameter("update_title");
 	String content=request.getParameter("update_content");
+	String tag=request.getParameter("update_tag");
 	String link=request.getParameter("update_link");
 	if(link.length()<=30){
 		link="https://www.youtube.com/embed/"+link.substring(16);
@@ -19,6 +20,7 @@
 	dto.setNum(num);
 	dto.setTitle(title);
 	dto.setContent(content);
+	dto.setTag(tag);
 	dto.setLink(link);
 	
 	// method를 이용하여 update

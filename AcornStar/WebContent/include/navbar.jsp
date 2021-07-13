@@ -40,8 +40,9 @@
         	<span class="navbar-toggler-icon"></span>
         </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-         <form class="d-flex ms-4">
-              <input class="form-control ml-2" type="search" placeholder="Search" aria-label="Search">
+         <form class="d-flex ms-4 searchForm">
+         	  <input type="hidden" name="condition" value="tag"/>
+              <input class="form-control ml-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
               <button class="btn" style="color: #6610f2" type="submit">
               	<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 512 512" width="25px" height="25px" fill="indigo"  style="enable-background:new 0 0 512 512;" xml:space="preserve">
 					<path d="M270.746,117.149c-20.516-20.514-47.79-31.812-76.802-31.811c-12.854,0-23.273,10.42-23.273,23.273    c0.002,12.854,10.42,23.273,23.274,23.273c16.578,0,32.163,6.454,43.886,18.178c11.723,11.723,18.178,27.308,18.178,43.885    c-0.002,12.853,10.418,23.274,23.271,23.274c0.002,0,0.002,0,0.002,0c12.851,0,23.271-10.418,23.273-23.271    C302.556,164.939,291.26,137.663,270.746,117.149z"/>

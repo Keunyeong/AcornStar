@@ -32,14 +32,15 @@ public class MusicFeedDao {
 			conn = new DbcpBean().getConn();
 			// 실행할 sql 문 작성
 			String sql = "insert into music_feed"
-					+ " (num, writer, title, content, link, upCount, regdate)"
-					+ " values(music_feed_seq.nextval, ?, ?, ?, ?, 0, sysdate)";
+					+ " (num, writer, title, content, link, upCount, tag, regdate)"
+					+ " values(music_feed_seq.nextval, ?, ?, ?, ?, 0, ?, sysdate)";
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 binding 할 내용이 있으면 여기서 binding
 			pstmt.setString(1, dto.getWriter());
 			pstmt.setString(2, dto.getTitle());
 			pstmt.setString(3, dto.getContent());
 			pstmt.setString(4, dto.getLink());
+			pstmt.setString(5, dto.getTag());
 			// insert or update or delete 문 수행하고
 			// 변화된 row의 개수 return 받기
 			flag = pstmt.executeUpdate();
@@ -76,7 +77,7 @@ public class MusicFeedDao {
 					+ " from"
 					+ 		" (select result1.*, rownum as rnum"
 					+ 		" from"
-					+ 				" (select num, writer, title, content, link, upCount, tag, regdate"
+					+ 				" (select num, writer, title, content, link, upCount, tag, to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate"
 					+ 				" from music_feed"
 					+ 				" order by num desc) result1)"
 					+ " where rnum between ? and ?";
@@ -300,14 +301,15 @@ public class MusicFeedDao {
 			conn = new DbcpBean().getConn();
 			// 실행할 sql 문 작성
 			String sql = "update music_feed"
-					+ " set title=?, content=?, link=?"
+					+ " set title=?, content=?, tag=?, link=?"
 					+ " where num=?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 binding 할 내용이 있으면 여기서 binding
 			pstmt.setString(1, dto.getTitle());
 			pstmt.setString(2, dto.getContent());
-			pstmt.setString(3, dto.getLink());
-			pstmt.setInt(4, dto.getNum());
+			pstmt.setString(3, dto.getTag());
+			pstmt.setString(4, dto.getLink());
+			pstmt.setInt(5, dto.getNum());
 			// insert or update or delete 문 수행하고
 			// 변화된 row의 개수 return 받기
 			flag = pstmt.executeUpdate();
@@ -507,6 +509,69 @@ public class MusicFeedDao {
 		return list;
 	}
 	
+	// 아무 검색으로나 list를 불러오는 method
+	public List<MusicFeedDto> getListTotal(MusicFeedDto dto){
+		List<MusicFeedDto> list=new ArrayList<>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "select *"
+					+ " from"
+					+ 		" (select result1.*, rownum as rnum"
+					+ 		" from"
+					+ 				" (select num, writer, title, content, link, upCount, tag, regdate"
+					+ 				" from music_feed"
+					+				" where title like '%' || ? || '%' or content like '%' || ? || '%'"
+					+ 				" or writer like '%' || ? || '%' or tag like '%' || ? || '%'"
+					+ 				" order by num desc) result1)"
+					+ " where rnum between ? and ?";
+			// PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding할 내용이 있으면 여기서 binding
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getWriter());
+			pstmt.setString(4, dto.getTag());
+			pstmt.setInt(5, dto.getStartRowNum());
+			pstmt.setInt(6, dto.getEndRowNum());
+			// select 문 수행하고 결과를 ResultSet으로 받아옥
+			rs = pstmt.executeQuery();
+			// 반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서
+			// 원하는 Data type으로 포장하기
+			while (rs.next()) {
+				MusicFeedDto dto2=new MusicFeedDto();
+				dto2.setNum(rs.getInt("num"));
+				dto2.setWriter(rs.getString("writer"));
+				dto2.setTitle(rs.getString("title"));
+				dto2.setContent(rs.getString("content"));
+				dto2.setLink(rs.getString("link"));
+				dto2.setUpCount(rs.getInt("upCount"));
+				dto2.setTag(rs.getString("tag"));
+				dto2.setRegdate(rs.getString("regdate"));
+				list.add(dto2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return list;
+	}
+	
 	// 제목으로 글의 개수를 return 하는 method
 	public int getCountT(MusicFeedDto dto) {
 		int count=0;
@@ -629,5 +694,85 @@ public class MusicFeedDao {
 		}
 
 		return count;
+	}
+	
+	// 아무 검색어로든 글의 개수를 return 하는 method
+	public int getCountTotal(MusicFeedDto dto) {
+		int count=0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "select nvl(max(rownum),0) as num"
+					+ " from music_feed"
+					+ " where title like '%' || ? || '%' or content like '%' || ? || '%'"
+					+ " or writer like '%' || ? || '%' or tag like '%' || ? || '%'";
+			// PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding할 내용이 있으면 여기서 binding
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getWriter());
+			pstmt.setString(4, dto.getTag());
+			// select 문 수행하고 결과를 ResultSet으로 받아옥
+			rs = pstmt.executeQuery();
+			// 원하는 Data type으로 포장하기
+			if (rs.next()) {
+				count=rs.getInt("num");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return count;
+	}
+	
+	// 좋아요 count를 증가시키는 method
+	public boolean up(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0;
+		try {
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "update music_feed"
+					+ "set upCount=upCount+1"
+					+ "where num=?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding 할 내용이 있으면 여기서 binding
+			pstmt.setInt(1, num);
+			// insert or update or delete 문 수행하고
+			// 변화된 row의 개수 return 받기
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		if (flag > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
