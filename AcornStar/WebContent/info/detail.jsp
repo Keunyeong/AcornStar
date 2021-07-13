@@ -99,6 +99,8 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
+@import url(https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css);
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
 	a{
 	  text-decoration: none;
 	  color: black;
@@ -202,13 +204,18 @@
    	  text-align: center;
    }
    #Btn{
-   	  border-top-left-radius: 50px;
-   	  border-bottom-left-radius: 50px;
-   	  border-top-right-radius: 50px;
-   	  border-bottom-right-radius: 50px;
-   	  background-color: #a385cf;
-   	  color: white;
-   	  border: none;
+   	  display: inline-block;
+      padding: auto;
+      margin-left: 50px;
+      font-size: 30px;
+      color: white;
+      background-color: #a385cf;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 5px #999;
+   }
+   #Btn:hover {
+      background-color: pink;
    }
 </style>
 </head>
