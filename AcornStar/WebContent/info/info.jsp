@@ -111,8 +111,7 @@
 <title>/info/info.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <!-- 외부 css 로딩하기  -->
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
     a{
 	  text-decoration: none;
