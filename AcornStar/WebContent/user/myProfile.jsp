@@ -37,7 +37,8 @@
 		width: 200px;
 		height: 80%;
 		padding-left: 0;
-		margin-left: 60px;
+		margin-left: 40px;
+		margin-right: 20px;
 		margin-bottom: 50px;
 		margin-top: 30px;
 		text-align: center;
@@ -57,14 +58,13 @@
 	}
 	
 	
-	.profile_form {
-		margin-left: 20px;
-		margin-top: 5px;
+	.profile_main {
+		margin-left: 30px;
 		display: flex;
 		flex-direction: column;
 	}
 	
-	.profile_form input {
+	.profile_main input {
 		width: 300px;
 		padding-left: 5px;
 	}
@@ -81,53 +81,46 @@
 		border-radius: 0;
 	}
 	
-	.profile_form > div {
-		display: flex;
-		flex-direction: row;
-	}
-	
-	.profile_form > div > aside {
+	.profile_main  aside {
 		width: 150px;
 		padding: 15px;
 		font-weight: 700;
 	}
 	
-	.profile_form > div > div {
+	.profile_main > div > div {
 		padding: 15px;
-	}
-	
-	.profile_header {
-		margin: auto 0;
-		display:flex;
-		flex-direction:column;
-		align-items: center;
-		margin-bottom: 5px;
-	}
-	
-	.profile_header > div {
-		margin-top: 35px;
 	}
 	
 	.profile_header svg {
 		border-radius: 100%;
-		border: 1px solid #fff;
 		background-color: lightgray;
 		color: #fff;
+		margin: 0;
+		position: absolute;
+		left:4px;
+		top:4px;
 	}
 			
 	.profile_header svg:hover {
 		opacity: 0.7;
 	}
 	
-	.drag-area {
-		width: 153px;
-		height: 153px;
-		display: flex;
-	    justify-content: center;
-	    align-items: center;
+	.profile_wrapper {
+		margin: 0;
+		width: 158px;
+		height: 158px;
 	    border-radius: 100%;
 	    background: radial-gradient(circle at bottom left, #F58529 20%, #C42D91);
-	    margin-bottom: 8px;
+		margin-bottom: 5px;
+		position: relative;
+	}
+	
+	.profile_header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-top: 45px;
 	}
 	
 	.profile_btn {
@@ -164,6 +157,16 @@
 		border-radius: 0;
 	}
 	
+	.profile_main div {
+		display: flex;
+		flex-direction: row;
+	}
+	
+	.profile_main div div {
+		display: flex;
+		flex-direction: column;
+	}
+	
 </style>
 </head>
 <body>
@@ -186,56 +189,63 @@
 				
 			<article class="profile_article">
 				<form class="profile_form" action="signupUpdate.jsp" method="post" id="updatemyForm">
-					<div class="profile_header">
-						<div class="drag-area">
-							<svg id="svg" xmlns="http://www.w3.org/2000/svg" width="145" height="145" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="display:block;">
-							  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-							  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-							</svg>
-							<img id="myImage" style="
-						        width: 80%;
-						        height: 80%;
-						        object-fit: contain; display:none;"/>
-						</div>
-						<p style="font-weight:700; font-size:16px;"><%=dto.getId() %></p>
-	<!-- 나중에<a style="text-decoration:none;" href="#">프로필 사진 바꾸기</a> -->
-					</div>
-					<label class="form-label" for="profile" type="hidden"></label>
-					<textarea style="display:none;" class="form-control"  name="profile" id="profile"></textarea>
 					<div>
-						<aside><label for="name"></label>이름</aside>
+						<div class="profile_header">
+							<div class="profile_wrapper drag-area">
+								<svg id="svg" xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="display:block;">
+								  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+								  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+								</svg>															
+								<img id="myImage" style="
+							        width: 150px;
+							        height: 150px;
+							        border-radius:100%;
+							        border: 3px solid #fff;
+					        		position: absolute;
+									left:4px;
+									top:4px;
+							        object-fit: fill; display:none;"/>
+							</div>
+							<p style="font-weight:700; font-size:17px; margin:6px 0; "><%=dto.getId() %></p>
+		<!-- 나중에<a style="text-decoration:none;" href="#">프로필 사진 바꾸기</a> -->
+						</div>
+					</div>
+					<div class="profile_main">
+						<label class="form-label" for="profile" type="hidden"></label>
+						<textarea style="display:none;" class="form-control"  name="profile" id="profile"></textarea>
 						<div>
+							<aside><label for="name"></label>이름</aside>
 							<div>
-								<input placeholder="이름"/>
-								<div style="margin-top:5px; font-size:13px; color:gray;" type="text">회원님의 알려진 이름을 사용하여 회원님의 계정을 찾을 수 있도록 도와주세요.</div>
+								<div>
+									<input placeholder="이름"/>
+									<div style="margin-top:5px; font-size:13px; color:gray;" type="text">회원님의 알려진 이름을 사용하여 회원님의 계정을 찾을 수 있도록 도와주세요.</div>
+								</div>
+							</div>
+						</div>
+						<div>
+							<aside><label for="id"></label>사용자 아이디</aside>
+							<div>
+								<div>
+									<input type="text" name="id" id="id" value="<%=dto.getId() %>" disabled/>
+									<div style="margin-top:5px; font-size:13px; color:gray;" type="text">영문자 소문자로 시작하고 5글자~10글자 이내로 입력하세요.</div>
+								</div>
+							</div>
+						</div>
+						<div>
+							<aside><label for="introduce"></label>소개</aside>
+							<div>
+								<div>
+									<textarea class="intro_area" type="text" placeholder="소개글" rows="2" cols="35"></textarea>
+								</div>
+							</div>
+						</div>
+						<div>
+							<aside><label for="email">이메일</label></aside>
+							<div>
+								<input type="text" name="email" id="email" value="<%=dto.getEmail() %>"/>
 							</div>
 						</div>
 					</div>
-					<div>
-						<aside><label for="id"></label>사용자 아이디</aside>
-						<div>
-							<div>
-								<input type="text" name="id" id="id" value="<%=dto.getId() %>" disabled/>
-								<div style="margin-top:5px; font-size:13px; color:gray;" type="text">영문자 소문자로 시작하고 5글자~10글자 이내로 입력하세요.</div>
-							</div>
-						</div>
-					</div>
-					<div>
-						<aside><label for="introduce"></label>소개</aside>
-						<div>
-							<div>
-								<textarea class="intro_area" type="text" placeholder="소개글" rows="2" cols="35"></textarea>
-							</div>
-						</div>
-					</div>
-						<input type="text" placeholder="소개글"/>
-						
-					<div class="m-2">
-						<aside>
-						<label for="email">이메일</label>
-						</aside>
-					</div>
-						<input type="text" name="email" id="email" value="<%=dto.getEmail() %>"/>
 						
 			    <!-- 경로 수정! 클릭하면 프로필 변경 -->
 							
