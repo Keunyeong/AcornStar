@@ -26,48 +26,15 @@ public class UsersDao {
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
 			String sql = "UPDATE users"
-					+ " SET email=?, profile=?"
+					+ " SET email=?, profile=?,name=?,intro=?"
 					+ " WHERE id=?";
 			pstmt = conn.prepareStatement(sql);
 			//? 에 바인딩할 내용이 있으면 여기서 바인딩
 			pstmt.setString(1, dto.getEmail());
 			pstmt.setString(2, dto.getProfile());
-			pstmt.setString(3, dto.getId());
-			//insert or update or delete 문 수행하고 변화된 row 의 갯수 리턴 받기
-			flag = pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (pstmt != null)
-					pstmt.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e) {
-			}
-		}
-		if (flag > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	//프로필 이미지 경로를 수정하는 메소드
-	public boolean updateProfile(UsersDto dto) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		int flag = 0;
-		try {
-			conn = new DbcpBean().getConn();
-			//실행할 sql 문 작성
-			String sql = "UPDATE users"
-					+ " SET profile=?"
-					+ " WHERE id=?";
-			pstmt = conn.prepareStatement(sql);
-			//? 에 바인딩할 내용이 있으면 여기서 바인딩
-			pstmt.setString(1, dto.getProfile());
-			pstmt.setString(2, dto.getId());
+			pstmt.setString(3, dto.getName());
+			pstmt.setString(4, dto.getIntro());
+			pstmt.setString(5, dto.getId());
 			//insert or update or delete 문 수행하고 변화된 row 의 갯수 리턴 받기
 			flag = pstmt.executeUpdate();
 		} catch (Exception e) {
@@ -167,7 +134,7 @@ public class UsersDao {
 			//Connection 객체의 참조값 얻어오기 
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
-			String sql = "SELECT pwd, profile, email, regdate"
+			String sql = "SELECT pwd, profile, email, name, intro, regdate"
 					+ " FROM users"
 					+ " WHERE id=?";
 			//PreparedStatement 객체의 참조값 얻어오기
@@ -182,6 +149,8 @@ public class UsersDao {
 				dto.setId(id);
 				dto.setPwd(rs.getString("pwd"));
 				dto.setProfile(rs.getString("profile"));
+				dto.setName(rs.getString("name"));
+				dto.setIntro(rs.getString("intro"));
 				dto.setEmail(rs.getString("email"));
 				dto.setRegdate(rs.getString("regdate"));
 			}
