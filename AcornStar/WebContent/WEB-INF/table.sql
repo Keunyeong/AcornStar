@@ -1,8 +1,13 @@
 CREATE TABLE users(
 	id VARCHAR2(100) PRIMARY KEY,
+	name VARCHAR2(100),
 	pwd VARCHAR2(100) NOT NULL,
 	email VARCHAR2(100),
-	profile VARCHAR2(100), -- 프로필 이미지 경로를 저장할 칼럼
+	profile clob, -- 프로필 이미지 경로를 저장할 칼럼
+	friends clob,
+	uplist clob,
+	intro clob,
+	autority CHAR(3) DEFAULT 'no',
 	regdate DATE -- 가입일
 );
 

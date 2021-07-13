@@ -141,7 +141,7 @@
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 
 <div class="container">
-	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" style="margin-top:10px;">
 		<%for(MainFeedDto tmp:list){%>
 			<div id="card_front<%=tmp.getNum() %>" class="col item front front_feed">
 				<div class="card h-100" style="width: 18rem;">
@@ -326,7 +326,7 @@
 			</div>
 		<%} %>
 	</div>
-	<div style="display:flex; justify-content:center;">
+	<div style="display:flex; justify-content:center; margin-top:30px;">
 		<nav aria-label="Page navigation example">
 			<ul class="pagination">
 				<%if(startPageNum != 1){ %>
@@ -352,7 +352,7 @@
 			</ul>
 		</nav>
 	</div>
-	<div style="display:flex; justify-content:center;">
+	<div style="display:flex; justify-content:center; margin-bottom:50px;">
 		<form action="main.jsp" method="get"> 
 			<input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
 			<button type="submit">검색</button>

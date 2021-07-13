@@ -179,6 +179,9 @@
 				<li><a style="letter-spacing:5px;" href="${pageContext.request.contextPath}/index.jsp">로그아웃</a></li>
 				<li><a  href="#">이메일 및 SMS</a></li>
 				<li><a  href="#">공개범위 및 보안</a></li>
+				<%if(id.equals("master")){ %>
+					<li><a  href="${pageContext.request.contextPath}/authority.jsp">권한 관리</a></li>
+				<%} %>
 				<li><a  href="#">연락처 관리</a></li>
 			</ul>
 			
@@ -188,10 +191,17 @@
 				<form class="profile_form" action="signupUpdate.jsp" method="post" id="updatemyForm">
 					<div class="profile_header">
 						<div class="drag-area">
+						<%if(dto.getProfile() == null){ %>
 							<svg id="svg" xmlns="http://www.w3.org/2000/svg" width="145" height="145" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="display:block;">
 							  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
 							  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 							</svg>
+						<%}else{ %>
+							<img src="<%=dto.getProfile()%>" style="
+				         width: 80%;
+				         height: 80%;
+				         object-fit: contain;"/>
+						<%} %>
 							<img id="myImage" style="
 						        width: 80%;
 						        height: 80%;
@@ -206,7 +216,7 @@
 						<aside><label for="name"></label>이름</aside>
 						<div>
 							<div>
-								<input placeholder="이름"/>
+								<input placeholder="이름" id="name" name="name" value="<%=dto.getName() %>" />
 								<div style="margin-top:5px; font-size:13px; color:gray;" type="text">회원님의 알려진 이름을 사용하여 회원님의 계정을 찾을 수 있도록 도와주세요.</div>
 							</div>
 						</div>
@@ -221,16 +231,12 @@
 						</div>
 					</div>
 					<div>
-						<aside><label for="introduce"></label>소개</aside>
+						<aside><label for="intro"></label>소개</aside>
 						<div>
 							<div>
-								<textarea class="intro_area" type="text" placeholder="소개글" rows="2" cols="35"></textarea>
+								<textarea class="intro_area" name="intro" id="intro" type="text" placeholder="소개글" rows="2" cols="35" ><%=dto.getIntro() %></textarea>
 							</div>
 						</div>
-					</div>
-						<input type="text" placeholder="소개글"/>
-						
-					<div class="m-2">
 						<aside>
 						<label for="email">이메일</label>
 						</aside>
