@@ -13,4 +13,4 @@
 	// method를 이용해서 해당 data를 가져온다.
 	MusicFeedDto dto=MusicFeedDao.getInstance().getData(dto2);
 %>
-{"title":"<%=dto.getTitle() %>", "content":"<%=dto.getContent() %>", "link":"<%=dto.getLink() %>"}
+{"title":"<%=dto.getTitle() %>", "content":"<%=dto.getContent() %>", "tag":"<%=dto.getTag()%>", "link":"<%=dto.getLink() %>"}

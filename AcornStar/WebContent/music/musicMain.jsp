@@ -50,7 +50,7 @@
 	}
 	
 	// 특수기호를 encoding한 keyword를 미리 준비한다.
-		String encodedK=URLEncoder.encode(keyword);
+	String encodedK=URLEncoder.encode(keyword);
 	
 	
 	
@@ -82,6 +82,13 @@
 	      	dto.setWriter(keyword);
 	      	list=MusicFeedDao.getInstance().getListW(dto);
 	      	totalRow=MusicFeedDao.getInstance().getCountW(dto);
+	   	}else if(condition.equals("tag")){
+	   		dto.setTitle(keyword);
+			dto.setContent(keyword);
+			dto.setWriter(keyword);
+			dto.setTag(keyword);
+			list=MusicFeedDao.getInstance().getListTotal(dto);
+			totalRow=MusicFeedDao.getInstance().getCountTotal(dto);
 	   	} // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
 	} else { //검색 키워드가 넘어오지 않는다면
 	   	//키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다. 
@@ -164,7 +171,7 @@
 	<div class="container">
 		<div>
 			<!-- Button trigger modal -->
-			<button id="writeBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">
+			<button id="writeBtn" type="button" class="btn btn-primary" style="display:none;" data-bs-toggle="modal" data-bs-target="#insertModal">
 			  	새 글 작성
 			</button>
 			<a href="${pageContext.request.contextPath}/music/musicMain.jsp">글 전체 보기</a>
@@ -187,6 +194,10 @@
 					    		<label for="content">내용</label>
 					    		<textarea name="content" id="content"></textarea>
 					    	</div>
+					    	<div>
+					  			<label for="tag">태그</label>
+					  			<input type="tag" name="tag" id=""/>
+					  		</div>
 					    	<div>
 					  			<label for="link">링크</label>
 					  			<input type="url" name="link" id=""/>
@@ -220,6 +231,10 @@
 					    		<textarea name="update_content" id="update_content"></textarea>
 					    	</div>
 					    	<div>
+					    		<label for="tag">태그</label>
+					    		<input type="text" name="update_tag" id="update_tag"/>
+					    	</div>
+					    	<div>
 					  			<label for="update_link">링크</label>
 					  			<input type="url" name="update_link" id="update_link"/>
 					  		</div>
@@ -247,7 +262,12 @@
 					        		<h5 class="card-title"><%=tmp.getTitle() %></h5>
 					        		<p class="card-text">작성자 : <%=tmp.getWriter() %></p>
 					        		<p class="card-text"><%=tmp.getContent() %></p>
-					        		<p class="card-text"><small class="text-muted">to be continued</small></p>
+					        		<%if(tmp.getTag()==null){ %>
+					        			<p class="card-text"><small class="text-muted">tag : </small></p>
+					        		<%} else if(tmp.getTag()!=null){ %>
+					        			<p class="card-text"><small class="text-muted">tag : #<%=tmp.getTag() %></small></p>
+					        		<%} %>
+					        		<p class="card-text"><small class="text-muted">등록 시간 : <%=tmp.getRegdate() %></small></p>
 					      		</div>
 					      		<a data-num="<%=tmp.getNum() %>" class="up-link" href="javascript:">좋아요</a>
 					      		<a data-num="<%=tmp.getNum() %>" class="comment-link" href="javascript:">댓글</a>
@@ -380,7 +400,8 @@
 			</ul>
 		</div>
 	</div>
-	<form id="searchForm"action="musicMain.jsp" method="get">
+	<!--
+	<form id="searchForm" action="musicMain.jsp" method="get">
 		<label for="condition">검색 조건</label>
 		<select name="condition" id="condition">
 			<option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
@@ -399,22 +420,55 @@
 			<strong><%=totalRow %></strong> 개의 글이 있습니다.
 		</p>
 	<%} %>
+	-->
 	<script>
 		// 로고
 		document.querySelector("#acornstar").addEventListener("click",function(){
 			location.href="${pageContext.request.contextPath}/main/main.jsp";
 		});
-		
-		// 검색 관련 : 입력값이 없으면 제출하지 않는다.
+		/*
+		// 검색 관련 : 입력값이 없으면 제출하지 않는다.")
 		document.querySelector("#searchForm").addEventListener("submit", function(e){
 			if(document.querySelector("#keyword").value==""){
 				e.preventDefault();
 			}
 		});
+		*/
+		document.querySelector(".searchForm").setAttribute("action", "musicMain.jsp");
+		document.querySelector(".searchForm").setAttribute("method", "get");
+		document.querySelector(".searchForm").addEventListener("submit", function(e){
+			if(document.querySelector(".keyword").value==""){
+				e.preventDefault();
+			}
+		});
+		
+		/*
+			좋아요 관련
+		*/
+		let upLinks=document.querySelectorAll(".up-link");
+		for(let i=0; upLinks.length; i++){
+			upLinks[i].addEventListener("click", function(e){
+				e.preventDefault();
+				
+				let num=this.getAttribute("data-num");
+				
+				ajaxPromise("up.jsp", "post", "num="+num)
+				.then(function(response){
+					return response.
+				}).then(function(data){
+					console.log(data);
+				});
+			});
+		}
 		
 		/*
 			게시글 기능 관련
 		*/
+		
+		// 글쓰기 기호를 눌렀을 때 작동하는 곳
+		document.querySelector("#write").addEventListener("click", function(){
+			document.querySelector("#writeBtn").click();
+		});
 		
 		// insert modal 에서 글 작성 버튼을 눌렀을 때 작동하는 곳
 		document.querySelector("#insertForm").addEventListener("submit", function(e){
@@ -482,6 +536,7 @@
 					document.querySelector("#updateNum").value=num;
 					document.querySelector("#update_title").value=data.title;
 					document.querySelector("#update_content").value=data.content;
+					document.querySelector("#update_tag").value=data.tag;
 					document.querySelector("#update_link").value=data.link;
 				});
 			});	

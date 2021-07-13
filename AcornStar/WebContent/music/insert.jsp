@@ -9,6 +9,7 @@
 	// content parameter로 전달되는 data를 받아옴.
 	String title=request.getParameter("title");
 	String content=request.getParameter("content");
+	String tag=request.getParameter("tag");
 	String link=request.getParameter("link");
 	if(link.length()<=30){
 		link="https://www.youtube.com/embed/"+link.substring(16);
@@ -21,8 +22,9 @@
 	dto.setWriter(writer);
 	dto.setTitle(title);
 	dto.setContent(content);
+	dto.setTag(tag);
 	dto.setLink(link);
-	
+	System.out.println(writer + title + content + tag + link);
 	// 추가
 	boolean beInserted=MusicFeedDao.getInstance().insert(dto);
 	
