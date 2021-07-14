@@ -99,15 +99,10 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
-@import url(https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css);
-@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
 	a{
 	  text-decoration: none;
 	  color: black;
 	}
-   .content{
-   		
-   }
    
    /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
    .profile-image{
@@ -137,18 +132,17 @@
       border-top: 1px solid #888;
    }
    .comment-form textarea{
-      width: 80%;
-      height: 70px;
+      width: 100%;
+      height: 80px;
       color: black;
       background-color: white;
-      border: 1px solid #652dc1;
+      border: 1px solid #a385cf;
+      border-radius: 10px;
+      outline: none;
    }
-   .comment-form button{
-      width: 14%;
-      height: 70px;
-      color: black;
-      background-color: white;
-      border: 10px solid #6610f2;
+   .comment-form textarea:hover{
+      border: 2px solid #a385cf;
+      outline: none;
    }
    /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
    .comments .comment-form{
@@ -189,34 +183,54 @@
       animation: rotateAni 1s ease-out infinite;
    }
    
-   @keyframes rotateAni{
-      0%{
-         transform: rotate(0deg);
-      }
-      100%{
-         transform: rotate(360deg);
-      }
-   }
+  
    table{
    	  width: 70%;
    	  margin-left: auto;
    	  margin-light: auto;
    	  text-align: center;
    }
-   #Btn{
-   	  display: inline-block;
-      padding: auto;
-      margin-left: 50px;
-      font-size: 30px;
-      color: white;
-      background-color: #a385cf;
-      border: none;
-      border-radius: 50%;
-      box-shadow: 0 5px #999;
-   }
-   #Btn:hover {
-      background-color: pink;
-   }
+   #submitBtn{
+      background:#a385cf;
+	  color:#fff;
+	  border:none;
+	  border-radius: 5px;
+	  position:relative;
+	  margin-top: 20px;
+	  margin-bottom: 20px;
+	  float: right;
+	  height:50px;
+	  font-size:25px;
+	  padding:0 1em;
+	  cursor:pointer;
+	  transition:800ms ease all;
+	  outline:none;
+	}
+    #submitBtn:hover{
+	  background: #fff;
+	  color: #a385cf;
+	}
+	#submitBtn:before,#submitBtn:after{
+  	  content:'';
+	  position:absolute;
+	  top:0;
+	  right:0;
+	  height:2px;
+	  width:0;
+	  background: #a385cf;
+	  transition:400ms ease all;
+    }
+    #submitBtn:after{
+      right:inherit;
+      top:inherit;
+      left:0;
+      bottom:0;
+	}
+    #submitBtn:hover:before,#submitBtn:hover:after{
+      width:100%;
+      transition:800ms ease all;
+    }
+
 </style>
 </head>
 <body>
@@ -270,7 +284,7 @@
       
    </ul>
    <!-- 댓글 목록 -->
-   <div class="comments">
+   <div class="comments" style="width: 100%;">
       <ul>
          <%for(InfoCommentDto tmp: commentList){ %>
             <%if(tmp.getDeleted().equals("yes")){ %>
@@ -312,7 +326,7 @@
                   <dd>
                      <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>                  
                   </dd>
-               </dl>   
+               </dl>
                <form id="reForm<%=tmp.getNum() %>" class="animate__animated comment-form re-insert-form" 
                   action="private/comment_insert.jsp" method="post">
                   <input type="hidden" name="ref_group"
@@ -322,7 +336,7 @@
                   <input type="hidden" name="comment_group"
                      value="<%=tmp.getComment_group()%>"/>
                   <textarea name="content"></textarea>
-                  <button type="submit" id="Btn">등록</button>
+                  <button type="submit" id="submitBtn">등록</button>
                </form>   
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
@@ -348,9 +362,8 @@
       <input type="hidden" name="ref_group" value="<%=num%>"/>
       <!-- 원글의 작성자가 댓글의 대상자가 된다. -->
       <input type="hidden" name="target_id" value="<%=dto.getWriter()%>"/>
-      
       <textarea name="content"><%if(!isLogin){%>댓글 작성을 위해 로그인이 필요 합니다.<%}%></textarea>
-      <button type="submit" id="Btn">등록</button>
+      <button type="submit" id="submitBtn">등록</button>
    </form>
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>

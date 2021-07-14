@@ -122,53 +122,53 @@ public class UsersDao {
 		}
 	}
 	
-	
-	//인자로 전달된 아이디에 해당하는 정보를 리턴하는 메소드
-	public UsersDto getData(String id) {
-		UsersDto dto=null;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			//Connection 객체의 참조값 얻어오기 
-			conn = new DbcpBean().getConn();
-			//실행할 sql 문 작성
-			String sql = "SELECT pwd, profile, email, name, intro, regdate"
-					+ " FROM users"
-					+ " WHERE id=?";
-			//PreparedStatement 객체의 참조값 얻어오기
-			pstmt = conn.prepareStatement(sql);
-			//? 에 바인딩할 내용이 있으면 여기서 바인딩
-			pstmt.setString(1, id);
-			//select 문 수행하고 결과를 ResultSet 으로 받아오기
-			rs = pstmt.executeQuery();
-			//ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
-			if (rs.next()) {
-				dto=new UsersDto();
-				dto.setId(id);
-				dto.setPwd(rs.getString("pwd"));
-				dto.setProfile(rs.getString("profile"));
-				dto.setName(rs.getString("name"));
-				dto.setIntro(rs.getString("intro"));
-				dto.setEmail(rs.getString("email"));
-				dto.setRegdate(rs.getString("regdate"));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (pstmt != null)
-					pstmt.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e) {
-			}
-		}
-		return dto;
-	}
+   //인자로 전달된 아이디에 해당하는 정보를 리턴하는 메소드
+   public UsersDto getData(String id) {
+      UsersDto dto=null;
+      
+      Connection conn = null;
+      PreparedStatement pstmt = null;
+      ResultSet rs = null;
+      try {
+         //Connection 객체의 참조값 얻어오기 
+         conn = new DbcpBean().getConn();
+         //실행할 sql 문 작성
+         String sql = "SELECT pwd, profile, email, name, intro, autority, regdate"
+               + " FROM users"
+               + " WHERE id=?";
+         //PreparedStatement 객체의 참조값 얻어오기
+         pstmt = conn.prepareStatement(sql);
+         //? 에 바인딩할 내용이 있으면 여기서 바인딩
+         pstmt.setString(1, id);
+         //select 문 수행하고 결과를 ResultSet 으로 받아오기
+         rs = pstmt.executeQuery();
+         //ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+         if (rs.next()) {
+            dto=new UsersDto();
+            dto.setId(id);
+            dto.setPwd(rs.getString("pwd"));
+            dto.setProfile(rs.getString("profile"));
+            dto.setName(rs.getString("name"));
+            dto.setAutority(rs.getString("autority"));
+            dto.setIntro(rs.getString("intro"));
+            dto.setEmail(rs.getString("email"));
+            dto.setRegdate(rs.getString("regdate"));
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      } finally {
+         try {
+            if (rs != null)
+               rs.close();
+            if (pstmt != null)
+               pstmt.close();
+            if (conn != null)
+               conn.close();
+         } catch (Exception e) {
+         }
+      }
+      return dto;
+   }
 	
 	//인자로 전달된 아이디가 DB 에 존재하는지 여부를 리턴하는 메소드
 	public boolean isExist(String id) {
