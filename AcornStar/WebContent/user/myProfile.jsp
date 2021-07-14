@@ -205,7 +205,7 @@
 				                   border-radius:100%;
 							       border: 3px solid #fff;
 					        		position: absolute;
-				                   object-fit: contain;"/>
+				                   object-fit: fill;"/>
 				                <%} %>
 								<img id="myImage" style="
 							        width: 150px;
@@ -215,7 +215,7 @@
 					        		position: absolute;
 									left:4px;
 									top:4px;
-							        object-fit: contain; display:none;"/>
+							        object-fit: fill; display:none;"/>
 							</div>
 							<p style="font-weight:700; font-size:17px; margin:6px 0; "><%=dto.getId() %></p>
 		<!-- 나중에<a style="text-decoration:none;" href="#">프로필 사진 바꾸기</a> -->
