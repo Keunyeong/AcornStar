@@ -2,6 +2,8 @@
 <%@page import="java.util.List"%>
 <%@page import="test.info.dao.InfoDao"%>
 <%@page import="test.info.dto.InfoDto"%>
+<%@page import="test.users.dto.UsersDto"%>
+<%@page import="test.users.dao.UsersDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -46,7 +48,7 @@
    InfoDto dto=new InfoDto();
    dto.setStartRowNum(startRowNum);
    dto.setEndRowNum(endRowNum);
-
+   
    //ArrayList 객체의 참조값을 담을 지역변수를 미리 만든다.
    List<InfoDto> list=null;
    //전체 row 의 갯수를 담을 지역변수를 미리 만든다.
@@ -103,7 +105,7 @@
    }
    //로그인 된 아이디 읽어오기 
    String id=(String)session.getAttribute("id");
-   
+   UsersDto usersdto=UsersDao.getInstance().getData(id);
 %>        
 <!DOCTYPE html>
 <html>
@@ -131,7 +133,17 @@
    .pagination{
    	  margin-top: 50px;
    }
-   select{
+   .pagination a{
+      color: indigo;
+      line-height:28px;
+      margin:0 5px;
+      border:1px solid #ccc;
+   }
+   .pagination a.page-link:hover{
+	background-color: #a385cf;
+	color: #fff;
+	}
+    select{
    	  border-radius: 10px;
    	  border: solid 2px #a385cf;
    	  color: gray;
@@ -168,7 +180,9 @@
 <body>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
+<%if((usersdto.getAutority()).equals("yes")){%>
    <button class="btn-gradient purple" style="margin-top: 30px;" onclick="location.href='private/insert_form.jsp'">공지하기</button>
+<%}%>
    <h1 class="animate__animated animate__slideInDown" style="text-align: center;">
    		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50"
 	 	fill="#652dc1" viewBox="0 0 493.546 493.546" style="enable-background:new 0 0 493.546 493.546;" xml:space="preserve">
@@ -198,7 +212,7 @@
 		</svg>
    Notice
    </h1>
-   <h6 style="text-align: center;">AcornStar 의 모든 공지사항을 알립니다!</h6>
+   <h6 class="animate__pulse" style="text-align: center; color: gray;">AcornStar 의 모든 공지사항을 알립니다!</h6>
    <table class="table table-striped table-bordered table-hover">
       <thead style="background-color: #a385cf; color: white;">
          <tr>
@@ -229,13 +243,13 @@
                <a class="page-link" href="info.jsp?pageNum=<%=startPageNum-1 %>">Prev</a>
             </li>
          <%}else{ %>
-            <li class="page-item disabled">
+            <li class="page-item">
                <a class="page-link" href="javascript:">Prev</a>
             </li>
          <%} %>
          <%for(int i=startPageNum; i<=endPageNum; i++) {%>
             <%if(i==pageNum){ %>
-               <li class="page-item active">
+               <li class="page-item">
                   <a class="page-link" href="info.jsp?pageNum=<%=i %>"><%=i %></a>
                </li>
             <%}else{ %>
@@ -249,7 +263,7 @@
                <a class="page-link" href="info.jsp?pageNum=<%=endPageNum+1 %>">Next</a>
             </li>
          <%}else{ %>
-            <li class="page-item disabled">
+            <li class="page-item">
                <a class="page-link" href="javascript:">Next</a>
             </li>
          <%} %>

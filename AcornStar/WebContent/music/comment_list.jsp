@@ -2,13 +2,13 @@
 <%@page import="test.musicfeed.dto.MusicCommentDto"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%
 	// 로그인 id 정보 받아오기
 	String id=(String)session.getAttribute("id");
 	
 	// pageNum && num 정보 받아오기
-	int comment_pageNum=Integer.parseInt(request.getParameter("pageNum"));
+	int comment_pageNum=Integer.parseInt(request.getParameter("comment_pageNum"));
 	int num=Integer.parseInt(request.getParameter("num"));
 
 	/*
@@ -80,5 +80,5 @@
 		</li>
 	<%} %>
 	<%if(comment_totalPageCount > comment_pageNum){ %>
-		<a data-num="<%=num %>" data-num2="<%=comment_totalPageCount %>" class="moreComment" href="javascript:">더보기</a>
+		<a data-num="<%=num %>" data-num2="<%=comment_totalPageCount %>" data-num3="<%=comment_pageNum%>" class="page-<%=comment_pageNum%> moreComment" href="javascript:">더보기</a>
 	<%} %>

@@ -20,30 +20,29 @@
 	//System.out.println(array[0]);
 	//System.out.println(result);
 	boolean beSuccess=false;
-	boolean beUp=false;
+	boolean beDown=false;
 	
 	MusicFeedDto dto2=MusicFeedDao.getInstance().getData(num);
 	int upCount=dto2.getUpCount();
 	
-	if(check){
+	if(!check){
 		beSuccess=false;
 	} else {
-		List<String> upList=new ArrayList<>();
-		for(int i=0; i<array.length; i++){
-			upList.add(array[i]);
-		}
-		upList.add(str_num);
-		String list=String.join(",", upList);
+		List<String> alist = new ArrayList<String>(Arrays.asList(array));
+		alist.remove(str_num);
+		//System.out.println(result);
+		String list=String.join(",", alist);
 		//System.out.println(list);
 		UsersDto dto=new UsersDto();
 		dto.setId(id);
 		dto.setUplist(list);
 		
 		beSuccess=UsersDao.getInstance().addUpList(dto);
-		beUp=MusicFeedDao.getInstance().up(num);
+		beDown=MusicFeedDao.getInstance().down(num);
 		
 		dto2=MusicFeedDao.getInstance().getData(num);
 		upCount=dto2.getUpCount();
 	}
+	
 %>
-{"beSuccess":<%=beSuccess%>, "beUp":<%=beUp%>, "upCount":<%=upCount%>}
+{"beSuccess":<%=beSuccess%>, "beDown":<%=beDown%>, "upCount":<%=upCount%>}

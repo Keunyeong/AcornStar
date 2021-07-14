@@ -6,7 +6,7 @@
 <jsp:setProperty property="*" name="dto"/> 
 <%
 	/*
-	<jsp:useBean id="dto" class="test.cafe.dto.CafeDto"></jsp:useBean>   
+	<jsp:useBean id="dto" class="test.suggest.dto.SuggestDto"></jsp:useBean>   
 	<jsp:setProperty property="" name="dto"/> 
 	
 	위의 2줄은 아래의 코드를 대체 할수 있다.
@@ -15,7 +15,7 @@
 	String title=request.getParameter("title");
 	String content=request.getParameter("content");
 	
-	CafeDto dto=new CafeDto();
+	SuggestDto dto=new SuggestDto();
 	dto.setNum(num);
 	dto.setTitle(title);
 	dto.setContent(content);

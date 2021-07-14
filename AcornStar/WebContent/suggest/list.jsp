@@ -115,16 +115,21 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
   />
+  
+ <!-- 기본폰트 : 나눔고딕 폰트 적용 -->
+ 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
+/* body 전체에 나눔고딕 폰트 15px 적용*/
 	body {
 		font-family: 'Nanum Gothic', sans-serif;
 		font-size: 15px;
 	}
 
+/* page-ui 게시판 하단 페이지번호 */
    .page-ui a{
       text-decoration: none;
       color: #000;
@@ -155,14 +160,14 @@
 	.page-ui {
 		margin: 10px 0;
 	}
-   
+	
+/* 상단 Q&A title 및 subtitle 정렬*/
    .suggest_header {
    		display: flex;
    		align-items:center;
    		flex-direction:column;
    		justify-content:center;
    		margin : 50px 20px 40px 30px;
-   		
    }
    
    .suggest_title {
@@ -175,6 +180,7 @@
    		color:gray;
    }
    
+/* header, form을 감싼 box*/
    .suggest_box {
    		display: flex;
    		justify-content:center;
@@ -183,10 +189,14 @@
    		width:70vw;
    }
    
+	.suggest_box {
+		margin: 0 auto;
+	}
+	
+/* form title 정렬 */
 	.suggest_row {
 		text-align:center;
 	}
-	
 	
 	.suggest_row .col {
 		text-align:center;
@@ -197,20 +207,14 @@
 		text-align:left;
 	}
 	
-	.suggest_box {
-		margin: 0 auto;
-	}
-
 	.suggest_row_space {
 		border-bottom: 15px solid #fff;
 		border-top: 15px solid #fff;
 		border-left: 3px solid #fff;
 	}
 
-
 	.suggest_row_effect {
 		border-bottom: 1px solid #c465f0;
-		
 	}
 	
 	.suggest_row_effect:hover {
@@ -218,18 +222,14 @@
 		background-color: #c465f0;
 		color: #fff;
 		font-weight: 700;
-
 	}
 	
+/*링크 포함 된 div에 포인터 커서 등록*/
 	.content_effect:hover {
 		cursor:pointer;
 	}
 	
-	.suggest_btn {
-		display:flex;
-		justify-content: flex-end;
-	}
-	
+/*하단 검색창*/	
 	.suggest_form {
 		display:flex;
 		justify-content: center;
@@ -262,6 +262,13 @@
 		transition: all 0.1s ease-in;
 	}
 	
+/* 하단 문의하기 버튼 + 아이콘 감싼 태그*/
+	.suggest_btn {
+		display:flex;
+		justify-content: flex-end;
+	}
+	
+/*문의하기 버튼*/	
 	.btn_color {
 		background-color: #fff;
 		border-radius: 10px;
@@ -273,7 +280,6 @@
 		color:white;
 	}
 	
-	
 </style>
 </head>
 <body>
@@ -284,6 +290,8 @@
 	   <h2 class="suggest_title">Q&A</h2>
 	   <span class="suggest_subtitle">궁금한 점이 있다면 하단의 검색창을 이용해 보세요.</span>   	
    	</div>
+   	
+  	<!-- 게시판 타이틀과 내용 -->
 	   <table>
 	      <thead>
 	         <tr class="suggest_row suggest_row_space">
@@ -309,6 +317,7 @@
 	      </tbody>
 	   </table>
 	   
+	   <!-- 페이지 번호  -->
 	   <div class="page-ui clearfix">
 	      <ul>
 	         <%if(startPageNum != 1){ %>
@@ -334,6 +343,7 @@
 	      </ul>
 	   </div>
 	   
+	 <!-- 하단 문의하기 버튼 -->
 	   <div class="suggest_btn">
 		   <a class="btn btn_color" href="private/insert_form.jsp">
 		   	문의하기
@@ -345,6 +355,7 @@
 	   
 	   <div style="clear:both;"></div>
 	   
+	<!-- 하단 검색창 -->
 	   <form class="suggest_form" action="list.jsp" method="get"> 
 	      <label style="visibility:hidden;" for="condition">검색조건</label>
 	      <select name="condition" id="condition">
@@ -360,14 +371,13 @@
 	      </button>
 	   </form>   
 	   
+	  <!-- 검색 결과 출력 -->
 	   <%if(!condition.equals("")){ %>
 	      <p>
 	         <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
 	      </p>
 	   <%} %>
    	</article>
-   </section>
-   
-   
+   </section> 
 </body>
 </html>

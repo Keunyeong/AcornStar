@@ -72,9 +72,13 @@
 <body>
 <jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container">
+
+<!-- update 상단 타이틀 -->
    <h2 class="update_title">Q&A</h2>
    <form class="update_form" action="update.jsp" method="post">
       <input type="hidden" name="num" value="<%=num %>" />
+      
+<!-- update 상단 작성자,제목 수정 -->
       <div class="update_wt">
          <label for="writer">작성자</label>
          <input class="update_input" style="width:200px;" type="text" id="writer" value="<%=dto.getWriter() %>" disabled/>
@@ -83,6 +87,8 @@
          <label for="title">제목</label>
          <input class="update_input input_m" style="width:200px;" type="text" name="title" id="title" value="<%=dto.getTitle()%>"/>
       </div>
+      
+<!-- update 내용 컨텐츠 -->
       <div>
          <label for="content" style="visibility:hidden;">내용</label>
          <textarea name="content" id="content"><%=dto.getContent() %></textarea>

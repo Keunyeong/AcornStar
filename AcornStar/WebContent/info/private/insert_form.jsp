@@ -17,6 +17,19 @@
 		width: 100%;
 		display:none;
 	}
+	.saveBtn{
+		width: 80px;
+		height: 50px;
+		margin-bottom: 20px;
+		border: 2px solid #a385cf;
+		border-radius: 10px;
+		outline: none;
+		background-color: #fff;
+	}
+	.saveBtn:hover{
+		background-color: #a385cf;
+		color: #fff;
+	}
 </style>
 </head>
 <body>
@@ -25,14 +38,14 @@
 <div class="container">
 	<form action="insert.jsp" method="post" id="insertForm">
 		<div class="mb-3">
-			<label class="form-label" for="title">Title</label>
+			<label class="form-label" for="title">제목</label>
 			<input class="form-control" type="text" name="title" id="title"/>
 		</div>
 		<div class="mb-3">
-			<label class="form-label" for="content">Content</label>
+			<label class="form-label" for="content">내용</label>
 			<textarea class="form-control"  name="content" id="content"></textarea>
 		</div>
-		<button class="btn btn-outline-info" type="submit">Save</button>
+		<button class="saveBtn" type="submit">저장</button>
 	</form>
 </div>
 	<%--
