@@ -402,7 +402,9 @@
 										</form>
 									<%} %>
 									<!-- 대댓글 form(hidden) -->
-									<form data-num="<%=tmp2.getNum() %>" id="recommentForm<%=tmp2.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
+									<form data-num="<%=tmp2.getNum() %>" data-num3="80" id="recommentForm<%=tmp2.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
+										<input type="hidden" name="currentPage" value="80"/>
+										<input type="hidden" name="num" value="<%=tmp.getNum()%>"/>
 										<input type="hidden" name="target_id" value="<%=tmp2.getWriter() %>"/>
 										<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 										<input type="hidden" name="comment_group" value="<%=tmp2.getComment_group()%>"/>
@@ -418,7 +420,9 @@
 							
 						<!-- 댓글 작성하는 form(hidden) -->
 						<div>
-							<form data-num="<%=tmp.getNum() %>" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
+							<form data-num="<%=tmp.getNum() %>" data-num3="80" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
+								<input type="hidden" name="currentPage" value="80"/>
+								<input type="hidden" name="num" value="<%=tmp.getNum()%>"/>
 								<input type="hidden" name="target_id" value="<%=tmp.getWriter() %>"/>
 								<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 								<textarea name="comment" id="comment"></textarea>
@@ -703,6 +707,7 @@
 		
 		commentAddListener(".comment");
 		// 댓글 달기 버튼을 눌렀을 때 작동하는 곳
+		
 		function commentAddListener(sel){
 			let commentForms=document.querySelectorAll(sel);
 			for(let i=0; i<commentForms.length; i++){
@@ -719,15 +724,75 @@
 					}).then(function(data){
 						if(data.beInserted){
 							let path="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=pageNum%>";
-							location.href=path;
+							location.href=path;	
 						} else {
 							console.log("댓글 등록 실패");
 						}
+
 					});
 				});
 			}
 		}
 		
+		/*
+		let tcurrentPage=80;
+		function commentAddListener(sel){
+			let commentForms=document.querySelectorAll(sel);
+			for(let i=0; i<commentForms.length; i++){
+				commentForms[i].addEventListener("submit", function(e){
+					// 일단 form 제출을 막고
+					e.preventDefault();
+					
+					// 대댓글일 경우
+					if(commentForms[i].getAttribute("id").includes("re")){
+						let num=this.getAttribute("data-num");
+						
+						//tcurrentPage=this.getAttribute("data-num3");
+						
+						tcurrentPage++;
+						
+						// ajax로 응답
+						ajaxFormPromise(this)
+						.then(function(response){
+							return response.text();
+						}).then(function(data){
+							document.querySelector(".commentList[id=commentList"+num+"]"+" ul").insertAdjacentHTML("beforeend", data);
+													
+							// 새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 event listener를 등록하기
+							recommentBtnAddListener(".page-"+tcurrentPage+" .recomment-link");
+							commentAddListener(".page-"+tcurrentPage+" .comment");
+							commentDeleteBtnAddListener(".page-"+tcurrentPage+" .comment-delete-link");
+							commentUpdateBtnAddListener(".page-"+tcurrentPage+" .comment-update-link");
+							commentUpdateAddListener(".page-"+tcurrentPage+" .commentUpdate");
+							moreComment(".moreComment");
+						});
+					} else { // 댓글일 경우
+						let num=this.getAttribute("data-num");
+						
+						//tcurrentPage=this.getAttribute("data-num3");
+						
+						tcurrentPage++;
+						
+						// ajax로 응답
+						ajaxFormPromise(this)
+						.then(function(response){
+							return response.text();
+						}).then(function(data){
+							document.querySelector(".commentList[id=commentList"+num+"]"+" ul").insertAdjacentHTML("beforeend", data);
+													
+							// 새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 event listener를 등록하기
+							recommentBtnAddListener(".page-"+tcurrentPage+" .recomment-link");
+							commentAddListener(".page-"+tcurrentPage+" .comment");
+							commentDeleteBtnAddListener(".page-"+tcurrentPage+" .comment-delete-link");
+							commentUpdateBtnAddListener(".page-"+tcurrentPage+" .comment-update-link");
+							commentUpdateAddListener(".page-"+tcurrentPage+" .commentUpdate");
+							moreComment(".moreComment");
+						});
+					}
+				});
+			}
+		}
+		*/
 		commentDeleteBtnAddListener(".comment-delete-link");
 		function commentDeleteBtnAddListener(sel){
 			// 댓글 삭제 버튼을 눌렀을 때 작동하는 곳
@@ -851,7 +916,7 @@
 					// 마지막 page는 for문 안에다가
 					let lastPage=this.getAttribute("data-num2");
 					
-					let currentPage=this.getAttribute("data-num3");
+					currentPage=this.getAttribute("data-num3");
 					
 					let beLast= currentPage==lastPage;
 					
