@@ -103,6 +103,14 @@
  font-family: 'Lato', sans-serif;
  background-color: #c5b3e6;
 }
+
+.navbar_ul {
+	display:flex;
+	flex-direction: row;
+	justify-content:space-around;
+	align-items:center;
+}
+
 .wrapper {
 padding-top: 30px;
 }
