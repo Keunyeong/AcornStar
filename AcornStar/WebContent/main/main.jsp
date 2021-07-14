@@ -96,6 +96,59 @@
 <title>main.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
+	body {
+ font-family: 'Lato', sans-serif;
+ background-color: #c5b3e6;
+}
+.wrapper {
+padding-top: 30px;
+}
+.card-img-top {
+box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+}
+.card-body{
+    text-align: center;
+    box-shadow: 0px 15px 15px -8px rgba(0,0,0,0.5);
+}
+.card-body h6 {
+font-size: 14px;
+text-transform: uppercase;
+color: deeppink;
+}
+.card-title {
+text-transform: uppercase;
+font-weight: bold;
+font-size: 24px;
+}
+
+.socials a {
+width: 40px;
+height: 40px;
+display: inline-block;
+border-radius: 50%;
+margin: 0 5px;
+}
+.socials a i {
+color: #fff;
+padding: 12px 0;
+}    
+
+.socials a:nth-child(1) {
+background: #3b5998;
+}.socials a:nth-child(2) {
+background: #ff0000;
+}.socials a:nth-child(3) {
+background: #007bb5;
+}.socials a:nth-child(4) {
+background: #ea4c89;
+}
+
+@media (max-width: 800px){
+    .mx-30{
+        margin-bottom: 30px;
+    }
+}
+
 	a{
 		text-decoration: none;
 	}
@@ -139,21 +192,20 @@
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 
 <jsp:include page="../include/navbar.jsp"></jsp:include>
-
-<div class="container">
-	<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4" style="margin-top:10px;">
-		<%for(MainFeedDto tmp:list){%>
-			<div id="card_front<%=tmp.getNum() %>" class="col item front front_feed">
-				<div class="card h-100" style="width: 18rem;">
-					<ul class="list-group list-group-flush">
-					    <li class="list-group-item">
+<div class="wrapper">
+	<div class="container">
+		<div class="row " >
+			<%for(MainFeedDto tmp:list){%>
+				<div class="col item front front_feed col-md-6 col-lg-4" id="card_front<%=tmp.getNum() %>" style="margin-bottom:20px;">
+					<div class="card mx-30" style="width: 18rem;">
+						<div class="card-body">
 					    	<%if(tmp.getProfile() == null){ %>
 								<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
 									  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
 									  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 								</svg>
 							<%}else{ %>
-								<img class="profile-image" src="<%=tmp.getProfile()%>" style="width:20px; rounded;"/>
+								<img class="profile-image " src="<%=tmp.getProfile()%>" style="width:20px; rounded;"/>
 							<%} %>
 					    	<%=tmp.getWriter() %>님이 작성한 글. 
 					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn"  href="javascript:">
@@ -162,50 +214,51 @@
 								</svg>
 								<%=tmp.getUpCount()%>
 					    	</a>
-					    </li>
-					</ul>
-				  <img id="img<%=tmp.getNum() %>" src="<%=tmp.getImage() %>" class="card-img-top" style="
-				         width: 80%;
-				         height: 80%;
-				         object-fit: contain;
-				         margin:25px;
-				   " >
-				  <div id="content<%=tmp.getNum() %>"class="card-body" >
-				    <p class="card-text">
-				    	<%=tmp.getContent() %>
-				    </p>
-				  </div>
-				  <ul class="list-group list-group-flush">
-				    <li id="tag<%=tmp.getNum() %>" class="list-group-item" style="text-margin-left:10px;"><%=tmp.getTag() %></li>
-				    <%if(tmp.getWriter().equals(id)){ %>
-				    <li id="update<%=tmp.getNum() %>" class="list-group-item" style="text-margin-left:10px;">
-				    		<!-- 피드 수정 -->
-							<a data-num="<%=tmp.getNum() %>" class="update" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-								  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-								  <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-								</svg>
-							</a>
-
-							<!-- 피드 삭제 -->
-							<a data-num="<%=tmp.getNum() %>" class="delete" href="javascript:">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-								  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-								  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-								</svg>
-							</a>
-				    </li>
-				    <%} %>
-				    <li class="list-group-item" >
-				    	<a  data-num="<%=tmp.getNum() %>" class="commentBtn" href="javascript:">댓글</a>
-				    </li>
-				  </ul>
+						</div>
+					  <img id="img<%=tmp.getNum() %>" src="<%=tmp.getImage() %>" class="card-img-top" style="
+					         width: 80%;
+					         height: 80%;
+					         object-fit: contain;
+					         margin:25px;
+					   " >
+					   
+					  <div class="card-body" id="content<%=tmp.getNum() %>" >
+					    <p class="card-text">
+					    	<%=tmp.getContent() %>
+					    </p>
+					    <p class="card-text">
+					    	<%=tmp.getTag() %>
+					    </p>
+					    <div class="socials">
+						    <%if(tmp.getWriter().equals(id)){ %>
+					    		<!-- 피드 수정 -->
+								<a data-num="<%=tmp.getNum() %>" class="update" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
+									  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+									  <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+									</svg>
+								</a>
+	
+								<!-- 피드 삭제 -->
+								<a data-num="<%=tmp.getNum() %>" class="delete" href="javascript:">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+									  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+									  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+									</svg>
+								</a>
+						    
+						    <%} %>
+						</div>
+						<div style="display:flex; justify-content:flex-end;">    
+						    <a  data-num="<%=tmp.getNum() %>" class="commentBtn" href="javascript:" style="text-decoration:none; color:black;">댓글</a>
+					  	</div>
+					  </div>
+					</div>
 				</div>
-			</div>
-			<div id="card_back<%=tmp.getNum() %>" class="col item front back_comment" style="display:none;">
-				<div class="card h-100" style="width: 18rem;">
-					<ul class="list-group list-group-flush">
-					    <li class="list-group-item">
+				
+				<div id="card_back<%=tmp.getNum() %>" class="col item front back_comment col-md-6 col-lg-4" style="display:none;">
+					<div class="card mx-30" style="width: 18rem;">
+						<div class="card-body">
 					    	<%if(tmp.getProfile() == null){ %>
 								<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
 									  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -221,151 +274,151 @@
 								</svg>
 								<%=tmp.getUpCount()%>
 					    	</a>
-					    </li>
-					</ul>
-				  <div id="cardBody<%=tmp.getNum() %>" class="card-body" style="overflow:auto; height:300px;">
-				  	<%  //한 페이지에 몇개씩 표시할 것인지
-					    	final int PAGE_ROW_COUNT2=100;
-
-					    	//detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
-					    	int pageNum2=1;
-
-					    	//보여줄 페이지의 시작 ROWNUM
-					    	int startRowNum2=1+(pageNum2-1)*PAGE_ROW_COUNT2;
-					    	//보여줄 페이지의 끝 ROWNUM
-					    	int endRowNum2=pageNum2*PAGE_ROW_COUNT2;
-
-					    	//원글의 글번호를 이용해서 해당글에 달린 댓글 목록을 얻어온다.
-							FeedCommentDto commentDto=new FeedCommentDto();
-							commentDto.setRef_group(tmp.getNum());
-							//1페이지에 해당하는 startRowNum 과 endRowNum 을 dto 에 담아서  
-							commentDto.setStartRowNum(startRowNum2);
-							commentDto.setEndRowNum(endRowNum2);
+						 </div>
+					  <div id="cardBody<%=tmp.getNum() %>" class="card-body" style="overflow:auto; height:300px;">
+					  	<%  //한 페이지에 몇개씩 표시할 것인지
+						    	final int PAGE_ROW_COUNT2=100;
+	
+						    	//detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
+						    	int pageNum2=1;
+	
+						    	//보여줄 페이지의 시작 ROWNUM
+						    	int startRowNum2=1+(pageNum2-1)*PAGE_ROW_COUNT2;
+						    	//보여줄 페이지의 끝 ROWNUM
+						    	int endRowNum2=pageNum2*PAGE_ROW_COUNT2;
+	
+						    	//원글의 글번호를 이용해서 해당글에 달린 댓글 목록을 얻어온다.
+								FeedCommentDto commentDto=new FeedCommentDto();
+								commentDto.setRef_group(tmp.getNum());
+								//1페이지에 해당하는 startRowNum 과 endRowNum 을 dto 에 담아서  
+								commentDto.setStartRowNum(startRowNum2);
+								commentDto.setEndRowNum(endRowNum2);
+								
+								//1페이지에 해당하는 댓글 목록만 select 되도록 한다. 
+								List<FeedCommentDto> commentList=
+									FeedCommentDao.getInstance().getList(commentDto);%>
+					    	<%for(FeedCommentDto mp: commentList){ %>
+								<%if(mp.getDeleted().equals("yes")){ %>
+									<li>삭제된 댓글 입니다.</li>
+								<% 
+									// continue; 아래의 코드를 수행하지 않고 for 문으로 실행순서 다시 보내기 
+									continue;
+								}%>
 							
-							//1페이지에 해당하는 댓글 목록만 select 되도록 한다. 
-							List<FeedCommentDto> commentList=
-								FeedCommentDao.getInstance().getList(commentDto);%>
-				    	<%for(FeedCommentDto mp: commentList){ %>
-							<%if(mp.getDeleted().equals("yes")){ %>
-								<li>삭제된 댓글 입니다.</li>
-							<% 
-								// continue; 아래의 코드를 수행하지 않고 for 문으로 실행순서 다시 보내기 
-								continue;
-							}%>
-						
-							<%if(mp.getNum() == mp.getComment_group()){ %>
-								<li id="reli<%=mp.getNum()%>">
-							<%}else{ %>
-								<li id="reli<%=mp.getNum()%>" style="padding-left:50px;">
-									<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-					  					<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-									</svg>
+								<%if(mp.getNum() == mp.getComment_group()){ %>
+									<li id="reli<%=mp.getNum()%>">
+								<%}else{ %>
+									<li id="reli<%=mp.getNum()%>" style="padding-left:50px;">
+										<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+						  					<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+										</svg>
+								<%} %>
+										<dl>
+											<dt>
+												<%if(mp.getProfile() == null){ %>
+													<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+														  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+														  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+													</svg>
+												<%}else{ %>
+													<img class="profile-image" src="<%=mp.getProfile()%>" style="width:20px;height:20px;rounded;"/>
+												<%} %>
+													<span><%=mp.getWriter() %></span>
+												<%if(mp.getNum() != mp.getComment_group()){ %>
+													@<i><%=mp.getTarget_id() %></i>
+												<%} %>
+													<span><%=mp.getRegdate() %></span>
+													<a data-num="<%=mp.getNum() %>" class="reply-link" href="javascript:" >답글</a>
+												<%if(id != null && mp.getWriter().equals(id)){ %>
+													<a data-num="<%=mp.getNum() %>" class="update-link" href="javascript:">수정</a>
+													<a data-num="<%=mp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
+												<%} %>
+											</dt>
+											<dd>
+												<pre id="pre<%=mp.getNum()%>"><%=mp.getContent() %></pre>						
+											</dd>
+										</dl>	
+										<form id="reForm<%=mp.getNum() %>" class="reComment animate__animated comment-form re-insert-form" 
+											action="comment_insert.jsp" method="post" style="display:none;">
+											<input type="hidden" name="ref_group"
+												value="<%=tmp.getNum() %>"/>
+											<input type="hidden" name="target_id"
+												value="<%=mp.getWriter()%>"/>
+											<input type="hidden" name="comment_group"
+												value="<%=mp.getComment_group()%>"/>
+											<textarea name="content"></textarea>
+											<button type="submit">등록</button>
+										</form>	
+										<%if(mp.getWriter().equals(id)){ %>	
+											<form id="updateForm<%=mp.getNum() %>" class="comment-form update-form" 
+												action="comment_update.jsp" method="post" style="display:none;">
+												<input type="hidden" name="num" value="<%=mp.getNum() %>" />
+												<textarea name="content"><%=mp.getContent() %></textarea>
+												<button type="submit">수정</button>
+											</form>
+										<%} %>						
+								</li>
 							<%} %>
-									<dl>
-										<dt>
-											<%if(mp.getProfile() == null){ %>
-												<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-													  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-													  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-												</svg>
-											<%}else{ %>
-												<img class="profile-image" src="<%=mp.getProfile()%>" style="width:20px;height:20px;rounded;"/>
-											<%} %>
-												<span><%=mp.getWriter() %></span>
-											<%if(mp.getNum() != mp.getComment_group()){ %>
-												@<i><%=mp.getTarget_id() %></i>
-											<%} %>
-												<span><%=mp.getRegdate() %></span>
-												<a data-num="<%=mp.getNum() %>" class="reply-link" href="javascript:" >답글</a>
-											<%if(id != null && mp.getWriter().equals(id)){ %>
-												<a data-num="<%=mp.getNum() %>" class="update-link" href="javascript:">수정</a>
-												<a data-num="<%=mp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
-											<%} %>
-										</dt>
-										<dd>
-											<pre id="pre<%=mp.getNum()%>"><%=mp.getContent() %></pre>						
-										</dd>
-									</dl>	
-									<form id="reForm<%=mp.getNum() %>" class="reComment animate__animated comment-form re-insert-form" 
-										action="comment_insert.jsp" method="post" style="display:none;">
-										<input type="hidden" name="ref_group"
-											value="<%=tmp.getNum() %>"/>
-										<input type="hidden" name="target_id"
-											value="<%=mp.getWriter()%>"/>
-										<input type="hidden" name="comment_group"
-											value="<%=mp.getComment_group()%>"/>
-										<textarea name="content"></textarea>
-										<button type="submit">등록</button>
-									</form>	
-									<%if(mp.getWriter().equals(id)){ %>	
-										<form id="updateForm<%=mp.getNum() %>" class="comment-form update-form" 
-											action="comment_update.jsp" method="post" style="display:none;">
-											<input type="hidden" name="num" value="<%=mp.getNum() %>" />
-											<textarea name="content"><%=mp.getContent() %></textarea>
-											<button type="submit">수정</button>
-										</form>
-									<%} %>						
-							</li>
-						<%} %>
-				  </div>
-				  <ul class="list-group list-group-flush">
-				    <li class="list-group-item" >
-					    <form class="comment-form insert-form comment" action="comment_insert.jsp" method="post">
-							<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
-							<input type="hidden" name="ref_group" value="<%=tmp.getNum()%>"/>
-							<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
-							<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
-							
-							<textarea   name="content"></textarea>
-							<button data-num="<%=tmp.getNum() %>" type="submit">등록</button>
-						</form>
-				    	<a  data-num="<%=tmp.getNum() %>" class="feedBtn" href="javascript:">피드</a>
-				    </li>
-				  </ul>
+					  </div>
+					  <ul class="list-group list-group-flush">
+					    <li class="list-group-item" >
+						    <form class="comment-form insert-form comment" action="comment_insert.jsp" method="post">
+								<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+								<input type="hidden" name="ref_group" value="<%=tmp.getNum()%>"/>
+								<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
+								<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
+								
+								<textarea   name="content"></textarea>
+								<button data-num="<%=tmp.getNum() %>" type="submit">등록</button>
+							</form>
+					    	<a  data-num="<%=tmp.getNum() %>" class="feedBtn" href="javascript:">피드</a>
+					    </li>
+					  </ul>
+					</div>
 				</div>
-			</div>
-		<%} %>
-	</div>
-	<div style="display:flex; justify-content:center; margin-top:30px;">
-		<nav aria-label="Page navigation example">
-			<ul class="pagination">
-				<%if(startPageNum != 1){ %>
-					<li class="page-item">
-						<a href="main.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Prev</a>
-					</li>	
-				<%} %>
-				
-				<%for(int i=startPageNum; i<=endPageNum ; i++){ %>
-					<li class="page-item">
-						<%if(pageNum == i){ %>
-							<a class="active page-link"  href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
-						<%}else{ %>
-							<a class="page-link" href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
-						<%} %>
-					</li>	
-				<%} %>
-				<%if(endPageNum < totalPageCount){ %>
-					<li class="page-item">
-						<a class="page-link" href="main.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Next</a>
-					</li>
-				<%} %>
-			</ul>
-		</nav>
-	</div>
-	<div style="display:flex; justify-content:center; margin-bottom:50px;">
-		<form action="main.jsp" method="get"> 
-			<input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
-			<button type="submit">검색</button>
-		</form>	
+			<%} %>
+		</div>
 		
-		<%if(!keyword.equals("")){ %>
-			<p>
-				<strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
-			</p>
-		<%} %>
+		<div style="display:flex; justify-content:center; margin-top:30px;">
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<%if(startPageNum != 1){ %>
+						<li class="page-item">
+							<a href="main.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Prev</a>
+						</li>	
+					<%} %>
+					
+					<%for(int i=startPageNum; i<=endPageNum ; i++){ %>
+						<li class="page-item">
+							<%if(pageNum == i){ %>
+								<a class="active page-link"  href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+							<%}else{ %>
+								<a class="page-link" href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+							<%} %>
+						</li>	
+					<%} %>
+					<%if(endPageNum < totalPageCount){ %>
+						<li class="page-item">
+							<a class="page-link" href="main.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Next</a>
+						</li>
+					<%} %>
+				</ul>
+			</nav>
+		</div>
+		<div style="display:flex; justify-content:center; margin-bottom:50px;">
+			<form action="main.jsp" method="get"> 
+				<input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
+				<button type="submit">검색</button>
+			</form>	
+			
+			<%if(!keyword.equals("")){ %>
+				<p>
+					<strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
+				</p>
+			<%} %>
+		</div>
 	</div>
 </div>
-	
 	
 	<!-- Button trigger modal -->
 	<button style="display:none;" id="modalBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
@@ -384,8 +437,9 @@
 			         width: 100%;
 			         height: 100%;
 			         object-fit: contain;
+			         display:none;
 			   "/></div>
-	        	<label class="form-label" for="image">IMAGE</label>
+	        	<label class="form-label" for="image">IMAGE(Drag and Drop)</label>
 				<textarea style="display:none;" class="form-control"  name="image" id="image"></textarea>
 
 				<div class="mb-3">

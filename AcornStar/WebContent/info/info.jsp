@@ -103,6 +103,7 @@
    }
    //로그인 된 아이디 읽어오기 
    String id=(String)session.getAttribute("id");
+   
 %>        
 <!DOCTYPE html>
 <html>
