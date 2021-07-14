@@ -320,9 +320,6 @@
 					      		<%
 					      			String dbList=UsersDao.getInstance().getUpList(id);
 					      			System.out.println(dbList);
-					      			if(dbList==null){
-					      		  		dbList="0";
-					      		    }
 					      			String[] array=dbList.split(",");
 					      			boolean check=Arrays.asList(array).contains(Integer.toString(tmp.getNum()));
 					      			System.out.println(check);
