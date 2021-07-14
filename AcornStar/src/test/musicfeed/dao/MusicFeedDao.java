@@ -750,8 +750,8 @@ public class MusicFeedDao {
 			conn = new DbcpBean().getConn();
 			// 실행할 sql 문 작성
 			String sql = "update music_feed"
-					+ "set upCount=upCount+1"
-					+ "where num=?";
+					+" set upCount=upCount+1"
+					+" where num=?";
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 binding 할 내용이 있으면 여기서 binding
 			pstmt.setInt(1, num);
@@ -774,5 +774,90 @@ public class MusicFeedDao {
 		} else {
 			return false;
 		}
+	}
+	
+	// 좋아요 count를 감소시키는 method
+	public boolean down(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0;
+		try {
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "update music_feed"
+					+" set upCount=upCount-1"
+					+" where num=?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding 할 내용이 있으면 여기서 binding
+			pstmt.setInt(1, num);
+			// insert or update or delete 문 수행하고
+			// 변화된 row의 개수 return 받기
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		if (flag > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// 좋아요 top6 게시물 정보를 가져오는 method
+	public List<MusicFeedDto> getTopSix(){
+		List<MusicFeedDto> list=new ArrayList<>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "select *"
+					+ " from"
+					+ 		" (select result1.*, rownum as rnum"
+					+ 		" from"
+					+ 			" (select *"
+					+ 			" from music_feed"
+					+ 			" order by upCount desc) result1)"
+					+ " where rnum<=6";
+			// PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding할 내용이 있으면 여기서 binding
+			// 없음
+			// select 문 수행하고 결과를 ResultSet으로 받아옥
+			rs = pstmt.executeQuery();
+			// 반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서
+			// 원하는 Data type으로 포장하기
+			while (rs.next()) {
+				MusicFeedDto dto=new MusicFeedDto();
+				dto.setLink(rs.getString("link"));
+				dto.setUpCount(rs.getInt("upCount"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return list;
 	}
 }

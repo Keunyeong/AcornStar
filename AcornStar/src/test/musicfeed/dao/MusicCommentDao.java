@@ -203,8 +203,7 @@ public class MusicCommentDao {
 		}
 
 		return count;
-	}
-	
+	}	
 	
 	// 해당 댓글을 삭제하는 method
 	// 사실 삭제하는게 아니라 deleted를 yes로
@@ -276,5 +275,68 @@ public class MusicCommentDao {
 		} else {
 			return false;
 		}
+	}
+	
+	// 본인이 방금 직전에 등록한 댓글을 불러오는 method
+	public List<MusicCommentDto> getLast(String id) {
+		List<MusicCommentDto> list=null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "select *"
+					+ " from"
+					+ 	" (select result1.*, rownum as rnum" 
+					+ 	" from"
+					+ 		" (select *"
+					+ 		" from music_comment"
+					+ 		" where writer=?) result1)"
+					+ " where rnum=(select nvl(max(rnum),0)"
+					+ 				" from"
+					+ 					" (select result1.*, rownum as rnum"
+					+ 					" from"
+					+ 					" (select *"
+					+ 					" from music_comment"
+					+ 					" where writer='test123') result1))";
+			// PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding할 내용이 있으면 여기서 binding
+			pstmt.setString(1, id);
+			// select 문 수행하고 결과를 ResultSet으로 받아옥
+			rs = pstmt.executeQuery();
+			// 원하는 Data type으로 포장하기
+			if (rs.next()) {
+				list=new ArrayList<>();
+				MusicCommentDto dto=new MusicCommentDto();
+				dto=new MusicCommentDto();
+				dto.setNum(rs.getInt("num"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setContent(rs.getString("content"));
+				dto.setTarget_id(rs.getString("target_id"));
+				dto.setRef_group(rs.getInt("ref_group"));
+				dto.setComment_group(rs.getInt("comment_group"));
+				dto.setDeleted(rs.getString("deleted"));
+				dto.setRegdate(rs.getString("regdate"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return list;
 	}
 }

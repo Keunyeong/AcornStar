@@ -289,6 +289,88 @@ public class UsersDao {
 		}
 	}
 	
+	// 좋아요 list 불러오는 method
+	public String getUpList(String id) {
+		String list=null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "select upList"
+					+ " from users"
+					+ " where id=?";
+			// PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding할 내용이 있으면 여기서 binding
+			pstmt.setString(1, id);
+			// select 문 수행하고 결과를 ResultSet으로 받아옥
+			rs = pstmt.executeQuery();
+			// 원하는 Data type으로 포장하기
+			if (rs.next()) {
+				list=rs.getString("upList");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+
+		return list;
+	}
+	
+	// 좋아요로 게시물 upList를 update하는 method
+	public boolean addUpList(UsersDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0;
+		try {
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "update users"
+					+ " set upList=?"
+					+ " where id=?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding 할 내용이 있으면 여기서 binding
+			pstmt.setString(1, dto.getUplist());
+			pstmt.setString(2, dto.getId());
+			// insert or update or delete 문 수행하고
+			// 변화된 row의 개수 return 받기
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		if (flag > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	/*
+	// 좋아요 취소로 게시물 upList를 update하는 method
+	public boolean subtractUpList() {
+		
+	}
+	*/
 }
 
 

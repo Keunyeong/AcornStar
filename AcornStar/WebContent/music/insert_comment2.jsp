@@ -1,41 +1,49 @@
+<%@page import="java.util.List"%>
 <%@page import="test.musicfeed.dao.MusicCommentDao"%>
 <%@page import="test.musicfeed.dto.MusicCommentDto"%>
-<%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="application/json; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%
-	// 로그인 id 정보 받아오기
+	// 일단 id 정보를 불러와서 writer에 담는다.
 	String id=(String)session.getAttribute("id");
-	
-	// pageNum && num 정보 받아오기
-	int comment_pageNum=Integer.parseInt(request.getParameter("comment_pageNum"));
 	int num=Integer.parseInt(request.getParameter("num"));
 
-	/*
-	댓글 paging 처리
-	*/
+	// 글 번호, target_id, 댓글에 대한 정보를 받아오고
+	String content=request.getParameter("comment");
+	String target_id=request.getParameter("target_id");
+	int ref_group=Integer.parseInt(request.getParameter("ref_group"));
+	String comment_group=request.getParameter("comment_group");
+	// ㄴ 0인 경우 글에 직접 달린 댓글이다
+	// ㄴ 대댓글에서는 이 정보를 따로 전달해서 댓글 아래 댓글을 출력할 수 있다.
+	
+	// sequence 숫자 정보
+	int seq=MusicCommentDao.getInstance().getSequence();
+	
+	// dto에 넣고
+	MusicCommentDto dto= new MusicCommentDto();
+	dto.setNum(seq);
+	dto.setWriter(id);
+	dto.setContent(content);
+	dto.setTarget_id(target_id);
+	dto.setRef_group(ref_group);
+	if(comment_group==null){
+		dto.setComment_group(seq);
+	} else {
+		dto.setComment_group(Integer.parseInt(comment_group));
+	}
 	
 	// 한 번에 몇 개 씩 보이게 할 것인지
 	final int comment_row_count=5;
-	
-	// 보여줄 댓글 page의 시작 rownum
-	int comment_startRowNum=1+(comment_pageNum-1)*comment_row_count;
-	// 보여줄 댓글 page의 끝 rownum
-	int comment_endRowNum=comment_pageNum*comment_row_count;
-	
-	MusicCommentDto comment_dto=new MusicCommentDto();
-	comment_dto.setNum(num);
-	comment_dto.setStartRowNum(comment_startRowNum);
-	comment_dto.setEndRowNum(comment_endRowNum);
-	
 	// 댓글 전체의 개수 얻어내기
 	int comment_totalRow=MusicCommentDao.getInstance().getCount(num);
-	
 	// 전체 page의 수
 	int comment_totalPageCount=(int)Math.ceil(comment_totalRow/(double)comment_row_count);
+	// 응답
+	boolean beInserted=MusicCommentDao.getInstance().insert(dto);
+	
 %>
 	<!-- 댓글의 data를 불러온다. -->
-	<%List<MusicCommentDto> commentList=MusicCommentDao.getInstance().getList(comment_dto); %>
+	<%List<MusicCommentDto> commentList=MusicCommentDao.getInstance().getLast(id); %>
 	<%for(MusicCommentDto tmp2:commentList) {%>
 		<%if(tmp2.getDeleted().equals("yes")){ %>
 			<li>삭제된 댓글입니다.</li>
@@ -43,9 +51,9 @@
 			continue;
 		}%>
 		<%if(tmp2.getComment_group()==tmp2.getNum()) {%>
-			<li id="comment<%=tmp2.getNum()%>" class="page-<%=comment_pageNum%>">
+			<li id="comment<%=tmp2.getNum()%>" class="page-">
 		<%} else {%>
-			<li id="comment<%=tmp2.getNum()%>" class="page-<%=comment_pageNum%>" style="padding-left:50px;">
+			<li id="comment<%=tmp2.getNum()%>" class="page-" style="padding-left:50px;">
 		<%} %>
 			<dl>
 				<dt>
@@ -79,6 +87,6 @@
 			</form>
 		</li>
 	<%} %>
-	<%if(comment_totalPageCount > comment_pageNum){ %>
-		<a data-num="<%=num %>" data-num2="<%=comment_totalPageCount %>" data-num3="<%=comment_pageNum%>" class="page-<%=comment_pageNum%> moreComment" href="javascript:">더보기</a>
+	<%if(comment_totalPageCount > 1){ %>
+		<a data-num="<%=num %>" data-num2="<%=comment_totalPageCount %>" class="moreComment" href="javascript:">더보기</a>
 	<%} %>
