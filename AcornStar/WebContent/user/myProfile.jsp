@@ -176,16 +176,14 @@
 		<div class="container">
 
 			<ul class="profile_list">
-				<li><a  href="${pageContext.request.contextPath}/user/update_form.jsp">프로필 수정</a></li>
 				<li><a style="letter-spacing:5px;" href="${pageContext.request.contextPath}/info/info.jsp">공지사항</a></li>
 				<li><a style="letter-spacing:15px;" href="${pageContext.request.contextPath}/suggest/list.jsp">Q&A</a></li>
-				<li><a style="letter-spacing:5px;" href="${pageContext.request.contextPath}/index.jsp">로그아웃</a></li>
 				<li><a  href="#">이메일 및 SMS</a></li>
 				<li><a  href="#">공개범위 및 보안</a></li>
+				<li><a  href="#">연락처 관리</a></li>
 				<%if(id.equals("master")){ %>
 					<li><a  href="${pageContext.request.contextPath}/authority.jsp">권한 관리</a></li>
 				<%} %>
-				<li><a  href="#">연락처 관리</a></li>
 			</ul>
 			
 				<!-- 마이프로필 수정 폼 (프로필 이미지, 소개글 포함) 마크업 -->
