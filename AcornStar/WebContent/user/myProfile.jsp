@@ -195,17 +195,20 @@
 					<div>
 						<div class="profile_header">
 							<div class="profile_wrapper drag-area">
-                <%if(dto.getProfile() == null){ %>
-                  <svg id="svg" xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="display:block;">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                  </svg>		
-                <%}else{ %>
-                  <img src="<%=dto.getProfile()%>" style="
-                   width: 80%;
-                   height: 80%;
-                   object-fit: contain;"/>
-                <%} %>
+				                <%if(dto.getProfile() == null){ %>
+				                  <svg id="svg" xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="display:block;">
+				                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+				                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+				                  </svg>		
+				                <%}else{ %>
+				                  <img id="myImage" src="<%=dto.getProfile()%>" style="
+				                   width: 100%;
+				                   height: 100%;
+				                   border-radius:100%;
+							       border: 3px solid #fff;
+					        		position: absolute;
+				                   object-fit: contain;"/>
+				                <%} %>
 								<img id="myImage" style="
 							        width: 150px;
 							        height: 150px;
@@ -214,7 +217,7 @@
 					        		position: absolute;
 									left:4px;
 									top:4px;
-							        object-fit: fill; display:none;"/>
+							        object-fit: contain; display:none;"/>
 							</div>
 							<p style="font-weight:700; font-size:17px; margin:6px 0; "><%=dto.getId() %></p>
 		<!-- 나중에<a style="text-decoration:none;" href="#">프로필 사진 바꾸기</a> -->
