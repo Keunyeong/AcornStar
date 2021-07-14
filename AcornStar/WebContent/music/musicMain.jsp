@@ -1,3 +1,5 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="test.users.dao.UsersDao"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="test.musicfeed.dao.MusicCommentDao"%>
 <%@page import="test.musicfeed.dto.MusicCommentDto"%>
@@ -51,9 +53,7 @@
 	
 	// 특수기호를 encoding한 keyword를 미리 준비한다.
 	String encodedK=URLEncoder.encode(keyword);
-	
-	
-	
+		
 	MusicFeedDto dto=new MusicFeedDto();
 	dto.setStartRowNum(startRowNum);
 	dto.setEndRowNum(endRowNum);
@@ -96,8 +96,6 @@
 	   	//키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
 	   	totalRow=MusicFeedDao.getInstance().getCount();
 	}
-	
-	
 	
 	
 	// 하단의 시작 page 번호
@@ -160,7 +158,34 @@
 		padding: 0;
 		margin: 0 auto;
 	}
-
+	
+	.wrapper{
+	   perspective: 500px;
+	   perspective-origin: 50% 20%;
+	   margin-top: 30px;
+	   border: 1px solid red;
+	}
+	.cube{
+	   transform-style: preserve-3d;
+	   transform-origin: 50% 50%;
+	   position: relative;
+	   width: 400px;
+	   height: 400px;
+	   margin: 0 auto; /* 가운데 정렬 */
+	   transition: all 0.5s ease-out;
+	}
+	.cube > .iframeBox{
+	   position: absolute;
+	   width: 400px;
+	   height: 400px;
+	   opacity: 1; /* 투명도 */
+	   background-color: #2e272f;
+	}
+	
+	.control{
+	   /* 인라인 요소의 가운데 정렬 */
+	   text-align: center;
+	}  
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 </style>
 </head>
@@ -196,7 +221,7 @@
 					    	</div>
 					    	<div>
 					  			<label for="tag">태그</label>
-					  			<input type="tag" name="tag" id=""/>
+					  			<input type=text name="tag" id=""/>
 					  		</div>
 					    	<div>
 					  			<label for="link">링크</label>
@@ -248,6 +273,27 @@
 			</div>
 		</div>
 		
+		<!-- top six cube -->
+		<%
+			// top six list
+			List<MusicFeedDto> topSix=MusicFeedDao.getInstance().getTopSix();
+		%>
+		<div class="wrapper">
+			<div class="cube">
+				<%for(MusicFeedDto tmp3:topSix){ %>
+					<div class="iframeBox">
+						<iframe class="" src="<%=tmp3.getLink()%>"></iframe>
+					</div>
+				<%} %>
+			</div>
+		</div>		
+		<br>		
+		<div class="control">
+			<button id="prevBtn">&larr;</button>
+			<button id="nextBtn">&rarr;</button>
+		</div>
+		<br>
+
 		<!-- card 게시글 list -->
 		<ul class="cardlist">
 			<%for(MusicFeedDto tmp:list) {%>
@@ -268,8 +314,20 @@
 					        			<p class="card-text"><small class="text-muted">tag : #<%=tmp.getTag() %></small></p>
 					        		<%} %>
 					        		<p class="card-text"><small class="text-muted">등록 시간 : <%=tmp.getRegdate() %></small></p>
+					        		<p class="card-text"><small class="text-muted">좋아요 수: <span class="upCount"><%=tmp.getUpCount() %></span></small></p>
 					      		</div>
-					      		<a data-num="<%=tmp.getNum() %>" class="up-link" href="javascript:">좋아요</a>
+					      		<%
+					      			String dbList=UsersDao.getInstance().getUpList(id);
+					      			System.out.println(dbList);
+					      			String[] array=dbList.split(",");
+					      			boolean check=Arrays.asList(array).contains(Integer.toString(tmp.getNum()));
+					      			System.out.println(check);
+					      		%>
+					      		<%if(check) {%>
+					      			<a data-num="<%=tmp.getNum() %>" class="up-link" href="javascript:">좋아요 취소</a>
+					      		<%} else { %>
+					      			<a data-num="<%=tmp.getNum() %>" class="up-link" href="javascript:">좋아요</a>
+					      		<%} %>
 					      		<a data-num="<%=tmp.getNum() %>" class="comment-link" href="javascript:">댓글</a>
 					      		<%if(tmp.getWriter().equals(id)){ %>
 						      		<a data-num="<%=tmp.getNum() %>" class="update-link" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">수정</a>
@@ -344,7 +402,9 @@
 										</form>
 									<%} %>
 									<!-- 대댓글 form(hidden) -->
-									<form data-num="<%=tmp2.getNum() %>" id="recommentForm<%=tmp2.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
+									<form data-num="<%=tmp2.getNum() %>" data-num3="80" id="recommentForm<%=tmp2.getNum() %>" class="comment" style="display:none;" action="insert_comment.jsp" method="post">
+										<input type="hidden" name="currentPage" value="80"/>
+										<input type="hidden" name="num" value="<%=tmp.getNum()%>"/>
 										<input type="hidden" name="target_id" value="<%=tmp2.getWriter() %>"/>
 										<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 										<input type="hidden" name="comment_group" value="<%=tmp2.getComment_group()%>"/>
@@ -355,11 +415,14 @@
 							<%} %>
 						</ul>
 						<%if(comment_totalPageCount > 1){ %>
-							<a data-num="<%=tmp.getNum() %>" data-num2="<%=comment_totalPageCount %>" class="moreComment" href="javascript:">더보기</a>
+							<a data-num="<%=tmp.getNum() %>" data-num2="<%=comment_totalPageCount %>" data-num3="1" class="moreComment" href="javascript:">더보기</a>
 						<%} %>
+							
 						<!-- 댓글 작성하는 form(hidden) -->
 						<div>
-							<form data-num="<%=tmp.getNum() %>" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
+							<form data-num="<%=tmp.getNum() %>" data-num3="80" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
+								<input type="hidden" name="currentPage" value="80"/>
+								<input type="hidden" name="num" value="<%=tmp.getNum()%>"/>
 								<input type="hidden" name="target_id" value="<%=tmp.getWriter() %>"/>
 								<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 								<textarea name="comment" id="comment"></textarea>
@@ -426,6 +489,44 @@
 		document.querySelector("#acornstar").addEventListener("click",function(){
 			location.href="${pageContext.request.contextPath}/main/main.jsp";
 		});
+		
+		/*
+			test
+		*/
+		
+		function getAngleNtz(n, width) {
+			let angle = (360 / n);
+			let tz = ((width/2)/Math.tan((angle*Math.PI)/(2*180)));
+			let obj = {
+				angle: angle,
+				tz: tz
+			};
+			return obj;
+		}
+		
+		let cube=document.querySelector(".cube");
+		let cubelist=cube.children;
+		
+		let obj=getAngleNtz(cubelist.length, 400);
+		for(let i=0; i<cubelist.length; i++){
+			//cubelist[i].style.transform=`rotateY(${obj.angle*i}deg) translateZ(${obj.tz}px)`;
+			cubelist[i].style.transform="rotateY("+(obj.angle*i)+"deg) translateZ("+(obj.tz)+"px)";
+		}
+		//cube.style.transform=`translateZ(-${obj.tz}px)`;
+		cube.style.transform="translateZ("+(-obj.tz)+"px)";
+		
+		let angle=0;
+		document.querySelector("#prevBtn").addEventListener("click", function(){
+			angle -= obj.angle;
+			//cube.style.transform=`translateZ(${-obj.tz}px) rotateY(${angle}deg)`;
+			cube.style.transform="translateZ("+(-obj.tz)+"px) rotateY("+(angle)+"deg)";
+		});
+		document.querySelector("#nextBtn").addEventListener("click", function(){
+			angle += obj.angle;
+			//cube.style.transform=`translateZ(${-obj.tz}px) rotateY(${angle}deg)`;
+			cube.style.transform="translateZ("+(-obj.tz)+"px) rotateY("+(angle)+"deg)";
+		});
+		
 		/*
 		// 검색 관련 : 입력값이 없으면 제출하지 않는다.")
 		document.querySelector("#searchForm").addEventListener("submit", function(e){
@@ -445,19 +546,36 @@
 		/*
 			좋아요 관련
 		*/
+		
 		let upLinks=document.querySelectorAll(".up-link");
-		for(let i=0; upLinks.length; i++){
+		let upCounts=document.querySelectorAll(".upCount");
+		for(let i=0; i<upLinks.length; i++){
 			upLinks[i].addEventListener("click", function(e){
 				e.preventDefault();
 				
 				let num=this.getAttribute("data-num");
 				
-				ajaxPromise("up.jsp", "post", "num="+num)
-				.then(function(response){
-					return response.
-				}).then(function(data){
-					console.log(data);
-				});
+				if(this.innerText=="좋아요"){
+					ajaxPromise("up.jsp", "post", "num="+num)
+					.then(function(response){
+						return response.json();
+					}).then(function(data){
+						if(data.beSuccess){
+							upLinks[i].innerText="좋아요 취소";
+							upCounts[i].innerText=data.upCount;
+						}
+					});	
+				} else if(this.innerText=="좋아요 취소"){
+					ajaxPromise("down.jsp", "post", "num="+num)
+					.then(function(response){
+						return response.json();
+					}).then(function(data){
+						if(data.beSuccess){
+							upLinks[i].innerText="좋아요";
+							upCounts[i].innerText=data.upCount;
+						}
+					});	
+				}
 			});
 		}
 		
@@ -523,7 +641,7 @@
 		for(let i=0; i<updateLinks.length; i++){
 			updateLinks[i].addEventListener("click", function(e){
 				// 링크 이동을 막고
-				//e.preventDefault();
+				e.preventDefault();
 				
 				let num=this.getAttribute("data-num");
 				
@@ -589,6 +707,7 @@
 		
 		commentAddListener(".comment");
 		// 댓글 달기 버튼을 눌렀을 때 작동하는 곳
+		
 		function commentAddListener(sel){
 			let commentForms=document.querySelectorAll(sel);
 			for(let i=0; i<commentForms.length; i++){
@@ -605,15 +724,75 @@
 					}).then(function(data){
 						if(data.beInserted){
 							let path="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=pageNum%>";
-							location.href=path;
+							location.href=path;	
 						} else {
 							console.log("댓글 등록 실패");
 						}
+
 					});
 				});
 			}
 		}
 		
+		/*
+		let tcurrentPage=80;
+		function commentAddListener(sel){
+			let commentForms=document.querySelectorAll(sel);
+			for(let i=0; i<commentForms.length; i++){
+				commentForms[i].addEventListener("submit", function(e){
+					// 일단 form 제출을 막고
+					e.preventDefault();
+					
+					// 대댓글일 경우
+					if(commentForms[i].getAttribute("id").includes("re")){
+						let num=this.getAttribute("data-num");
+						
+						//tcurrentPage=this.getAttribute("data-num3");
+						
+						tcurrentPage++;
+						
+						// ajax로 응답
+						ajaxFormPromise(this)
+						.then(function(response){
+							return response.text();
+						}).then(function(data){
+							document.querySelector(".commentList[id=commentList"+num+"]"+" ul").insertAdjacentHTML("beforeend", data);
+													
+							// 새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 event listener를 등록하기
+							recommentBtnAddListener(".page-"+tcurrentPage+" .recomment-link");
+							commentAddListener(".page-"+tcurrentPage+" .comment");
+							commentDeleteBtnAddListener(".page-"+tcurrentPage+" .comment-delete-link");
+							commentUpdateBtnAddListener(".page-"+tcurrentPage+" .comment-update-link");
+							commentUpdateAddListener(".page-"+tcurrentPage+" .commentUpdate");
+							moreComment(".moreComment");
+						});
+					} else { // 댓글일 경우
+						let num=this.getAttribute("data-num");
+						
+						//tcurrentPage=this.getAttribute("data-num3");
+						
+						tcurrentPage++;
+						
+						// ajax로 응답
+						ajaxFormPromise(this)
+						.then(function(response){
+							return response.text();
+						}).then(function(data){
+							document.querySelector(".commentList[id=commentList"+num+"]"+" ul").insertAdjacentHTML("beforeend", data);
+													
+							// 새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 event listener를 등록하기
+							recommentBtnAddListener(".page-"+tcurrentPage+" .recomment-link");
+							commentAddListener(".page-"+tcurrentPage+" .comment");
+							commentDeleteBtnAddListener(".page-"+tcurrentPage+" .comment-delete-link");
+							commentUpdateBtnAddListener(".page-"+tcurrentPage+" .comment-update-link");
+							commentUpdateAddListener(".page-"+tcurrentPage+" .commentUpdate");
+							moreComment(".moreComment");
+						});
+					}
+				});
+			}
+		}
+		*/
 		commentDeleteBtnAddListener(".comment-delete-link");
 		function commentDeleteBtnAddListener(sel){
 			// 댓글 삭제 버튼을 눌렀을 때 작동하는 곳
@@ -737,6 +916,8 @@
 					// 마지막 page는 for문 안에다가
 					let lastPage=this.getAttribute("data-num2");
 					
+					currentPage=this.getAttribute("data-num3");
+					
 					let beLast= currentPage==lastPage;
 					
 					if(!beLoading && !beLast){
@@ -745,14 +926,13 @@
 						currentPage++;
 						
 						// ajax로 응답
-						ajaxPromise("comment_list.jsp", "get",
-								"pageNum="+currentPage+"&num="+num)
+						ajaxPromise("comment_list.jsp", "post",
+								"comment_pageNum="+currentPage+"&num="+num)
 						.then(function(response){
 							return response.text();
 						}).then(function(data){
-							document.querySelector(".commentList ul").insertAdjacentHTML("beforeend", data);
+							document.querySelector(".commentList[id=commentList"+num+"]"+" ul").insertAdjacentHTML("beforeend", data);
 							morelinks[i].style.display="none";
-							beLoading = false;
 							
 							// 새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 event listener를 등록하기
 							recommentBtnAddListener(".page-"+currentPage+" .recomment-link");
@@ -761,11 +941,14 @@
 							commentUpdateBtnAddListener(".page-"+currentPage+" .comment-update-link");
 							commentUpdateAddListener(".page-"+currentPage+" .commentUpdate");
 							moreComment(".moreComment");
+							
+							beLoading = false;
 						});					
 					}
 				});
 			}
 		}
+		
 	</script>
 </body>
 </html>

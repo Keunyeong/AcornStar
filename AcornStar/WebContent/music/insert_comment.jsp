@@ -29,7 +29,6 @@
 	} else {
 		dto.setComment_group(Integer.parseInt(comment_group));
 	}
-
 	
 	// 응답
 	boolean beInserted=MusicCommentDao.getInstance().insert(dto);
