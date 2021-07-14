@@ -25,7 +25,7 @@
 		keyword="";
 		condition=""; 
 	}
-	//CafeDto 객체를 생성해서 
+	//SuggestDto 객체를 생성해서 
 	SuggestDto dto=new SuggestDto();
 	//자세히 보여줄 글번호를 넣어준다. 
 	dto.setNum(num);
@@ -33,7 +33,7 @@
 	if(!keyword.equals("")){
 		//검색 조건이 무엇이냐에 따라 분기 하기
 		if(condition.equals("title_content")){//제목 + 내용 검색인 경우
-			//검색 키워드를 CafeDto 에 담아서 전달한다.
+			//검색 키워드를 SuggestDto 에 담아서 전달한다.
 			dto.setTitle(keyword);
 			dto.setContent(keyword);
 			dto=SuggestDao.getInstance().getDataTC(dto);
@@ -106,11 +106,13 @@
 		font-family: 'Nanum Gothic', sans-serif;
 		font-size: 15px;
 	}
-	
+
+	/* 스크롤 안보이게 */	
 	::-webkit-scrollbar {
 	  display: none;
 	}
 	
+	/* 상단, 하단 나눠서 정렬하려고 감싼 태그 */
 	.container {
 		display: flex;
 		flex-direction:column;
@@ -118,6 +120,7 @@
 		width: 100vw;
 	}
 	
+	/* 콘텐츠 박스*/
    .content{
       border-bottom: 1px solid gray;
       width:830px;
@@ -190,6 +193,8 @@
       left: 1em;
       color: red;
    }
+   
+   /* 댓글창 설정 */
    pre {
      display: block;
      padding: 9.5px;
@@ -213,7 +218,8 @@
    .loader svg{
       animation: rotateAni 1s ease-out infinite;
    }
-	
+   
+	/* 상단 detail_contents(제목, 조회수 등) 감싸서 정렬한 태그*/
 	.detail_box {
 		display:flex;
 		align-items: center;
@@ -225,6 +231,7 @@
 		justify-content:space-around;
 	}
 	
+	/* 상단 제목,작성자 등.. */
 	.detail_contents {
 		display:inline-block;
 		padding: 5px 15px;
@@ -237,10 +244,12 @@
 		color: gray;
 	}
 	
+	/*상단 '제목'만 width 넓게 설정*/
 	.contents_title {
 		padding: 5px 50px;
 	}
 	
+	/*콘텐츠 하단 글 수정, 삭제, 목록보기*/
 	.detail_ul {
 		list-style:none;
 		display:flex;
@@ -265,10 +274,12 @@
 		font-weight:bold;
 	}
 	
+	/* 하단 이전글, 다음글로 넘어가기 */
 	.page_change > a > svg{
 		margin:15px;
 	}
 
+	/* 댓글창 수정 답글 삭제 */
 	.comments_dt > a {
 		text-decoration: none;
 		color: gray;
@@ -283,7 +294,8 @@
  
 <div class="container" style="width:950px; margin-top:20px;">
 
-   <table class="detail_box" style="width:950px;">
+<!-- 글 상단 정보  -->
+	<table class="detail_box" style="width:950px;">
       <tr class="detail_contents">
          <th>글번호</th> 
          <td><%=dto.getNum() %></td>
@@ -304,19 +316,23 @@
          <th>등록일</th>
          <td><%=dto.getRegdate() %></td>
       </tr>
-   </table>
+	</table>
+	
+<!-- 글 작성 컨텐츠 -->
 	<div class="content" style="width:950px;"><%=dto.getContent() %></div>
-   <ul class="detail_ul" style="width:950px;">
-      	<li><div onclick="location.href='list.jsp'">목록보기</a></li>
-      <%if(dto.getWriter().equals(id)){ %>
-         <li><div onclick="location.href='private/update_form.jsp?num=<%=dto.getNum()%>'">수정</a></li>
-         <li><div onclick="location.href='private/delete.jsp?num=<%=dto.getNum()%>'">삭제</a></li>
-      <%} %>
-   </ul>
+	
+<!-- 컨텐츠 박스 하단 리스트 -->
+	   <ul class="detail_ul" style="width:950px;">
+	      	<li><div onclick="location.href='list.jsp'">목록보기</a></li>
+	      <%if(dto.getWriter().equals(id)){ %>
+	         <li><div onclick="location.href='private/update_form.jsp?num=<%=dto.getNum()%>'">수정</a></li>
+	         <li><div onclick="location.href='private/delete.jsp?num=<%=dto.getNum()%>'">삭제</a></li>
+	      <%} %>
+	   </ul>
 </div>
    
 <div class="container" >
-
+<!-- 이전글, 다음글로 넘기는 아이콘 -->
 	<div class="page_change" style="display:flex; flex-direction:row;">
 	   <%if(dto.getPrevNum()!=0){ %>
 	      <a  href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">
@@ -334,7 +350,7 @@
 	   <%} %>
 	</div>
    
-   <!-- 댓글 목록 -->
+<!-- 댓글 목록 -->
    <div class="comments" style="width:800px;">
       <ul>
          <%for(SuggestCommentDto tmp: commentList){ %>
@@ -406,7 +422,8 @@
            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
       </svg>
    </div>
-   <!-- 원글에 댓글을 작성할 폼 -->
+   
+<!-- 원글에 댓글을 작성할 폼 -->
    <form class="comment-form insert-form" action="private/comment_insert.jsp" method="post">
       <!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
       <input type="hidden" name="ref_group" value="<%=num%>"/>
@@ -419,7 +436,6 @@
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <script>
-   
    //클라이언트가 로그인 했는지 여부
    let isLogin=<%=isLogin%>;
    
