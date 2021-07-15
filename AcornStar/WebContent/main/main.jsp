@@ -104,7 +104,6 @@
  background-color: #c5b3e6;
 }
 
-/*Navbar 가로 정렬*/
 .navbar_ul {
 	display:flex;
 	flex-direction: row;

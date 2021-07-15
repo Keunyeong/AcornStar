@@ -119,14 +119,6 @@
 <meta charset="UTF-8">
 <title>/music/musicMain.jsp</title>
 <style>
-
-	/*Navbar 가로 정렬*/
-	.navbar_ul {
-		display:flex;
-		flex-direction: row;
-		justify-content:space-around;
-		align-items:center;
-	}
 	.iframeBox{
 		position: relative;
 	}
@@ -328,9 +320,6 @@
 					      		<%
 					      			String dbList=UsersDao.getInstance().getUpList(id);
 					      			System.out.println(dbList);
-					      			if(dbList==null){
-					      		  		dbList="0";
-					      		    }
 					      			String[] array=dbList.split(",");
 					      			boolean check=Arrays.asList(array).contains(Integer.toString(tmp.getNum()));
 					      			System.out.println(check);
