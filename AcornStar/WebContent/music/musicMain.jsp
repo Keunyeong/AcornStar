@@ -467,7 +467,11 @@
 								<%} %>
 									<dl>
 										<dt>
-											<small>@<%=tmp2.getTarget_id() %> //  </small><span><%=tmp2.getWriter() %></span>
+											<%if(tmp2.getComment_group()!=tmp2.getNum()) { %>
+												<small>@<%=tmp2.getTarget_id() %> //  </small><span><%=tmp2.getWriter() %></span>
+											<%} else {%>
+												<span><%=tmp2.getWriter() %></span>
+											<%} %>
 											<a data-num="<%=tmp2.getNum() %>" class="recomment-link mb-2 btn btn-light btn-sm" href="javascript;">댓글</a>
 											<%if(tmp2.getWriter().equals(id)){ %>
 												<a data-num="<%=tmp2.getNum() %>" class="comment-delete-link float-end me-2 mb-2 btn btn-light btn-sm" href="javascript:">삭제</a>
@@ -500,10 +504,11 @@
 								</li>
 							<%} %>
 						</ul>
+						
 						<%if(comment_totalPageCount > 1){ %>
 							<a data-num="<%=tmp.getNum() %>" data-num2="<%=comment_totalPageCount %>" data-num3="1" class="moreComment btn" href="javascript:">더보기</a>
 						<%} %>
-							
+						<br>
 						<!-- 댓글 작성하는 form(hidden) -->
 						<div>
 							<form data-num="<%=tmp.getNum() %>" data-num3="80" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
@@ -512,11 +517,13 @@
 								<input type="hidden" name="target_id" value="<%=tmp.getWriter() %>"/>
 								<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 								<textarea class="form-control" name="comment" id="comment"></textarea>
-								<button class="btn" type="submit">댓글 달기</button>
+								<button class="btn float-end me-2" type="submit">댓글 달기</button>
 							</form>
 						</div>
 					</div>
-				</li>				
+				</li>
+				<br>
+				<br>				
 			<%} %>
 		</ul>
 		<!-- page 넘길 수 있는 부분 -->
