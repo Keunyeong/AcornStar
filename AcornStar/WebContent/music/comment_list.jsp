@@ -74,6 +74,8 @@
 					<input class="form-label" type="hidden" name="num" value="<%=tmp2.getNum() %>"/>
 					<textarea class="form-control" name="commentUpdate" id="commentUpdate"><%=tmp2.getContent() %></textarea>
 					<button class="btn float-end me-2" type="submit">수정하기</button>
+					<br>
+					<br>
 				</form>
 			<%} %>
 			<!-- 대댓글 form(hidden) -->
@@ -83,6 +85,8 @@
 				<input type="hidden" name="comment_group" value="<%=tmp2.getComment_group()%>"/>
 				<textarea class="form-control" name="comment" id="recomment"></textarea>
 				<button class="btn float-end me-2" type="submit">댓글 달기</button>
+				<br>
+				<br>
 			</form>
 		</li>
 	<%} %>
