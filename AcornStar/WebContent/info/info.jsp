@@ -139,10 +139,11 @@
       margin:0 5px;
       border:1px solid #ccc;
    }
-   .pagination a.page-link:hover{
+   .pagination a .page-link.active{
 	background-color: #a385cf;
 	color: #fff;
 	}
+	
     select{
    	  border-radius: 10px;
    	  border: solid 2px #a385cf;
