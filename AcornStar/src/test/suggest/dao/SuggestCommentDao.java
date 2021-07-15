@@ -126,7 +126,7 @@ public class SuggestCommentDao {
             "   (select result1.*, rownum as rnum\r\n" + 
             "   from" + 
             "      (select num, writer, content, target_id, ref_group," + 
-            "      comment_group, deleted, suggest_comment.regdate, profile" + 
+            "      comment_group, deleted, to_char(suggest_comment.regdate, 'yyyy/mm/dd hh24:mi') as regdate, profile" + 
             "      from suggest_comment" + 
             "      inner join users" + 
             "      on suggest_comment.writer = users.id" + 

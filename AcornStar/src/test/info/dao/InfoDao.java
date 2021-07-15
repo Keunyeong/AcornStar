@@ -131,7 +131,7 @@ public class InfoDao {
 	         //Connection 객체의 참조값 얻어오기 
 	         conn = new DbcpBean().getConn();
 	         //실행할 sql 문 작성
-	         String sql = "SELECT num,title,writer,content,upCount,regdate"
+	         String sql = "SELECT num,title,writer,content,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate"
 	               + " FROM info"
 	               + " WHERE num=?";
 	         //PreparedStatement 객체의 참조값 얻어오기
@@ -180,7 +180,7 @@ public class InfoDao {
 	         //실행할 sql 문 작성
 	         String sql = "SELECT *" + 
 	               " FROM" + 
-	               "   (SELECT num,title,writer,content,upCount,regdate," + 
+	               "   (SELECT num,title,writer,content,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate," + 
 	               "   LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 	               "   LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 	               "   FROM info" + 
@@ -231,7 +231,7 @@ public class InfoDao {
 	         //실행할 sql 문 작성
 	         String sql = "SELECT *" + 
 	               " FROM" + 
-	               "   (SELECT num,title,writer,content,upCount,regdate," + 
+	               "   (SELECT num,title,writer,content,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate," + 
 	               "   LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 	               "   LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 	               "   FROM info"+ 
@@ -284,7 +284,7 @@ public class InfoDao {
 	         //실행할 sql 문 작성
 	         String sql = "SELECT *" + 
 	               " FROM" + 
-	               "   (SELECT num,title,writer,content,upCount,regdate," + 
+	               "   (SELECT num,title,writer,content,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate," + 
 	               "   LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 	               "   LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 	               "   FROM info"+ 
@@ -337,7 +337,7 @@ public class InfoDao {
 	         //실행할 sql 문 작성
 	         String sql = "SELECT *" + 
 	               " FROM" + 
-	               "   (SELECT num,title,writer,content,upCount,regdate," + 
+	               "   (SELECT num,title,writer,content,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate," + 
 	               "   LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 	               "   LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 	               "   FROM info"+ 
@@ -430,7 +430,7 @@ public class InfoDao {
 	               "      FROM" + 
 	               "          (SELECT result1.*, ROWNUM AS rnum" + 
 	               "          FROM" + 
-	               "              (SELECT num,writer,title,upCount,regdate" + 
+	               "              (SELECT num,writer,title,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate" + 
 	               "              FROM info" + 
 	               "              ORDER BY num DESC) result1)" + 
 	               "      WHERE rnum BETWEEN ? AND ?";
@@ -519,7 +519,7 @@ public class InfoDao {
 	               "      FROM" + 
 	               "          (SELECT result1.*, ROWNUM AS rnum" + 
 	               "          FROM" + 
-	               "              (SELECT num,writer,title,upCount,regdate" + 
+	               "              (SELECT num,writer,title,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate" + 
 	               "              FROM info"+ 
 	               "             WHERE title LIKE '%' || ? || '%' "+               
 	               "              ORDER BY num DESC) result1)" + 
@@ -574,7 +574,7 @@ public class InfoDao {
 	               "      FROM" + 
 	               "          (SELECT result1.*, ROWNUM AS rnum" + 
 	               "          FROM" + 
-	               "              (SELECT num,writer,title,upCount,regdate" + 
+	               "              (SELECT num,writer,title,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate" + 
 	               "              FROM info"+ 
 	               "             WHERE writer LIKE '%' || ? || '%' "+               
 	               "              ORDER BY num DESC) result1)" + 
@@ -629,7 +629,7 @@ public class InfoDao {
 	               "      FROM" + 
 	               "          (SELECT result1.*, ROWNUM AS rnum" + 
 	               "          FROM" + 
-	               "              (SELECT num,writer,title,upCount,regdate" + 
+	               "              (SELECT num,writer,title,upCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate" + 
 	               "              FROM info"+ 
 	               "             WHERE title LIKE '%'||?||'%' OR content LIKE '%'||?||'%' "+               
 	               "              ORDER BY num DESC) result1)" + 

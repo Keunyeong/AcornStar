@@ -147,7 +147,7 @@ public class FeedCommentDao {
 					"	(SELECT result1.*, ROWNUM AS rnum" + 
 					"	 FROM" + 
 					"		(SELECT num, writer, content, target_id, ref_group," + 
-					"		comment_group, deleted, Feed_comment.regdate, profile" + 
+					"		comment_group, deleted, to_char(Feed_comment.regdate, 'yyyy/mm/dd hh24:mi') as regdate, profile" + 
 					"		FROM Feed_comment" + 
 					"		INNER JOIN users" + 
 					"		ON Feed_comment.writer = users.id" + 

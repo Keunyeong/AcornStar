@@ -71,7 +71,7 @@ public class MainFeedDao {
 			// Connection 객체의 참조값 얻어오기
 			conn = new DbcpBean().getConn();
 			// 실행할 sql 문 작성
-			String sql = "select num, writer, tag, image, content, upcount,upmember, main_feed.regdate as regdate, profile"
+			String sql = "select num, writer, tag, image, content, upcount,upmember, to_char(main_feed.regdate, 'yyyy/mm/dd hh24:mi') as regdate, profile"
 					+ " from main_feed"
 					+ " INNER JOIN users" 
 					+ " ON main_feed.writer = users.id"
@@ -308,7 +308,7 @@ public class MainFeedDao {
 			//실행할 sql 문 작성
 			String sql = "SELECT *" + 
 					" FROM" + 
-					"	(SELECT num,writer, image, content,upCount,tag,upMember, main_feed.regdate as regdate, profile," + 
+					"	(SELECT num,writer, image, content,upCount,tag,upMember, to_char(main_feed.regdate, 'yyyy/mm/dd hh24:mi') as regdate, profile," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 					"	FROM MainFeed" + 
@@ -407,7 +407,7 @@ public class MainFeedDao {
 					"		FROM" + 
 					"		    (SELECT result1.*, ROWNUM AS rnum" + 
 					"		    FROM" + 
-					"		        (SELECT num,writer, image, content,upCount,tag,upMember, main_feed.regdate as regdate, profile" + 
+					"		        (SELECT num,writer, image, content,upCount,tag,upMember, to_char(main_feed.regdate, 'yyyy/mm/dd hh24:mi') as regdate, profile" + 
 					"		        FROM Main_feed" + 
 					"				INNER JOIN users" +
 					"				ON main_feed.writer = users.id" + 
@@ -463,7 +463,7 @@ public class MainFeedDao {
 					"		FROM" + 
 					"		    (SELECT result1.*, ROWNUM AS rnum" + 
 					"		    FROM" + 
-					"		        (SELECT num,writer, image, content,upCount,tag,upMember, main_feed.regdate as regdate, profile" + 
+					"		        (SELECT num,writer, image, content,upCount,tag,upMember, to_char(main_feed.regdate, 'yyyy/mm/dd hh24:mi') as regdate, profile" + 
 					"		        FROM Main_Feed"+
 					"				INNER JOIN users" +
 					"				ON main_feed.writer = users.id" +
