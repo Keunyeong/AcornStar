@@ -129,6 +129,14 @@
 		font-size: 15px;
 	}
 
+	/*Navbar 가로 정렬*/
+	.navbar_ul {
+		display:flex;
+		flex-direction: row;
+		justify-content:space-around;
+		align-items:center;
+	}
+
 /* page-ui 게시판 하단 페이지번호 */
    .page-ui a{
       text-decoration: none;

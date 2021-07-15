@@ -16,6 +16,14 @@
 		font-size: 15px;
 	}
 	
+	/*Navbar 가로 정렬*/
+	.navbar_ul {
+		display:flex;
+		flex-direction: row;
+		justify-content:space-around;
+		align-items:center;
+	}
+
 	#content{
 		height: 400px;
 		display:none;
