@@ -6,10 +6,15 @@
 <meta charset="UTF-8">
 <title>/info/private/insert_form.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
-<style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 
+<style>
 	body {
 		margin-top:30px;
+		font-family: 'Lato', sans-serif;
+		font-size: 17px;
 	}
 	
 	/*Navbar 가로 정렬*/

@@ -30,18 +30,7 @@
 		width: 100%;
 		display:none;
 	}
-	#writer{
-		border: 2px solid #a385cf;
-		border-radius: 10px;
 	
-	}
-	#title{
-		border: 2px solid #a385cf;
-		border-radius: 10px;
-	}
-	#title:focus{
-		outline: none;
-	}
 	.submitBtn{
 		float: left;
 		width: 80px;
@@ -80,38 +69,31 @@
 <jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container">
    <form action="update.jsp" method="post">
-		<div id="contentForm">
-		    <input type="hidden" name="pageNum" value="${pageNum}">
-		    <input type="hidden" name="articleNumber" value="${article.articleNumber}">
-		    
-		    <div class="input-group input-group-sm" role="group" aria-label="...">
-				<table class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th width="30%">글쓴이</th>
-							<td width="70%">${id}</td>
-						</tr>
-						<tr>
-							<th style="padding-top: 15px">제목</th>
-							<td><input type="text" name="title" value="${article.title}"
-										class="form-control" aria-describedby="basic-addon1"></td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td colspan="2">
-								<textarea class="form-control" rows="20" name="content" >${article.content}</textarea>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<button type="submit" onclick="submitContents(this);" class="submitBtn">수정하기</button>
-      		<button type="reset" onclick="location.href='../info.jsp'" class="resetBtn">취소</button>
-   	</div>
+          <input type="hidden" name="num" value="<%=num %>" />
+          <div class="input-group input-group-sm" role="group" aria-label="...">
+            <table class="table table-bordered">
+               <thead>   
+                  <tr>
+                     <th>작성자</th>
+                     <td width="70%"><input type="text" id="writer" value="<%=dto.getWriter() %>" disabled/></td>
+                  </tr>
+                  <tr>
+                     <th>제목</th>
+                     <td><input type="text" name="title" id="title" value="<%=dto.getTitle()%>"/></td>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td colspan="2">
+                        <textarea name="content" id="content" ><%=dto.getContent() %></textarea>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <button type="submit" onclick="submitContents(this);" class="submitBtn">수정하기</button>
+         <button type="reset" onclick="location.href='../info.jsp'" class="resetBtn">취소</button>
    </form>
-		</div>
-	</form>
 </div>
 <%--
 		[ SmartEditor 를 사용하기 위한 설정 ]
