@@ -22,13 +22,6 @@
 		font-size: 15px;
 	}
 
-	/*Navbar 가로 정렬*/
-	.navbar_ul {
-		display:flex;
-		flex-direction: row;
-		justify-content:space-around;
-		align-items:center;
-	}
 	.profile_article {
 		margin-top: 20px;
 		display: flex;
