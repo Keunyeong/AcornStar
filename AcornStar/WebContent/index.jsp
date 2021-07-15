@@ -25,7 +25,7 @@ body {
 </style>
 </head>
 <body>
-<div class="text-center" style="margin-top:100px;">
+<div class="text-center" style="margin-top:170px;">
 
    <h1 style="font-family: 'Lobster', cursive; display: inline-block; color: #c5b3e6;">AcornStar<span class="badge bg-secondary"></span></h1>
 

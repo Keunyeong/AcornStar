@@ -246,7 +246,7 @@
 	
 	/*상단 '제목'만 width 넓게 설정*/
 	.contents_title {
-		padding: 5px 50px;
+		padding: 5px 30px;
 	}
 	
 	/*콘텐츠 하단 글 수정, 삭제, 목록보기*/

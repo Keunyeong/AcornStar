@@ -119,6 +119,14 @@
 <meta charset="UTF-8">
 <title>/music/musicMain.jsp</title>
 <style>
+
+	/*Navbar 가로 정렬*/
+	.navbar_ul {
+		display:flex;
+		flex-direction: row;
+		justify-content:space-around;
+		align-items:center;
+	}
 	.iframeBox{
 		position: relative;
 	}
