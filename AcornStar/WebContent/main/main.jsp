@@ -131,28 +131,6 @@ font-weight: bold;
 font-size: 24px;
 }
 
-.socials a {
-width: 40px;
-height: 40px;
-display: inline-block;
-border-radius: 50%;
-margin: 0 5px;
-}
-.socials a i {
-color: #fff;
-padding: 12px 0;
-}    
-
-.socials a:nth-child(1) {
-background: #3b5998;
-}.socials a:nth-child(2) {
-background: #ff0000;
-}.socials a:nth-child(3) {
-background: #007bb5;
-}.socials a:nth-child(4) {
-background: #ea4c89;
-}
-
 @media (max-width: 800px){
     .mx-30{
         margin-bottom: 30px;
@@ -267,7 +245,7 @@ background: #ea4c89;
 			<%for(MainFeedDto tmp:list){%>
 				<div class="col item front front_feed col-md-6 col-lg-4" id="card_front<%=tmp.getNum() %>" style="margin-bottom:20px;">
 					<div class="card mx-30" style="width: 18rem; margin:30px auto;">
-						<div class="card-body">
+						<div class="card-body" style="display:flex; jusntify-content:space-around">
 					    	<%if(tmp.getProfile() == null){ %>
 								<svg style="margin-right:10px;" class="profile-image" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
 									  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -277,7 +255,7 @@ background: #ea4c89;
 								<img style="margin-right:10px; width:35px; height:35px; border-radius:100%;" class="profile-image" src="<%=tmp.getProfile()%>"/>
 							<%} %>
 					    	<span style="font-size:27px;"><%=tmp.getWriter() %></span>
-					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn" style="margin-left:60px;"  href="javascript:">
+					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn"  href="javascript:">
 					    		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#8540f5" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
 								  <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
 								</svg>
@@ -298,22 +276,16 @@ background: #ea4c89;
 					    <p class="card-text">
 					    	<%=tmp.getTag() %>
 					    </p>
-					    <div class="socials">
+					    <div >
 						    <%if(tmp.getWriter().equals(id)){ %>
 					    		<!-- 피드 수정 -->
-								<a data-num="<%=tmp.getNum() %>" class="update" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:">
-									<svg style="margin-top:9px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-exclamation-circle" viewBox="0 0 16 16">
-									  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-									  <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-									</svg>
+								<a data-num="<%=tmp.getNum() %>" class="update" data-bs-toggle="modal" data-bs-target="#updateModal" href="javascript:" style="color:#8540f5;font-weight: bold;">
+									수정
 								</a>
 	
 								<!-- 피드 삭제 -->
-								<a data-num="<%=tmp.getNum() %>" class="delete" href="javascript:">
-									<svg style="margin-top:9px;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-									  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-									  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
-									</svg>
+								<a data-num="<%=tmp.getNum() %>" class="delete" href="javascript:" style="color:#8540f5;font-weight: bold;">
+									삭제
 								</a>
 						    
 						    <%} %>
@@ -327,7 +299,7 @@ background: #ea4c89;
 				
 				<div id="card_back<%=tmp.getNum() %>" class="col item front back_comment col-md-6 col-lg-4" style="display:none;">
 					<div class="card mx-30" style="width: 18rem;">
-						<div class="card-body">
+						<div class="card-body" style="display:flex; jusntify-content:space-around">
 					    	<%if(tmp.getProfile() == null){ %>
 								<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
 									  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -337,7 +309,7 @@ background: #ea4c89;
 								<img style="margin-right:10px; width:35px; height:35px; border-radius:100%;" class="profile-image" src="<%=tmp.getProfile()%>" style="width:20px; rounded;"/>
 							<%} %>
 					    	<span style="font-size:30px;"><%=tmp.getWriter() %></span>
-					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn"  style="margin-left:70px; href="javascript:">
+					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn"   href="javascript:">
 					    		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#8540f5" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
 								  <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
 								</svg>
@@ -397,10 +369,10 @@ background: #ea4c89;
 													@<i><%=mp.getTarget_id() %></i>
 												<%} %>
 													<span><%=mp.getRegdate() %></span>
-													<a data-num="<%=mp.getNum() %>" class="reply-link" href="javascript:" >답글</a>
+													<a data-num="<%=mp.getNum() %>" class="reply-link" href="javascript:" style="color:#8540f5;font-weight: bold;" >답글</a>
 												<%if(id != null && mp.getWriter().equals(id)){ %>
-													<a data-num="<%=mp.getNum() %>" class="update-link" href="javascript:">수정</a>
-													<a data-num="<%=mp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
+													<a data-num="<%=mp.getNum() %>" class="update-link" href="javascript:" style="color:#8540f5;font-weight: bold;">수정</a>
+													<a data-num="<%=mp.getNum() %>" class="delete-link" href="javascript:" style="color:#8540f5;font-weight: bold;">삭제</a>
 												<%} %>
 											</dt>
 											<dd>
@@ -416,14 +388,14 @@ background: #ea4c89;
 											<input type="hidden" name="comment_group"
 												value="<%=mp.getComment_group()%>"/>
 											<textarea name="content"></textarea>
-											<button type="submit">등록</button>
+											<button type="submit" style="color:#8540f5;font-weight: bold; outline:none; border:none;">등록</button>
 										</form>	
 										<%if(mp.getWriter().equals(id)){ %>	
 											<form id="updateForm<%=mp.getNum() %>" class="comment-form update-form" 
 												action="comment_update.jsp" method="post" style="display:none;">
 												<input type="hidden" name="num" value="<%=mp.getNum() %>" />
-												<textarea name="content"><span style="font-family: 'Gamja Flower', cursive;"><%=mp.getContent() %></span></textarea>
-												<button type="submit">수정</button>
+												<textarea name="content"><%=mp.getContent() %></textarea>
+												<button type="submit" style="color:#8540f5;font-weight: bold; outline:none; border:none;">수정</button>
 											</form>
 										<%} %>						
 								</li>
@@ -545,7 +517,7 @@ background: #ea4c89;
 				<label class="form-label" for="tag">TAG</label>
 				<input id="updateTag" class="form-control" type="text" name="tag" />
 			</div>
-			<button class="btn " style="color: #6610f2;" type="submit">SAVE</button>
+			<button class="btn " style="color: #6610f2;" type="submit"><img style="width:50px; display:inline-block;" src="${pageContext.request.contextPath}/image/roket.gif" alt="" />SAVE</button>
 		</form>
       </div>
     </div>
