@@ -49,11 +49,11 @@
 		<%} %>
 			<dl>
 				<dt>
-					<span><%=tmp2.getWriter() %></span>
-					<a data-num="<%=tmp2.getNum() %>" class="recomment-link" href="javascript;">댓글</a>
+					<small>@<%=tmp2.getTarget_id() %> //  </small><span><%=tmp2.getWriter() %></span>
+					<a data-num="<%=tmp2.getNum() %>" class="recomment-link mb-2 btn btn-light btn-sm" href="javascript;">댓글</a>
 					<%if(tmp2.getWriter().equals(id)){ %>
-						<a data-num="<%=tmp2.getNum() %>" class="comment-update-link" href="javascript:">수정</a>
-						<a data-num="<%=tmp2.getNum() %>" class="comment-delete-link" href="javascript:">삭제</a>
+						<a data-num="<%=tmp2.getNum() %>" class="comment-delete-link float-end me-2 mb-2 btn btn-light btn-sm" href="javascript:">삭제</a>
+						<a data-num="<%=tmp2.getNum() %>" class="comment-update-link float-end me-2 mb-2 btn btn-light btn-sm" href="javascript:">수정</a>
 					<%} %>
 					<span><%=tmp2.getRegdate() %></span>
 				</dt>
@@ -64,8 +64,8 @@
 			<!-- 댓글 수정하는 form(hidden) -->
 			<%if(tmp2.getWriter().equals(id)){ %>
 				<form data-num="<%=tmp2.getNum() %>" id="commentUpdateForm<%=tmp2.getNum() %>" class="commentUpdate" style="display:none;" action="update_comment.jsp" method="post">
-					<input type="hidden" name="num" value="<%=tmp2.getNum() %>"/>
-					<textarea name="commentUpdate" id="commentUpdate"><%=tmp2.getContent() %></textarea>
+					<input class="form-label" type="hidden" name="num" value="<%=tmp2.getNum() %>"/>
+					<textarea class="form-control" name="commentUpdate" id="commentUpdate"><%=tmp2.getContent() %></textarea>
 					<button type="submit">수정하기</button>
 				</form>
 			<%} %>
@@ -74,11 +74,11 @@
 				<input type="hidden" name="target_id" value="<%=tmp2.getWriter() %>"/>
 				<input type="hidden" name="ref_group" value="<%=num %>"/>
 				<input type="hidden" name="comment_group" value="<%=tmp2.getComment_group()%>"/>
-				<textarea name="comment" id="recomment"></textarea>
+				<textarea class="form-control" name="comment" id="recomment"></textarea>
 				<button type="submit">댓글 달기</button>
 			</form>
 		</li>
 	<%} %>
 	<%if(comment_totalPageCount > comment_pageNum){ %>
-		<a data-num="<%=num %>" data-num2="<%=comment_totalPageCount %>" data-num3="<%=comment_pageNum%>" class="page-<%=comment_pageNum%> moreComment" href="javascript:">더보기</a>
+		<a data-num="<%=num %>" data-num2="<%=comment_totalPageCount %>" data-num3="<%=comment_pageNum%>" class="page-<%=comment_pageNum%> moreComment btn" href="javascript:">더보기</a>
 	<%} %>
