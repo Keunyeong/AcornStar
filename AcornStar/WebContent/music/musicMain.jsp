@@ -228,6 +228,8 @@
 	}
 	.topSix{
 		font-family: 'Tourney', cursive;
+		color: #8b00ff;
+		text-decoration: fill;
 	}
 	.control{
 	   /* 인라인 요소의 가운데 정렬 */
@@ -237,8 +239,9 @@
 </style>
 </head>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tourney:ital,wght@1,200&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tourney:ital,wght@1,900&display=swap" rel="stylesheet">
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
@@ -288,7 +291,7 @@
 					  		</div>
 					  		<br>
 					    	<div>
-					  			<label class="form-label" for="link">링크</label>
+					  			<label class="form-label" for="link">너튜브 링크</label>
 					  			<input class="form-control" type="url" name="link" id=""/>
 					  		</div>
 					  	</div>
@@ -357,7 +360,7 @@
 							    		<input class="form-control" type="text" name="update_tag" id="update_tag" value="<%=tmp.getTag() %>"/>
 							    	</div>
 							    	<div>
-							  			<label class="form-label" for="update_link">링크</label>
+							  			<label class="form-label" for="update_link">너튜브 링크</label>
 							  			<input class="form-control" type="url" name="update_link" id="update_link" value="<%=tmp.getLink() %>"/>
 							  		</div>
 							  	</div>

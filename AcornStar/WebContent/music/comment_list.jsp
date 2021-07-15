@@ -65,7 +65,7 @@
 					<span><%=tmp2.getRegdate() %></span>
 				</dt>
 				<dd>
-					<pre><%=tmp2.getContent() %></pre>
+					<pre class="form-control"><%=tmp2.getContent() %></pre>
 				</dd>
 			</dl>
 			<!-- 댓글 수정하는 form(hidden) -->
