@@ -115,7 +115,15 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <!-- 외부 css 로딩하기  -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 <style>
+	body {
+		font-family: 'Lato', sans-serif;
+		font-size: 17px;
+	}
+	
     a{
 	  text-decoration: none;
 	  color: black;
@@ -139,9 +147,13 @@
       margin:0 5px;
       border:1px solid #ccc;
    }
-   .pagination a .page-link.active{
-	background-color: #a385cf;
-	color: #fff;
+   .pagination a.page-link:hover{
+	  background-color: #a385cf;
+	  color: #fff;
+	}
+	.pagination a.page-link.active{
+      background-color: #a385cf;
+	  color: #fff;
 	}
 	
     select{
@@ -253,7 +265,7 @@
          <%for(int i=startPageNum; i<=endPageNum; i++) {%>
             <%if(i==pageNum){ %>
                <li class="page-item">
-                  <a class="page-link" href="info.jsp?pageNum=<%=i %>"><%=i %></a>
+                  <a class="page-link active" href="info.jsp?pageNum=<%=i %>"><%=i %></a>
                </li>
             <%}else{ %>
                <li class="page-item">

@@ -100,11 +100,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <style>
 	body {
  background-color: #c5b3e6;
- font-family: 'Gamja Flower', cursive;
+ font-family: 'Jua', sans-serif;
  font-size:20px;
 }
 
@@ -404,7 +404,7 @@ background: #ea4c89;
 												<%} %>
 											</dt>
 											<dd>
-												<pre id="pre<%=mp.getNum()%>"><span style="font-family: 'Gamja Flower', cursive;"><%=mp.getContent() %></span></pre>						
+												<pre id="pre<%=mp.getNum()%>"><span style="font-family: 'Jua', sans-serif;"><%=mp.getContent() %></span></pre>						
 											</dd>
 										</dl>	
 										<form id="reForm<%=mp.getNum() %>" class="reComment animate__animated comment-form re-insert-form" 
