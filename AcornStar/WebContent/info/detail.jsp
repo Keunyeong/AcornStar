@@ -1,5 +1,3 @@
-<%@page import="test.users.dto.UsersDto"%>
-<%@page import="test.users.dao.UsersDao"%>
 <%@page import="java.util.List"%>
 <%@page import="test.info.dao.InfoCommentDao"%>
 <%@page import="test.info.dto.InfoCommentDto"%>
@@ -55,8 +53,6 @@
    
    //로그인된 아이디 (로그인을 하지 않았으면 null 이다)
    String id=(String)session.getAttribute("id");
-   UsersDto usersdto = new UsersDto();
-   usersdto = UsersDao.getInstance().getData(id);
    //로그인 여부
    boolean isLogin=false;
    if(id != null){
@@ -102,7 +98,16 @@
 <title>/info/detail.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
 <style>
+	body {
+		font-family: 'Lato', sans-serif;
+		font-size: 17px;
+	}
+	
 	a{
 	  text-decoration: none;
 	  color: black;
@@ -171,8 +176,7 @@
      color: #333333;
      word-break: break-all;
      word-wrap: break-word;
-     background-color: #f5f5f5;
-     border: 1px solid #ccc;
+     border: 2px solid #a385cf;
      border-radius: 4px;
    }   
    
@@ -186,8 +190,7 @@
    .loader svg{
       animation: rotateAni 1s ease-out infinite;
    }
-   
-  
+ 
    table{
    	  width: 70%;
    	  margin-left: auto;
@@ -308,13 +311,13 @@
             <%} %>
                <dl>
                   <dt>
-                  <%if(usersdto.getProfile() == null){ %>
+                  <%if(tmp.getProfile() == null){ %>
                      <svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                           <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                           <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                      </svg>
                   <%}else{ %>
-                     <img class="profile-image" src="<%=usersdto.getProfile()%>"/>
+                     <img class="profile-image" src="<%=tmp.getProfile()%>"/>
                   <%} %>
                      <span><%=tmp.getWriter() %></span>
                   <%if(tmp.getNum() != tmp.getComment_group()){ %>
