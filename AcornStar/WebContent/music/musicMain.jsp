@@ -301,41 +301,6 @@
 			</div>
 		</div>
 		
-		<!-- 글 수정 modal -->
-		<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-				  	<div class="modal-header">
-				    	<h5 class="modal-title" id="updateModalLabel">어떻게 수정하시겠어요?.?</h5>
-				  	</div>
-				  	<form id="updateForm" method="post" action="${pageContext.request.contextPath}/music/update.jsp">
-					  	<div class="modal-body">
-					  		<input type="hidden" name="num" id="updateNum"/>
-					  		<div>
-					  			<label class="form-label" for="update_title">제목</label>
-					  			<input class="form-control" type="text" name="update_title" id="update_title"/>
-					  		</div>
-					    	<div>
-					    		<label class="form-label" for="update_content">내용</label>
-					    		<textarea class="form-control" name="update_content" id="update_content"></textarea>
-					    	</div>
-					    	<div>
-					    		<label class="form-label" for="tag">태그</label>
-					    		<input class="form-control" type="text" name="update_tag" id="update_tag"/>
-					    	</div>
-					    	<div>
-					  			<label class="form-label" for="update_link">링크</label>
-					  			<input class="form-control" type="url" name="update_link" id="update_link"/>
-					  		</div>
-					  	</div>
-					  	<div class="modal-footer">
-					  		<button class="btn btnK" type="submit">수정</button>
-					    	<button id="updateCancelBtn" type="button" class="btn btnK" data-bs-dismiss="modal">취소</button>
-					  	</div>
-				  	</form>
-				</div>
-			</div>
-		</div>
 		<h2 class="control topSix">Top 6</h2>
 		<!-- top six cube -->
 		<%
@@ -369,6 +334,42 @@
 		<!-- card 게시글 list -->
 		<ul class="cardlist">
 			<%for(MusicFeedDto tmp:list) {%>
+				<!-- 글 수정 modal -->
+				<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						  	<div class="modal-header">
+						    	<h5 class="modal-title" id="updateModalLabel">어떻게 수정하시겠어요?.?</h5>
+						  	</div>
+						  	<form id="updateForm" method="post" action="${pageContext.request.contextPath}/music/update.jsp">
+							  	<div class="modal-body">
+							  		<input type="hidden" name="num" id="updateNum"/>
+							  		<div>
+							  			<label class="form-label" for="update_title">제목</label>
+							  			<input class="form-control" type="text" name="update_title" id="update_title" value="<%=tmp.getTitle() %>" />
+							  		</div>
+							    	<div>
+							    		<label class="form-label" for="update_content">내용</label>
+							    		<textarea class="form-control" name="update_content" id="update_content"><%=tmp.getContent() %></textarea>
+							    	</div>
+							    	<div>
+							    		<label class="form-label" for="tag">태그</label>
+							    		<input class="form-control" type="text" name="update_tag" id="update_tag" value="<%=tmp.getTag() %>"/>
+							    	</div>
+							    	<div>
+							  			<label class="form-label" for="update_link">링크</label>
+							  			<input class="form-control" type="url" name="update_link" id="update_link" value="<%=tmp.getLink() %>"/>
+							  		</div>
+							  	</div>
+							  	<div class="modal-footer">
+							  		<button class="btn btnK" type="submit">수정</button>
+							    	<button id="updateCancelBtn" type="button" class="btn btnK" data-bs-dismiss="modal">취소</button>
+							  	</div>
+						  	</form>
+						</div>
+					</div>
+				</div>						
+			
 				<li class="mb-3 col-md-9">
 					<div class="card mb-3">
 					  	<div class="row g-0">
