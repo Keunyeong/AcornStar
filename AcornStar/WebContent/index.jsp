@@ -64,7 +64,7 @@ body {
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	        <form action="user/signup.jsp" method="post" id="myForm" class="row">
+	        <form action="signup.jsp" method="post" id="myForm" class="row">
 		      <div>
 		         <label class="control-label" for="id">아이디</label>
 		         <input class="form-control" type="text" name="id" id="id"/>
