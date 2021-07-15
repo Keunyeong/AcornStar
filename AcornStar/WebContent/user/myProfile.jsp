@@ -360,6 +360,7 @@ function readImageFile(file){
     	 }
       });
 });
+   document.querySelector("#newWrite").style.display="none";
 </script>
 </body>
 </html>
