@@ -74,11 +74,11 @@
             <table class="table table-bordered">
                <thead>   
                   <tr>
-                     <th>작성자</th>
+                     <th style="color: #a385cf;">작성자</th>
                      <td width="70%"><input type="text" id="writer" value="<%=dto.getWriter() %>" disabled/></td>
                   </tr>
                   <tr>
-                     <th>제목</th>
+                     <th style="color: #a385cf;">제목</th>
                      <td><input type="text" name="title" id="title" value="<%=dto.getTitle()%>"/></td>
                   </tr>
                </thead>
@@ -147,6 +147,15 @@
 		alert(sHTML);
 	}
 
+	function submitContents(elClickedObj) {
+        oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);   // 에디터의 내용이 textarea에 적용됩니다.
+     
+        // 에디터의 내용에 대한 값 검증은 이곳에서 document.getElementById("content").value를 이용해서 처리하면 됩니다.
+     
+        try {
+           elClickedObj.form.submit();
+        } catch(e) {}
+     }
 	
 	function setDefaultFont() {
 		var sDefaultFont = '궁서';
