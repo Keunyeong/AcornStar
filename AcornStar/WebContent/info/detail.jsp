@@ -1,3 +1,5 @@
+<%@page import="test.users.dto.UsersDto"%>
+<%@page import="test.users.dao.UsersDao"%>
 <%@page import="java.util.List"%>
 <%@page import="test.info.dao.InfoCommentDao"%>
 <%@page import="test.info.dto.InfoCommentDto"%>
@@ -53,6 +55,8 @@
    
    //로그인된 아이디 (로그인을 하지 않았으면 null 이다)
    String id=(String)session.getAttribute("id");
+   UsersDto usersdto = new UsersDto();
+   usersdto = UsersDao.getInstance().getData(id);
    //로그인 여부
    boolean isLogin=false;
    if(id != null){
@@ -108,7 +112,7 @@
    .profile-image{
       width: 50px;
       height: 50px;
-      color: #652dc1;
+      color: #a385cf;
    }
    /* ul 요소의 기본 스타일 제거 */
    .comments ul{
@@ -304,23 +308,23 @@
             <%} %>
                <dl>
                   <dt>
-                  <%if(tmp.getProfile() == null){ %>
+                  <%if(usersdto.getProfile() == null){ %>
                      <svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                           <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                           <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                      </svg>
                   <%}else{ %>
-                     <img class="profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile()%>"/>
+                     <img class="profile-image" src="<%=usersdto.getProfile()%>"/>
                   <%} %>
                      <span><%=tmp.getWriter() %></span>
                   <%if(tmp.getNum() != tmp.getComment_group()){ %>
                      @<i><%=tmp.getTarget_id() %></i>
                   <%} %>
                      <span><%=tmp.getRegdate() %></span>
-                     <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">답글</a>
+                     <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link" style="color: #a385cf">답글</a>
                   <%if(id != null && tmp.getWriter().equals(id)){ %>
-                     <a data-num="<%=tmp.getNum() %>" class="update-link" href="javascript:">수정</a>
-                     <a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
+                     <a data-num="<%=tmp.getNum() %>" class="update-link" style="color: #a385cf" href="javascript:">수정</a>
+                     <a data-num="<%=tmp.getNum() %>" class="delete-link" style="color: #a385cf" href="javascript:">삭제</a>
                   <%} %>
                   </dt>
                   <dd>
@@ -343,7 +347,7 @@
                   action="private/comment_update.jsp" method="post">
                   <input type="hidden" name="num" value="<%=tmp.getNum() %>" />
                   <textarea name="content"><%=tmp.getContent() %></textarea>
-                  <button type="submit">수정</button>
+                  <button type="submit" id="submitBtn">수정</button>
                </form>
                <%} %>                  
             </li>

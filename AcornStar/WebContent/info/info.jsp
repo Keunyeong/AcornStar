@@ -183,7 +183,8 @@
 <%if((usersdto.getAutority()).equals("yes")){%>
    <button class="btn-gradient purple" style="margin-top: 30px;" onclick="location.href='private/insert_form.jsp'">공지하기</button>
 <%}%>
-   <h1 class="animate__animated animate__slideInDown" style="text-align: center;">
+
+   <h1 style="text-align: center;">
    		<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50"
 	 	fill="#652dc1" viewBox="0 0 493.546 493.546" style="enable-background:new 0 0 493.546 493.546;" xml:space="preserve">
 			<path d="M226.078,157.206c26.286,0,47.604-21.314,47.604-47.609s-21.317-47.611-47.604-47.611
@@ -213,6 +214,7 @@
    Notice
    </h1>
    <h6 class="animate__pulse" style="text-align: center; color: gray;">AcornStar 의 모든 공지사항을 알립니다!</h6>
+
    <table class="table table-striped table-bordered table-hover">
       <thead style="background-color: #a385cf; color: white;">
          <tr>
