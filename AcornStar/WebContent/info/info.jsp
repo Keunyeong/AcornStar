@@ -321,5 +321,8 @@
       </p>
    <%} %>
 </div>
+<script>
+document.querySelector("#newWrite").style.display="none";
+</script>
 </body>
 </html>

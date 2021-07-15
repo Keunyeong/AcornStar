@@ -158,6 +158,7 @@
       var nFontSize = 24;
       oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
    }
+   document.querySelector("#newWrite").style.display="none";
 </script>
 </body>
 </html>

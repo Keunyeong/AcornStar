@@ -3,7 +3,10 @@ package test.users.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
+import test.feed.dto.MainFeedDto;
 import test.users.dto.UsersDto;
 import test.util.DbcpBean;
 
@@ -364,6 +367,48 @@ public class UsersDao {
 		} else {
 			return false;
 		}
+	}
+	
+	public List<UsersDto> getList(){
+		List<UsersDto> list=new ArrayList<>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			// Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			// 실행할 sql 문 작성
+			String sql = "select id,name,autority"
+					+ " from users";
+			// PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 binding할 내용이 있으면 여기서 binding
+			// select 문 수행하고 결과를 ResultSet으로 받아옥
+			rs = pstmt.executeQuery();
+			// 반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서
+			// 원하는 Data type으로 포장하기
+			while (rs.next()) {
+				UsersDto dto=new UsersDto();
+				dto.setId(rs.getString("id"));
+				dto.setName(rs.getString("name"));
+				dto.setAutority(rs.getString("autority"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return list;
 	}
 	/*
 	// 좋아요 취소로 게시물 upList를 update하는 method

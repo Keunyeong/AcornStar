@@ -189,7 +189,7 @@
 				<li><a  href="#">공개범위 및 보안</a></li>
 				<li><a  href="#">연락처 관리</a></li>
 				<%if(id.equals("master")){ %>
-					<li><a  href="${pageContext.request.contextPath}/authority.jsp">권한 관리</a></li>
+					<li><a  href="${pageContext.request.contextPath}/user/authority.jsp">권한 관리</a></li>
 				<%} %>
 			</ul>
 			
@@ -260,7 +260,7 @@
 							<div>
 
 								<div>
-									<textarea class="intro_area" type="text" placeholder="소개글" rows="2" cols="35"><%=dto.getIntro() %></textarea>
+									<textarea class="intro_area" type="text" name="intro" placeholder="소개글" rows="2" cols="35"><%=dto.getIntro() %></textarea>
 								</div>
 							</div>
 						</div>
@@ -356,7 +356,7 @@ function readImageFile(file){
     		 location.href="${pageContext.request.contextPath}/user/myProfile.jsp";
     	 } else {
     		 alert("회원정보 수정에 실패 하였습니다.");
-    		 location.href="${pageContext.request.contextPath}/user/update_form.jsp";
+    		 location.href="${pageContext.request.contextPath}/user/myProfile.jsp";
     	 }
       });
 });

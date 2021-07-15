@@ -98,10 +98,14 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 <style>
 	body {
- font-family: 'Lato', sans-serif;
  background-color: #c5b3e6;
+ font-family: 'Gamja Flower', cursive;
+ font-size:20px;
 }
 
 .navbar_ul {
@@ -211,7 +215,51 @@ background: #ea4c89;
 		height:20px;
 		fill:red;
 	}
-	
+		#commentSaveBtn{
+		width: 60px;
+		height: 40px;
+		color:#8540f5;
+		margin-bottom: 20px;
+		border: 2px solid #a385cf;
+		border-radius: 10px;
+		outline: none;
+		background-color: #fff;
+	}
+	#commentSaveBtn:hover{
+		background-color: #a385cf;
+		color: #fff;
+	}
+	/* page-ui 게시판 하단 페이지번호 */
+	   .page-ui a{
+      text-decoration: none;
+      color: #000;
+   }
+   
+   .page-ui a:hover{
+      text-decoration: underline;
+   }
+   
+   .page-ui a.active{
+      color: purple;
+      font-weight: 700;
+   }
+   
+   .page-ui ul{
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content:center;
+   }
+   
+   .page-ui ul > li{
+   	display: inline;
+   	padding: 5px;
+   }
+   
+	.page-ui {
+		margin: 10px 0;
+	}
 </style>
 </head>
 <body>
@@ -233,10 +281,10 @@ background: #ea4c89;
 							<%}else{ %>
 								<img style="margin-right:10px; width:35px; height:35px; border-radius:100%;" class="profile-image" src="<%=tmp.getProfile()%>"/>
 							<%} %>
-					    	<%=tmp.getWriter() %>
-					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn" style="margin-left:90px;"  href="javascript:">
-					    		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="indigo" class="bi bi-suit-heart heart_beat" viewBox="0 0 16 16">
-								  <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+					    	<span style="font-size:30px;"><%=tmp.getWriter() %></span>
+					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn" style="margin-left:70px;"  href="javascript:">
+					    		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#8540f5" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+								  <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
 								</svg>
 								<%=tmp.getUpCount()%>
 					    	</a>
@@ -276,7 +324,7 @@ background: #ea4c89;
 						    <%} %>
 						</div>
 						<div style="display:flex; justify-content:flex-end;">    
-						    <a  data-num="<%=tmp.getNum() %>" class="commentBtn" href="javascript:" style="text-decoration:none; color:gray;">댓글</a>
+						    <a  data-num="<%=tmp.getNum() %>" class="commentBtn" href="javascript:" style="text-decoration:none; color:#8540f5; font-weight: bold;">댓글</a>
 					  	</div>
 					  </div>
 					</div>
@@ -291,14 +339,14 @@ background: #ea4c89;
 									  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 								</svg>
 							<%}else{ %>
-								<img class="profile-image" src="<%=tmp.getProfile()%>" style="width:20px; rounded;"/>
+								<img style="margin-right:10px; width:35px; height:35px; border-radius:100%;" class="profile-image" src="<%=tmp.getProfile()%>" style="width:20px; rounded;"/>
 							<%} %>
-					    	<%=tmp.getWriter() %>님이 작성한 글.
-					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn"  href="javascript:">
-					    		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="indigo" class="bi bi-suit-heart" viewBox="0 0 16 16">
-								  <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+					    	<span style="font-size:30px;"><%=tmp.getWriter() %></span>
+					    	<a data-num="<%=tmp.getNum() %>" class="likeBtn"  style="margin-left:70px; href="javascript:">
+					    		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#8540f5" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+								  <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
 								</svg>
-								<%=tmp.getUpCount()%>
+								<%=tmp.getUpCount()%>	
 					    	</a>
 						 </div>
 					  <div id="cardBody<%=tmp.getNum() %>" class="card-body" style="overflow:auto; height:300px;">
@@ -361,7 +409,7 @@ background: #ea4c89;
 												<%} %>
 											</dt>
 											<dd>
-												<pre id="pre<%=mp.getNum()%>"><%=mp.getContent() %></pre>						
+												<pre id="pre<%=mp.getNum()%>"><span style="font-family: 'Gamja Flower', cursive;"><%=mp.getContent() %></span></pre>						
 											</dd>
 										</dl>	
 										<form id="reForm<%=mp.getNum() %>" class="reComment animate__animated comment-form re-insert-form" 
@@ -379,7 +427,7 @@ background: #ea4c89;
 											<form id="updateForm<%=mp.getNum() %>" class="comment-form update-form" 
 												action="comment_update.jsp" method="post" style="display:none;">
 												<input type="hidden" name="num" value="<%=mp.getNum() %>" />
-												<textarea name="content"><%=mp.getContent() %></textarea>
+												<textarea name="content"><span style="font-family: 'Gamja Flower', cursive;"><%=mp.getContent() %></span></textarea>
 												<button type="submit">수정</button>
 											</form>
 										<%} %>						
@@ -388,16 +436,18 @@ background: #ea4c89;
 					  </div>
 					  <ul class="list-group list-group-flush">
 					    <li class="list-group-item" >
-						    <form class="comment-form insert-form comment" action="comment_insert.jsp" method="post">
+						    <form class="comment-form insert-form comment" action="comment_insert.jsp" method="post" style="display:flex; align-items:center; justify-content:space-around;">
 								<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
 								<input type="hidden" name="ref_group" value="<%=tmp.getNum()%>"/>
 								<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
 								<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
 								
 								<textarea   name="content"></textarea>
-								<button data-num="<%=tmp.getNum() %>" type="submit">등록</button>
+								<button data-num="<%=tmp.getNum() %>" id="commentSaveBtn" type="submit" >등록</button>
 							</form>
-					    	<a  data-num="<%=tmp.getNum() %>" class="feedBtn" href="javascript:">피드</a>
+							<div style="display:flex; justify-content:flex-end;">
+					    	<a  data-num="<%=tmp.getNum() %>" class="feedBtn" href="javascript:" style="color:#8540f5;font-weight: bold;">피드</a>
+					    	</div>
 					    </li>
 					  </ul>
 					</div>
@@ -405,44 +455,30 @@ background: #ea4c89;
 			<%} %>
 		</div>
 		
-		<div style="display:flex; justify-content:center; margin-top:30px;">
-			<nav aria-label="Page navigation example">
-				<ul class="pagination">
-					<%if(startPageNum != 1){ %>
-						<li class="page-item">
-							<a href="main.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Prev</a>
-						</li>	
-					<%} %>
-					
-					<%for(int i=startPageNum; i<=endPageNum ; i++){ %>
-						<li class="page-item">
-							<%if(pageNum == i){ %>
-								<a class="active page-link"  href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
-							<%}else{ %>
-								<a class="page-link" href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
-							<%} %>
-						</li>	
-					<%} %>
-					<%if(endPageNum < totalPageCount){ %>
-						<li class="page-item">
-							<a class="page-link" href="main.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Next</a>
-						</li>
-					<%} %>
-				</ul>
-			</nav>
-		</div>
-		<div style="display:flex; justify-content:center; margin-bottom:50px;">
-			<form action="main.jsp" method="get"> 
-				<input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
-				<button type="submit">검색</button>
-			</form>	
-			
-			<%if(!keyword.equals("")){ %>
-				<p>
-					<strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
-				</p>
-			<%} %>
-		</div>
+		<div class="page-ui clearfix">
+	      <ul>
+	         <%if(startPageNum != 1){ %>
+	            <li>
+	               <a href="main.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Prev</a>
+	            </li>   
+	         <%} %>
+	         
+	         <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
+	            <li>
+	               <%if(pageNum == i){ %>
+	                  <a class="active" href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+	               <%}else{ %>
+	                  <a href="main.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+	               <%} %>
+	            </li>   
+	         <%} %>
+	         <%if(endPageNum < totalPageCount){ %>
+	            <li>
+	               <a href="main.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">Next</a>
+	            </li>
+	         <%} %>
+	      </ul>
+	   </div>		
 	</div>
 </div>
 	
@@ -459,12 +495,14 @@ background: #ea4c89;
 	      </div>
 	      <div class="modal-body">
 	        <form action="main_insert.jsp" method="post" id="insertForm">
-	        	<div class="drag-area"><img id="myImage" style="
-			         width: 100%;
-			         height: 100%;
-			         object-fit: contain;
-			         display:none;
-			   "/></div>
+	        	<div class="drag-area" style="display:flex; justify-content:center; align-items:center;">
+		        	<img id="myImage" style="
+				         width: 80%;
+				         height: 80%;
+				         object-fit: contain;
+				         border:0px;
+				   "/>
+			   </div>
 	        	<label class="form-label" for="image">IMAGE(Drag and Drop)</label>
 				<textarea style="display:none;" class="form-control"  name="image" id="image"></textarea>
 
@@ -865,17 +903,31 @@ background: #ea4c89;
 						.then(function(data){
 							if(data.isSuccess){
 								//댓글이 있는 곳에 삭제된 댓글입니다를 출력해 준다. 
-								alert("좋아요.");
+								alert("좋아요");
 								location.href="${pageContext.request.contextPath}/main/main.jsp";
 							}
 						});
 					}else{
-						alert("중복할 수 없습니다.");
+						member.splice("<%=id%>");
+						let upmember=member.join();
+						
+						ajaxPromise("subtractcount.jsp","post","upmember="+upmember+"&num="+num)
+						.then(function(response){
+							return response.json();
+						})
+						.then(function(data){
+							if(data.isSuccess){
+								//댓글이 있는 곳에 삭제된 댓글입니다를 출력해 준다. 
+								alert("좋아요 취소");
+								location.href="${pageContext.request.contextPath}/main/main.jsp";
+							}
+						});
 					}	
 				};
 			});
 		});
 	};
+	
 </script>
 </body>
 </html>
