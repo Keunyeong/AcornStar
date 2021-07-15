@@ -22,6 +22,13 @@
 		font-size: 15px;
 	}
 
+	/*Navbar 가로 정렬*/
+	.navbar_ul {
+		display:flex;
+		flex-direction: row;
+		justify-content:space-around;
+		align-items:center;
+	}
 	.profile_article {
 		margin-top: 20px;
 		display: flex;
@@ -200,12 +207,14 @@
 				                  </svg>		
 				                <%}else{ %>
 				                  <img id="myImage" src="<%=dto.getProfile()%>" style="
-				                   width: 100%;
-				                   height: 100%;
+							       width: 150px;
+							       height: 150px;
 				                   border-radius:100%;
 							       border: 3px solid #fff;
 					        		position: absolute;
-				                   object-fit: fill;"/>
+					        		left:4px;
+									top:4px;
+				                   object-fit:  fill;"/>
 				                <%} %>
 								<img id="myImage" style="
 							        width: 150px;

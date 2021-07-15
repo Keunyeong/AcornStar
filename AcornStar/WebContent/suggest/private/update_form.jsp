@@ -19,6 +19,14 @@
  	display: none;
  }
  
+	 /*Navbar 가로 정렬*/
+	.navbar_ul {
+		display:flex;
+		flex-direction: row;
+		justify-content:space-around;
+		align-items:center;
+	}
+ 
  .update_title {
  	font-weight: 700;
  	margin: 30px 0;

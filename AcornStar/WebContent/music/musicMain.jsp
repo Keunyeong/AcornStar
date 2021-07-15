@@ -119,7 +119,15 @@
 <meta charset="UTF-8">
 <title>/music/musicMain.jsp</title>
 <style>
-	.iframeBox {
+
+	/*Navbar 가로 정렬*/
+	.navbar_ul {
+		display:flex;
+		flex-direction: row;
+		justify-content:space-around;
+		align-items:center;
+	}
+	.iframeBox{
 		position: relative;
 		/*padding-bottom: 56.25%; /* 16:9 비율인 경우 */
 		/* padding-bottom값은 4:3 비율인 경우 75%로 설정합니다 */
