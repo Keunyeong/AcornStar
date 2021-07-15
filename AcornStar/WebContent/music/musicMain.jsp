@@ -468,6 +468,9 @@
 									<dl>
 										<dt>
 											<%if(tmp2.getComment_group()!=tmp2.getNum()) { %>
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+												  	<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+												</svg>
 												<small>@<%=tmp2.getTarget_id() %> //  </small><span><%=tmp2.getWriter() %></span>
 											<%} else {%>
 												<span><%=tmp2.getWriter() %></span>
@@ -488,7 +491,9 @@
 										<form data-num="<%=tmp2.getNum() %>" id="commentUpdateForm<%=tmp2.getNum() %>" class="commentUpdate" style="display:none;" action="update_comment.jsp" method="post">
 											<input class="form-label" type="hidden" name="num" value="<%=tmp2.getNum() %>"/>
 											<textarea class="form-control" name="commentUpdate" id="commentUpdate"><%=tmp2.getContent() %></textarea>
-											<button type="submit">수정하기</button>
+											<button class="btn float-end me-2" type="submit">수정하기</button>
+											<br>
+											<br>
 										</form>
 									<%} %>
 									<!-- 대댓글 form(hidden) -->
@@ -499,7 +504,9 @@
 										<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 										<input type="hidden" name="comment_group" value="<%=tmp2.getComment_group()%>"/>
 										<textarea class="form-control" name="comment" id="recomment"></textarea>
-										<button class="btn" type="submit">댓글 달기</button>
+										<button class="btn float-end me-2" type="submit">댓글 달기</button>
+										<br>
+										<br>
 									</form>
 								</li>
 							<%} %>
