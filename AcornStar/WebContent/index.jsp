@@ -19,7 +19,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 body {
-	background-image: url("image/hh.gif");
+	background-image: url("image/bgPurple.png");
 	background-size: cover;
 }
 </style>
