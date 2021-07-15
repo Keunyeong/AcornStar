@@ -301,41 +301,6 @@
 			</div>
 		</div>
 		
-		<!-- 글 수정 modal -->
-		<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-				  	<div class="modal-header">
-				    	<h5 class="modal-title" id="updateModalLabel">어떻게 수정하시겠어요?.?</h5>
-				  	</div>
-				  	<form id="updateForm" method="post" action="${pageContext.request.contextPath}/music/update.jsp">
-					  	<div class="modal-body">
-					  		<input type="hidden" name="num" id="updateNum"/>
-					  		<div>
-					  			<label class="form-label" for="update_title">제목</label>
-					  			<input class="form-control" type="text" name="update_title" id="update_title"/>
-					  		</div>
-					    	<div>
-					    		<label class="form-label" for="update_content">내용</label>
-					    		<textarea class="form-control" name="update_content" id="update_content"></textarea>
-					    	</div>
-					    	<div>
-					    		<label class="form-label" for="tag">태그</label>
-					    		<input class="form-control" type="text" name="update_tag" id="update_tag"/>
-					    	</div>
-					    	<div>
-					  			<label class="form-label" for="update_link">링크</label>
-					  			<input class="form-control" type="url" name="update_link" id="update_link"/>
-					  		</div>
-					  	</div>
-					  	<div class="modal-footer">
-					  		<button class="btn btnK" type="submit">수정</button>
-					    	<button id="updateCancelBtn" type="button" class="btn btnK" data-bs-dismiss="modal">취소</button>
-					  	</div>
-				  	</form>
-				</div>
-			</div>
-		</div>
 		<h2 class="control topSix">Top 6</h2>
 		<!-- top six cube -->
 		<%
@@ -369,6 +334,42 @@
 		<!-- card 게시글 list -->
 		<ul class="cardlist">
 			<%for(MusicFeedDto tmp:list) {%>
+				<!-- 글 수정 modal -->
+				<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						  	<div class="modal-header">
+						    	<h5 class="modal-title" id="updateModalLabel">어떻게 수정하시겠어요?.?</h5>
+						  	</div>
+						  	<form id="updateForm" method="post" action="${pageContext.request.contextPath}/music/update.jsp">
+							  	<div class="modal-body">
+							  		<input type="hidden" name="num" id="updateNum"/>
+							  		<div>
+							  			<label class="form-label" for="update_title">제목</label>
+							  			<input class="form-control" type="text" name="update_title" id="update_title" value="<%=tmp.getTitle() %>" />
+							  		</div>
+							    	<div>
+							    		<label class="form-label" for="update_content">내용</label>
+							    		<textarea class="form-control" name="update_content" id="update_content"><%=tmp.getContent() %></textarea>
+							    	</div>
+							    	<div>
+							    		<label class="form-label" for="tag">태그</label>
+							    		<input class="form-control" type="text" name="update_tag" id="update_tag" value="<%=tmp.getTag() %>"/>
+							    	</div>
+							    	<div>
+							  			<label class="form-label" for="update_link">링크</label>
+							  			<input class="form-control" type="url" name="update_link" id="update_link" value="<%=tmp.getLink() %>"/>
+							  		</div>
+							  	</div>
+							  	<div class="modal-footer">
+							  		<button class="btn btnK" type="submit">수정</button>
+							    	<button id="updateCancelBtn" type="button" class="btn btnK" data-bs-dismiss="modal">취소</button>
+							  	</div>
+						  	</form>
+						</div>
+					</div>
+				</div>						
+			
 				<li class="mb-3 col-md-9">
 					<div class="card mb-3">
 					  	<div class="row g-0">
@@ -468,6 +469,9 @@
 									<dl>
 										<dt>
 											<%if(tmp2.getComment_group()!=tmp2.getNum()) { %>
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+												  	<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+												</svg>
 												<small>@<%=tmp2.getTarget_id() %> //  </small><span><%=tmp2.getWriter() %></span>
 											<%} else {%>
 												<span><%=tmp2.getWriter() %></span>
@@ -488,7 +492,9 @@
 										<form data-num="<%=tmp2.getNum() %>" id="commentUpdateForm<%=tmp2.getNum() %>" class="commentUpdate" style="display:none;" action="update_comment.jsp" method="post">
 											<input class="form-label" type="hidden" name="num" value="<%=tmp2.getNum() %>"/>
 											<textarea class="form-control" name="commentUpdate" id="commentUpdate"><%=tmp2.getContent() %></textarea>
-											<button type="submit">수정하기</button>
+											<button class="btn float-end me-2" type="submit">수정하기</button>
+											<br>
+											<br>
 										</form>
 									<%} %>
 									<!-- 대댓글 form(hidden) -->
@@ -499,7 +505,9 @@
 										<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 										<input type="hidden" name="comment_group" value="<%=tmp2.getComment_group()%>"/>
 										<textarea class="form-control" name="comment" id="recomment"></textarea>
-										<button class="btn" type="submit">댓글 달기</button>
+										<button class="btn float-end me-2" type="submit">댓글 달기</button>
+										<br>
+										<br>
 									</form>
 								</li>
 							<%} %>
