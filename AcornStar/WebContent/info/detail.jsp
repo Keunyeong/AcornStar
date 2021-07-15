@@ -141,7 +141,8 @@
       border-top: 1px solid #888;
    }
    .comment-form textarea{
-      width: 100%;
+      width: 700px;
+      margin-bottom: 20px;
       height: 80px;
       color: black;
       background-color: white;
@@ -198,12 +199,12 @@
    	  text-align: center;
    }
    #submitBtn{
+   	  display: block;
       background:#a385cf;
 	  color:#fff;
 	  border:none;
 	  border-radius: 5px;
 	  position:relative;
-	  margin-top: 20px;
 	  margin-bottom: 20px;
 	  float: right;
 	  height:50px;
@@ -419,7 +420,7 @@
       const isBottom = 
          window.innerHeight + window.scrollY  >= document.body.offsetHeight;
       //현재 페이지가 마지막 페이지인지 여부 알아내기
-      let isLast = currentPage == lastPage;   
+      let isLast = currentPage >= lastPage; 
       //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
       if(isBottom && !isLoading && !isLast){
          //로딩바 띄우기
