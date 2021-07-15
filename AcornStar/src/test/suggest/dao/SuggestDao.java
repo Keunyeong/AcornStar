@@ -108,7 +108,7 @@ import test.util.DbcpBean;
                 "      FROM" + 
                 "          (SELECT result1.*, ROWNUM AS rnum" + 
                 "          FROM" + 
-                "              (SELECT num,writer,title,viewCount,regdate" + 
+                "              (SELECT num,writer,title,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate" + 
                 "              FROM suggest" + 
                 "              ORDER BY num DESC) result1)" + 
                 "      WHERE rnum BETWEEN ? AND ?";
@@ -230,7 +230,7 @@ import test.util.DbcpBean;
 			//Connection 객체의 참조값 얻어오기 
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
-			String sql = "SELECT num,title,writer,content,viewCount,regdate"
+			String sql = "SELECT num,title,writer,content,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate"
 					+ " FROM suggest"
 					+ " WHERE num=?";
 			//PreparedStatement 객체의 참조값 얻어오기
@@ -279,7 +279,7 @@ import test.util.DbcpBean;
 			//실행할 sql 문 작성
 			String sql = "SELECT *" + 
 					" FROM" + 
-					"	(SELECT num,title,writer,content,viewCount,regdate," + 
+					"	(SELECT num,title,writer,content,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 					"	FROM suggest" + 
@@ -331,7 +331,7 @@ import test.util.DbcpBean;
 			//실행할 sql 문 작성
 			String sql = "SELECT *" + 
 					" FROM" + 
-					"	(SELECT num,title,writer,content,viewCount,regdate," + 
+					"	(SELECT num,title,writer,content,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 					"	FROM suggest"+ 
@@ -384,7 +384,7 @@ import test.util.DbcpBean;
 			//실행할 sql 문 작성
 			String sql = "SELECT *" + 
 					" FROM" + 
-					"	(SELECT num,title,writer,content,viewCount,regdate," + 
+					"	(SELECT num,title,writer,content,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 					"	FROM suggest"+ 
@@ -437,7 +437,7 @@ import test.util.DbcpBean;
 			//실행할 sql 문 작성
 			String sql = "SELECT *" + 
 					" FROM" + 
-					"	(SELECT num,title,writer,content,viewCount,regdate," + 
+					"	(SELECT num,title,writer,content,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate," + 
 					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 					"	FROM suggest"+ 
@@ -535,7 +535,7 @@ import test.util.DbcpBean;
 						"		FROM" + 
 						"		    (SELECT result1.*, ROWNUM AS rnum" + 
 						"		    FROM" + 
-						"		        (SELECT num,writer,title,viewCount,regdate" + 
+						"		        (SELECT num,writer,title,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate" + 
 						"		        FROM suggest"+ 
 						"			    WHERE title LIKE '%' || ? || '%' "+					
 						"		        ORDER BY num DESC) result1)" + 
@@ -590,7 +590,7 @@ import test.util.DbcpBean;
 						"		FROM" + 
 						"		    (SELECT result1.*, ROWNUM AS rnum" + 
 						"		    FROM" + 
-						"		        (SELECT num,writer,title,viewCount,regdate" + 
+						"		        (SELECT num,writer,title,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate" + 
 						"		        FROM suggest"+ 
 						"			    WHERE writer LIKE '%' || ? || '%' "+					
 						"		        ORDER BY num DESC) result1)" + 
@@ -645,7 +645,7 @@ import test.util.DbcpBean;
 						"		FROM" + 
 						"		    (SELECT result1.*, ROWNUM AS rnum" + 
 						"		    FROM" + 
-						"		        (SELECT num,writer,title,viewCount,regdate" + 
+						"		        (SELECT num,writer,title,viewCount,to_char(regdate, 'yyyy/mm/dd hh24:mi') as regdate" + 
 						"		        FROM suggest"+ 
 						"			    WHERE title LIKE '%'||?||'%' OR content LIKE '%'||?||'%' "+					
 						"		        ORDER BY num DESC) result1)" + 

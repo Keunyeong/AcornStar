@@ -144,13 +144,14 @@
 		color: #000;
 	}
 	.page-ui a:hover{
-		text-decoration: underline;
+		text-decoration: none;
 	}
 	
 	.page-ui a.active{
-		color: red;
+		font-size: xx-large ;
+		color: #8b00ff;
 		font-weight: bold;
-		text-decoration: underline;
+		text-decoration: none;
 	}
 	
 	.page-ui ul{
@@ -161,7 +162,6 @@
 		float: left;
 		padding: 10px;
 	}
-	
 	.cardlist{
 		padding: 0;
 	}
@@ -226,7 +226,9 @@
 		text-decoration:none;
 		color: #8b00ff;
 	}
-
+	.topSix{
+		font-family: 'Tourney', cursive;
+	}
 	.control{
 	   /* 인라인 요소의 가운데 정렬 */
 	   text-align: center;
@@ -235,6 +237,8 @@
 </style>
 </head>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tourney:ital,wght@1,200&display=swap" rel="stylesheet">
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
@@ -332,7 +336,7 @@
 				</div>
 			</div>
 		</div>
-		
+		<h2 class="control topSix">Top 6</h2>
 		<!-- top six cube -->
 		<%
 			// top six list
@@ -463,7 +467,11 @@
 								<%} %>
 									<dl>
 										<dt>
-											<small>@<%=tmp2.getTarget_id() %> //  </small><span><%=tmp2.getWriter() %></span>
+											<%if(tmp2.getComment_group()!=tmp2.getNum()) { %>
+												<small>@<%=tmp2.getTarget_id() %> //  </small><span><%=tmp2.getWriter() %></span>
+											<%} else {%>
+												<span><%=tmp2.getWriter() %></span>
+											<%} %>
 											<a data-num="<%=tmp2.getNum() %>" class="recomment-link mb-2 btn btn-light btn-sm" href="javascript;">댓글</a>
 											<%if(tmp2.getWriter().equals(id)){ %>
 												<a data-num="<%=tmp2.getNum() %>" class="comment-delete-link float-end me-2 mb-2 btn btn-light btn-sm" href="javascript:">삭제</a>
@@ -491,15 +499,16 @@
 										<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 										<input type="hidden" name="comment_group" value="<%=tmp2.getComment_group()%>"/>
 										<textarea class="form-control" name="comment" id="recomment"></textarea>
-										<button type="submit">댓글 달기</button>
+										<button class="btn" type="submit">댓글 달기</button>
 									</form>
 								</li>
 							<%} %>
 						</ul>
+						
 						<%if(comment_totalPageCount > 1){ %>
 							<a data-num="<%=tmp.getNum() %>" data-num2="<%=comment_totalPageCount %>" data-num3="1" class="moreComment btn" href="javascript:">더보기</a>
 						<%} %>
-							
+						<br>
 						<!-- 댓글 작성하는 form(hidden) -->
 						<div>
 							<form data-num="<%=tmp.getNum() %>" data-num3="80" id="commentForm<%=tmp.getNum() %>" class="comment" action="insert_comment.jsp" method="post">
@@ -508,38 +517,40 @@
 								<input type="hidden" name="target_id" value="<%=tmp.getWriter() %>"/>
 								<input type="hidden" name="ref_group" value="<%=tmp.getNum() %>"/>
 								<textarea class="form-control" name="comment" id="comment"></textarea>
-								<button type="submit">댓글 달기</button>
+								<button class="btn float-end me-2" type="submit">댓글 달기</button>
 							</form>
 						</div>
 					</div>
-				</li>				
+				</li>
+				<br>
+				<br>				
 			<%} %>
 		</ul>
 		<!-- page 넘길 수 있는 부분 -->
-		<div class="page-ui pagination justify-content-center">
-			<ul>
+		<div class="">
+			<ul class="page-ui pagination justify-content-center">
 				<!-- 이전 묶음 -->
 				<%if(startPageNum>1) {%>
-					<li>
-						<a href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=startPageNum-1%>">prev</a>
+					<li class="page-item">
+						<a class="page-link" href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=startPageNum-1%>">prev</a>
 					</li>
 				<%} %>
 				<!-- 각 page -->
 				<%for(int i=startPageNum; i<=endPageNum; i++){ %>
 					<%if(pageNum==i){ %>
-						<li>
-							<a class="active" href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=i%>"><%=i %></a>
+						<li class="page-item">
+							<a class="active page-link" href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=i%>"><%=i %></a>
 						</li>
 					<%} else { %>
-						<li>
-							<a href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=i%>"><%=i %></a>
+						<li class="page-item">
+							<a class="page-link" href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=i%>"><%=i %></a>
 						</li>
 					<%} %>
 				<%} %>
 				<!-- 다음 묶음 -->
 				<%if(endPageNum<totalPageCount){ %>
-					<li>
-						<a href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=endPageNum+1%>">next</a>
+					<li class="page-item">
+						<a class="page-link" href="${pageContext.request.contextPath}/music/musicMain.jsp?pageNum=<%=endPageNum+1%>">next</a>
 					</li>
 				<%} %>
 			</ul>
@@ -556,16 +567,18 @@
 		<input id="keyword" type="text" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
 		<button type="submit">검색</button>
 	</form>
-	<%if(!condition.equals("")){ %>
-		<p>
-			<strong><%=totalRow %></strong> 개의 글이 검색되습니다.
-		</p>
-	<%} else {%>
-		<p>
-			<strong><%=totalRow %></strong> 개의 글이 있습니다.
-		</p>
-	<%} %>
 	-->
+	<div class="control">
+		<%if(!condition.equals("")){ %>
+			<p>
+				<strong><%=totalRow %></strong> 개의 글이 검색되습니다.
+			</p>
+		<%} else {%>
+			<p>
+				<strong><%=totalRow %></strong> 개의 글이 있습니다.
+			</p>
+		<%} %>
+	</div>
 	<script>
 		// 로고
 		document.querySelector("#acornstar").addEventListener("click",function(){

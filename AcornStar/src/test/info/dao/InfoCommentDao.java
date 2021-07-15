@@ -135,7 +135,7 @@ public class InfoCommentDao {
             "   (select result1.*, rownum as rnum\r\n" + 
             "   from" + 
             "      (select num, writer, content, target_id, ref_group," + 
-            "      comment_group, deleted, info_comment.regdate, profile" + 
+            "      comment_group, deleted, to_char(info_comment.regdate, 'yyyy/mm/dd hh24:mi') as regdate, profile" + 
             "      from info_comment" + 
             "      inner join users" + 
             "      on info_comment.writer = users.id" + 
