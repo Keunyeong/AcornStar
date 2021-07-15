@@ -107,15 +107,7 @@
 	  text-decoration: none;
 	  color: black;
 	}
-	
-	/*Navbar 가로 정렬*/
-	.navbar_ul {
-		display:flex;
-		flex-direction: row;
-		justify-content:space-around;
-		align-items:center;
-	}
-   
+
    /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
    .profile-image{
       width: 50px;

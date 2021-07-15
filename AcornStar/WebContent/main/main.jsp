@@ -108,12 +108,7 @@
  font-size:20px;
 }
 
-.navbar_ul {
-	display:flex;
-	flex-direction: row;
-	justify-content:space-around;
-	align-items:center;
-}
+
 
 .wrapper {
 padding-top: 30px;

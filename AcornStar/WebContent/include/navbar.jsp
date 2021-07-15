@@ -15,7 +15,15 @@
        String id=(String)session.getAttribute("id");
     %>
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<style>
+.navbar_ul {
+	display:flex;
+	flex-direction: row;
+	justify-content:space-around;
+	align-items:center;
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
 
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 	<div class="container-fluid">
