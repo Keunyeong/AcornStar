@@ -228,17 +228,26 @@
 	}
 	.topSix{
 		font-family: 'Tourney', cursive;
+		color: #8b00ff;
+		text-decoration: fill;
 	}
+	
 	.control{
 	   /* 인라인 요소의 가운데 정렬 */
 	   text-align: center;
-	}  
+	} 
+	#chatList li{
+		list-style-type: none;
+		padding: 0;
+		margin: 0 auto;
+	}
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 </style>
 </head>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tourney:ital,wght@1,200&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tourney:ital,wght@1,900&display=swap" rel="stylesheet">
 <body>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
@@ -288,7 +297,7 @@
 					  		</div>
 					  		<br>
 					    	<div>
-					  			<label class="form-label" for="link">링크</label>
+					  			<label class="form-label" for="link">너튜브 링크</label>
 					  			<input class="form-control" type="url" name="link" id=""/>
 					  		</div>
 					  	</div>
@@ -357,7 +366,7 @@
 							    		<input class="form-control" type="text" name="update_tag" id="update_tag" value="<%=tmp.getTag() %>"/>
 							    	</div>
 							    	<div>
-							  			<label class="form-label" for="update_link">링크</label>
+							  			<label class="form-label" for="update_link">너튜브 링크</label>
 							  			<input class="form-control" type="url" name="update_link" id="update_link" value="<%=tmp.getLink() %>"/>
 							  		</div>
 							  	</div>
@@ -587,6 +596,36 @@
 			</p>
 		<%} %>
 	</div>
+	
+	<button id="chatBtn" type="button" class="btn btn-primary" style="display:none;" data-bs-toggle="modal" data-bs-target="#chatModal">
+		채팅창
+	</button>
+	<!-- 채팅 작성 modal -->
+		<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				  	<div class="modal-header">
+				    	<h5 class="modal-title" id="chatModalLabel">채팅하자 채팅</h5>
+				  	</div>
+			
+					  <div class="modal-body chatList">
+					  		
+					  </div>
+					
+					  <div class="modal-footer">
+					  		<form name="chatForm" id="chatForm" method="post" action="${pageContext.request.contextPath}/music/insert_chat.jsp">
+						  		<div>
+						    		<label class="form-label" for="chat_content" style="display:none;">내용</label>
+						    		<textarea style="width:464px;"class="form-control" name="chat_content" id="chat_content"></textarea>
+						    	</div>
+						  		<button class="btn btnK float-end me-2 chatEnter" type="submit">작성</button>
+					  		</form>
+					  </div>
+				</div>
+			</div>
+		</div>
+	
+	
 	<script>
 		// 로고
 		document.querySelector("#acornstar").addEventListener("click",function(){
@@ -1057,6 +1096,54 @@
 			}
 		}
 		
+		/*
+			채팅 관련
+		*/
+		
+		// 클릭했을 때 숨겨둔 modal button을 누르도록
+		document.querySelector(".chat-link").addEventListener("click", function(e){
+			// 일단 막고
+			e.preventDefault();
+			
+			document.querySelector("#chatBtn").click();
+		});
+		
+		// chat 제출했을 때 동작하는 부분
+		document.querySelector("#chatForm").addEventListener("submit", function(e){
+			// form 제출을 막고
+			e.preventDefault();
+			
+			ajaxFormPromise(this)
+			.then(function(response){
+				return response.json();
+			}).then(function(data){
+				console.log();
+				if(data.beInserted){
+					ajaxPromise("chatList.jsp", "post")
+					.then(function(response){
+						return response.text();
+					}).then(function(data){
+						let chatList=document.querySelector("#chatList");
+						if(chatList!=null){
+							document.querySelector("#chatList").remove();
+							document.querySelector(".chatList").insertAdjacentHTML("beforeend", data);
+						} else {
+							document.querySelector(".chatList").insertAdjacentHTML("beforeend", data);
+						}
+					});
+				}
+			});
+		});
+		
+		// chatting enter
+		document.querySelector("#chat_content").addEventListener("keypress", function(e){
+			if(e.keyCode==13){
+				document.querySelector(".chatEnter").click();
+				this.value="";
+			}
+		});	
+
+
 	</script>
 </body>
 </html>
