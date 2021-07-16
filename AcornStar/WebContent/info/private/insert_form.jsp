@@ -12,7 +12,6 @@
 
 <style>
 	body {
-		margin-top:30px;
 		font-family: 'Lato', sans-serif;
 		font-size: 17px;
 	}

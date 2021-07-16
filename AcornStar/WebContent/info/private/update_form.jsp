@@ -13,9 +13,7 @@
 <title>/info/private/update_form.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
-	body {
-		margin-top:30px;
-	}
+	
 	
 	/*Navbar 가로 정렬*/
 	.navbar_ul {
