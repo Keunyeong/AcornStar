@@ -641,6 +641,7 @@
 
    }
    document.querySelector("#newWrite").style.display="none";
+   document.querySelector("#searchForm").style.display="none";
 </script>
 </body>
 </html>

@@ -49,6 +49,7 @@
         </button>
       <div class="collapse navbar-collapse" id="navbarNav">
       	<!-- 검색기능 -->
+      	<div id="searchForm">
          <form class="d-flex ms-4 searchForm">
        	  	<input type="hidden" name="condition" value="tag"/>
             <input class="form-control ml-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
@@ -59,7 +60,7 @@
 				</svg>
             </button>
          </form>
-            
+        </div>    
          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar_ul" style="margin-right: 20px;">
 
             <!-- DM 이동  -->
