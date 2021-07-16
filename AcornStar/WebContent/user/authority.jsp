@@ -5,7 +5,6 @@
     pageEncoding="UTF-8"%>
 <%
 	List<UsersDto> list = UsersDao.getInstance().getList();
-	
 %>
 <!DOCTYPE html>
 <html>
@@ -31,17 +30,23 @@
 					<td><%=tmp.getId()%></td>
 					<td><%=tmp.getName()%></td>
 					<td>
-						<%if((tmp.getAutority()).equals("yes")){ %>
+						<%
+							String data=tmp.getAutority();
+							if(data==null){
+								data="no";
+							}
+						%>			
+						<%if(data.equals("yes")){ %>
 							<select name="autority" class="autority">
 								<option value="<%=tmp.getId()%>,yes" selected>yes</option>
 								<option value="<%=tmp.getId()%>,no">no</option>
 							</select>
-						<%}else{ %>
+						<%} else {%>
 							<select name="autority" class="autority">
 								<option value="<%=tmp.getId()%>,yes">yes</option>
 								<option value="<%=tmp.getId()%>,no" selected>no</option>
 							</select>
-					<%} %>
+						<%} %>
 					</td>
 				</tr>
 			<%} %>
