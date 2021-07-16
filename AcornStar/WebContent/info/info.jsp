@@ -196,7 +196,13 @@
 <body>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
-<%if((usersdto.getAutority()).equals("yes")){%>
+<%
+	String data=usersdto.getAutority(); 
+	if(data==null){
+		data="no";
+	}
+%>
+<%if(data.equals("yes")){%>
    <button class="btn-gradient purple" style="margin-top: 30px;" onclick="location.href='private/insert_form.jsp'">공지하기</button>
 <%}%>
 
@@ -242,6 +248,7 @@
          </tr>
       </thead>
       <tbody>
+      <!--  -->
       <%for(InfoDto tmp:list){%>
          <tr>
             <td><%=tmp.getNum() %></td>
@@ -286,7 +293,7 @@
             </li>
          <%} %>
       </ul>
-      
+     
    <form action="info.jsp" method="get">
       <label for="condition"></label>
       <select name="condition" id="condition">
@@ -327,6 +334,7 @@
          <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
       </p>
    <%} %>
+    
 </div>
 <script>
 document.querySelector("#newWrite").style.display="none";
