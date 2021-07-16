@@ -17,31 +17,35 @@
 <body>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
-	<table>
-		<tr>
-			<th>아이디</th>
-			<th>이름</th>
-			<th>권한</th>
-		</tr>
-	<%for(UsersDto tmp:list){%>
-		<tr>
-			<td><%=tmp.getId()%></td>
-			<td><%=tmp.getName()%></td>
-			<td>
-				<%if((tmp.getAutority()).equals("yes")){ %>
-					<select name="autority" class="autority">
-						<option value="<%=tmp.getId()%>,yes" selected>yes</option>
-						<option value="<%=tmp.getId()%>,no">no</option>
-					</select>
-				<%}else{ %>
-					<select name="autority" class="autority">
-						<option value="<%=tmp.getId()%>,yes">yes</option>
-						<option value="<%=tmp.getId()%>,no" selected>no</option>
-					</select>
+	<table class="table">
+		<thead>
+			<tr >
+				<th scope="col">아이디</th>
+				<th scope="col">이름</th>
+				<th scope="col">권한</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%for(UsersDto tmp:list){%>
+				<tr>
+					<td><%=tmp.getId()%></td>
+					<td><%=tmp.getName()%></td>
+					<td>
+						<%if((tmp.getAutority()).equals("yes")){ %>
+							<select name="autority" class="autority">
+								<option value="<%=tmp.getId()%>,yes" selected>yes</option>
+								<option value="<%=tmp.getId()%>,no">no</option>
+							</select>
+						<%}else{ %>
+							<select name="autority" class="autority">
+								<option value="<%=tmp.getId()%>,yes">yes</option>
+								<option value="<%=tmp.getId()%>,no" selected>no</option>
+							</select>
+					<%} %>
+					</td>
+				</tr>
 			<%} %>
-			</td>
-		</tr>
-	<%} %>
+		</tbody>
 	</table>
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
