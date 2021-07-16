@@ -63,6 +63,22 @@
 	table{
 		text-align: center;
 	}
+	#writer{
+		border: none;
+		width: 900px;
+		text-align: center;
+	}
+	#writer:focus{
+		outline: none;
+	}
+	#title{
+		border: none;
+		width: 900px;
+		text-align: center;
+	}
+	#title:focus{
+		outline: none;
+	}
 </style>
 </head>
 <body>

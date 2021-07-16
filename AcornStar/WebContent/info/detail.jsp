@@ -141,9 +141,10 @@
       border-top: 1px solid #888;
    }
    .comment-form textarea{
-      width: 700px;
+      width: 900px;
       margin-bottom: 20px;
-      height: 80px;
+      margin-left: 100px;
+      height: 60px;
       color: black;
       background-color: white;
       border: 1px solid #a385cf;
@@ -206,8 +207,9 @@
 	  border-radius: 5px;
 	  position:relative;
 	  margin-bottom: 20px;
+	  margin-right: 130px;
 	  float: right;
-	  height:50px;
+	  height:60px;
 	  font-size:25px;
 	  padding:0 1em;
 	  cursor:pointer;
@@ -258,23 +260,23 @@
    <%} %>
    <table class="table table-striped table-bordered table-hover">
       <tr>
-         <th>NO.</th>
+         <th style="color: indigo;">NO.</th>
          <td><%=dto.getNum() %></td>
       </tr>
       <tr>
-         <th>작성자</th>
+         <th style="color: indigo;">작성자</th>
          <td><%=dto.getWriter() %></td>
       </tr>
       <tr>
-         <th>제목</th>
+         <th style="color: indigo;">제목</th>
          <td><%=dto.getTitle() %></td>
       </tr>
       <tr>
-         <th>조회수</th>
+         <th style="color: indigo;">조회수</th>
          <td><%=dto.getUpCount() %></td>
       </tr>
       <tr>
-         <th>등록일</th>
+         <th style="color: indigo;">등록일</th>
          <td><%=dto.getRegdate() %></td>
       </tr>
       <tr>
