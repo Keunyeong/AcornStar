@@ -22,6 +22,11 @@ body {
 	background-image: url("image/bgPurple.png");
 	background-size: cover;
 }
+
+.flex-center {
+	display: flex;
+	align-items:center;
+}
 </style>
 </head>
 <body>
@@ -34,13 +39,13 @@ body {
 <div class="container" >
    <div style="margin:auto; text-align:center; margin-top:80px; rounded:50px;">
    <form id="loginForm" action="login.jsp" method="post" style="display:inline-block;">
-	  <div class="row mb-3">
+	  <div class="row mb-3 flex-center">
 	    <label for="loginId" class="col-sm-5 col-form-label" style="color: #c5b3e6; font-size: 25px;">ID</label>
 	    <div class="col-sm-7">
 	      <input type="text" class="form-control" name="loginId" id="loginId">
 	    </div>
 	  </div>
-	  <div class="row mb-3">
+	  <div class="row mb-3 flex-center">
 	    <label for="loginPwd" class="col-sm-5 col-form-label" style="color: #c5b3e6; font-size: 25px;" >Password</label>
 	    <div class="col-sm-7">
 	      <input type="password" class="form-control" name="loginPwd" id="loginPwd">
