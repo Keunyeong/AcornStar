@@ -27,7 +27,7 @@ body {
 <body>
 <div class="text-center" style="margin-top:170px;">
 
-   <h1 style="font-family: 'Lobster', cursive; display: inline-block; color: #c5b3e6;">AcornStar<span class="badge bg-secondary"></span></h1>
+   <h1 style="font-family: 'Lobster', cursive; font-size: 60px; display: inline-block; color: #c5b3e6;">AcornStar<span class="badge bg-secondary"></span></h1>
 
 </div>
 
@@ -35,20 +35,20 @@ body {
    <div style="margin:auto; text-align:center; margin-top:80px; rounded:50px;">
    <form id="loginForm" action="login.jsp" method="post" style="display:inline-block;">
 	  <div class="row mb-3">
-	    <label for="loginId" class="col-sm-5 col-form-label" style="color: #c5b3e6;">ID</label>
+	    <label for="loginId" class="col-sm-5 col-form-label" style="color: #c5b3e6; font-size: 25px;">ID</label>
 	    <div class="col-sm-7">
 	      <input type="text" class="form-control" name="loginId" id="loginId">
 	    </div>
 	  </div>
 	  <div class="row mb-3">
-	    <label for="loginPwd" class="col-sm-5 col-form-label" style="color: #c5b3e6;">Password</label>
+	    <label for="loginPwd" class="col-sm-5 col-form-label" style="color: #c5b3e6; font-size: 25px;" >Password</label>
 	    <div class="col-sm-7">
 	      <input type="password" class="form-control" name="loginPwd" id="loginPwd">
 	    </div>
 	  </div>
-    <div style="margin-top:50px;">
-      <button type="submit" class="col-sm-5 me-2 btn" style="color: #c5b3e6;">LOGIN</button>
-      <button type="button" class="btn" style="color: #c5b3e6;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <div style="margin-top:70px;">
+      <button type="submit" class="col-sm-5 me-2 btn" style="color: #c5b3e6; font-size: 25px;">LOGIN</button>
+      <button type="button" class="btn" style="color: #c5b3e6; font-size: 25px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
         JOIN
       </button>
 	  </div>
